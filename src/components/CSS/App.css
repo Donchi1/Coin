@@ -14,6 +14,10 @@ html {
   -webkit-text-fill-color: transparent !important;
 }
 
+.progress-data {
+  width: 17rem !important;
+}
+
 .history-info {
   background: linear-gradient(to right, #f87d18, purple) !important;
 }
@@ -87,6 +91,9 @@ html {
 @media only screen and (max-width: 1000px) {
   .header-align {
     min-width: 100%;
+  }
+  .progress-data {
+    width: 13rem !important;
   }
   .price-pd {
     margin-top: 1.2rem;

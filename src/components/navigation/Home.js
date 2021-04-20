@@ -43,6 +43,7 @@ function Home() {
   return (
     <>
       <NavBar />
+
       <section className="home-banner parallax site-bg" id="banner">
         <div className="container">
           <div className="row">

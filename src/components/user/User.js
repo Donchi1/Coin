@@ -20,14 +20,14 @@ function User() {
       <UserNav1 />
 
       <section className="site-bg pt-5  pb-0 ">
-        <div className="text-center  text-uppercase pt-5">
-          <h1 className="text-light">Dashboard</h1>
+        <div className="text-center  text-uppercase pt-3 ">
+          <h3 className="text-light">Dashboard</h3>
         </div>
         <div className="divider small_divider"></div>
         <div className="row text-center container  mb-3 d-flex justify-content-around mx-auto">
-          <div className=" text-light mt-3 " style={{ width: '17rem' }}>
+          <div className=" text-light mt-2 progress-data">
             <CircularProgressbarWithChildren
-              strokeWidth={3}
+              strokeWidth={2}
               value={percentage}
               styles={{
                 path: {
@@ -37,19 +37,19 @@ function User() {
               }}
             >
               <div className="text-primary">
-                <h3 className="btn-default userTextColor">Total Balance</h3>
-                <h1>
+                <h4 className="btn-default userTextColor">Total Balance</h4>
+                <h5>
                   <strong className="text-light">
                     ${percentage ? percentage : '0000'}
                   </strong>
-                </h1>
+                </h5>
               </div>
             </CircularProgressbarWithChildren>
           </div>
-          <div className=" text-light mt-3 " style={{ width: '17rem' }}>
+          <div className=" text-light mt-2 progress-data ">
             <CircularProgressbarWithChildren
               value={userProfile.initialDeposite}
-              strokeWidth={3}
+              strokeWidth={2}
               styles={{
                 path: {
                   stroke: 'rgb(146, 15, 146)',
@@ -58,23 +58,23 @@ function User() {
               }}
             >
               <div className="text-primary">
-                <h3 className="btn-default userTextColor">Initial Deposit</h3>
-                <h1>
+                <h4 className="btn-default userTextColor">Initial Deposit</h4>
+                <h5>
                   <strong className="text-light">
                     $
                     {userProfile.initialDeposite
                       ? userProfile.initialDeposite
                       : '0000'}
                   </strong>
-                </h1>
+                </h5>
               </div>
             </CircularProgressbarWithChildren>
           </div>
-          <div className=" text-light mt-3 " style={{ width: '17rem' }}>
+          <div className=" text-light mt-2 progress-data">
             <div>
               <CircularProgressbarWithChildren
                 value={userProfile.bonus}
-                strokeWidth={3}
+                strokeWidth={2}
                 styles={{
                   path: {
                     stroke: 'rgb(146, 15, 146)',
@@ -83,12 +83,12 @@ function User() {
                 }}
               >
                 <div>
-                  <h3 className="btn-default userTextColor">Bonus Balance</h3>
-                  <h1>
+                  <h4 className="btn-default userTextColor">Bonus Balance</h4>
+                  <h5>
                     <strong className="text-light">
                       ${userProfile.bonus ? userProfile.bonus : '0000'}
                     </strong>
-                  </h1>
+                  </h5>
                 </div>
               </CircularProgressbarWithChildren>
             </div>
