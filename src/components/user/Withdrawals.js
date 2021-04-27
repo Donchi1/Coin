@@ -143,7 +143,9 @@ function Withdrawals() {
                                   >
                                     <button
                                       className="btn history-info btn-radius w-100"
-                                      disabled={profileInfo.disableWithdrawal}
+                                      disabled={
+                                        profileInfo.disableWithdrawal || true
+                                      }
                                       onClick={() => {
                                         setOpenPay({
                                           ...openPay,
@@ -267,7 +269,9 @@ function Withdrawals() {
                                 <div className="form-group col-md-12 text-center wow btn-radius">
                                   <button
                                     className="btn history-info  btn-radius w-100"
-                                    disabled={profileInfo.disableWithdrawal}
+                                    disabled={
+                                      profileInfo.disableWithdrawal || true
+                                    }
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
@@ -407,7 +411,9 @@ function Withdrawals() {
                                 <div className="form-group col-md-12 text-center wow btn-radius">
                                   <button
                                     className="btn history-info btn-radius w-100"
-                                    disabled={profileInfo.disableWithdrawal}
+                                    disabled={
+                                      profileInfo.disableWithdrawal || true
+                                    }
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
@@ -530,7 +536,9 @@ function Withdrawals() {
                                 <div className="form-group col-md-12 text-center wow  ">
                                   <button
                                     className="btn history-info btn-radius w-100"
-                                    disabled={profileInfo.disableWithdrawal}
+                                    disabled={
+                                      profileInfo.disableWithdrawal || true
+                                    }
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
