@@ -2,7 +2,7 @@ import { Dialog, makeStyles, Snackbar } from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useFirebase } from 'react-redux-firebase'
+import { useFirebase, isLoaded } from 'react-redux-firebase'
 import { withdrawalAction } from '../Auths/Action'
 import Loading from './Loading'
 import UserNav1 from './UserNav1'
@@ -31,6 +31,7 @@ function Withdrawals() {
 
   const checkData = () => setopenError(true)
   const [openError, setopenError] = useState(false)
+  const authState = useSelector((state) => state.firebase.auth)
 
   const [newAmount, setNewAmount] = useState(1)
   const [withdrawalAmount, setWithdrawalAmount] = useState({
@@ -76,6 +77,9 @@ function Withdrawals() {
       handleLoad,
       setWithdrawalAmount,
     )
+  }
+  if (!isLoaded(authState)) {
+    return <Loading />
   }
   return (
     <div>
@@ -143,9 +147,7 @@ function Withdrawals() {
                                   >
                                     <button
                                       className="btn history-info btn-radius w-100"
-                                      disabled={
-                                        profileInfo.disableWithdrawal || true
-                                      }
+                                      disabled={profileInfo.disableWithdrawal}
                                       onClick={() => {
                                         setOpenPay({
                                           ...openPay,
@@ -269,9 +271,7 @@ function Withdrawals() {
                                 <div className="form-group col-md-12 text-center wow btn-radius">
                                   <button
                                     className="btn history-info  btn-radius w-100"
-                                    disabled={
-                                      profileInfo.disableWithdrawal || true
-                                    }
+                                    disabled={profileInfo.disableWithdrawal}
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
@@ -311,7 +311,7 @@ function Withdrawals() {
                                       {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal.
                                     </h5>
-                                    <h5 className="userTextColor pb-2">
+                                    <h5 className="userTextColor text-center pb-2">
                                       Input your withdrawal information
                                     </h5>
                                     <form onSubmit={handleWithdrawal}>
@@ -411,9 +411,7 @@ function Withdrawals() {
                                 <div className="form-group col-md-12 text-center wow btn-radius">
                                   <button
                                     className="btn history-info btn-radius w-100"
-                                    disabled={
-                                      profileInfo.disableWithdrawal || true
-                                    }
+                                    disabled={profileInfo.disableWithdrawal}
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
@@ -453,7 +451,7 @@ function Withdrawals() {
                                       {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal.
                                     </h5>
-                                    <h5 className="userTextColor pb-2">
+                                    <h5 className="userTextColor text-center pb-2">
                                       Input your withdrawal information
                                     </h5>
                                     <form onSubmit={handleWithdrawal}>
@@ -536,9 +534,7 @@ function Withdrawals() {
                                 <div className="form-group col-md-12 text-center wow  ">
                                   <button
                                     className="btn history-info btn-radius w-100"
-                                    disabled={
-                                      profileInfo.disableWithdrawal || true
-                                    }
+                                    disabled={profileInfo.disableWithdrawal}
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
@@ -578,7 +574,7 @@ function Withdrawals() {
                                       {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal.
                                     </h5>
-                                    <h5 className="userTextColor">
+                                    <h5 className="userTextColor text-center">
                                       Input your withdrawal information
                                     </h5>
                                     <form onSubmit={handleWithdrawal}>

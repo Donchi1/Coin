@@ -1,15 +1,21 @@
 import React from 'react'
 
 import { LogoutAction } from '../Auths/Action'
-import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
+import {
+  isLoaded,
+  useFirebase,
+  useFirestoreConnect,
+} from 'react-redux-firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Loading from './Loading'
 
 function UserNav1() {
   const firebase = useFirebase()
   const dispatch = useDispatch()
 
   const userProfile = useSelector((state) => state.firebase.profile)
+  const authState = useSelector((state) => state.firebase.auth)
 
   useFirestoreConnect([
     {
@@ -30,6 +36,10 @@ function UserNav1() {
   const handleLogoutRoute = () => window.location.assign('/')
   const handleLogout = () => {
     LogoutAction(firebase, dispatch, handleLogoutRoute)
+  }
+
+  if (!isLoaded(authState)) {
+    return <Loading />
   }
   return (
     <>
