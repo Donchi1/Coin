@@ -1,7 +1,8 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
 
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import UserNav1 from './UserNav1'
 
 function Invest() {
@@ -10,44 +11,36 @@ function Invest() {
 
   const handleReceivedPayment = (bool, price) => {
     dispatch({ type: 'PAYMENT_SET', amount: price, qrcode: bool })
-    push('/payments')
+    push('/user/payments')
   }
   return (
-    <>
+    <div className="main-wrapper">
       <UserNav1 />
-      <section className="sub-page-banner site-bg parallax" id="banner">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="page-banner text-center wow fadeInUp">
-                <h1 className="sub-banner-title">
-                  <span className="userTextColor">Investment</span> Plans
-                </h1>
-                <ul>
-                  <li>
-                    <a href="/user">Dashboard</a>
-                  </li>
-                  <li>Investment</li>
-                </ul>
+      <div className="content-body">
+        <div className="container-fluid">
+          <div className="row page-titles mx-0 ">
+            <div className="col-sm-6 p-md-0">
+              <div className="welcome-text">
+                <h4>Choose Your Investment Plan Now</h4>
               </div>
+            </div>
+            <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <a href="/user">Dashboard</a>
+                </li>
+                <li className="breadcrumb-item active">
+                  <Link to="#">Plans</Link>
+                </li>
+              </ol>
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="site-bg">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-8 col-md-12 offset-lg-2">
-              <div className=" text-center">
-                <h4 className="wow py-4">Choose Your Plan</h4>
-              </div>
-            </div>
-          </div>
           <div className="row small_space">
             <div className="col-lg-4 col-md-4">
-              <div className=" text-center card site-bg">
-                <div className="card-header history-info">
+              <div className=" text-center card ">
+                <div className="card-header bg-primary">
                   <h3>Basic</h3>
                   <div className="price_tage">
                     <h3>$3000.00</h3>
@@ -59,24 +52,21 @@ function Invest() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$200</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$3900</li>
+                    <li className="py-2">$4900</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$50</li>
                   </ul>
                 </div>
                 <div className="py-4">
-                  <button
-                    onClick={() => handleReceivedPayment(true, '200')}
-                    className="btn btn-default btn-radius-5 history-info"
-                  >
+                  <Button onClick={() => handleReceivedPayment(true, '200')}>
                     Invest Now
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className=" text-center card site-bg">
-                <div className=" card-header history-info">
+              <div className=" text-center card ">
+                <div className=" card-header bg-primary">
                   <h3>Standard</h3>
                   <div className="price_tage">
                     <h3>$4000.00</h3>
@@ -88,24 +78,21 @@ function Invest() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$400</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$5900</li>
+                    <li className="py-2">$7999</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$100</li>
                   </ul>
                 </div>
                 <div className="py-4">
-                  <button
-                    onClick={() => handleReceivedPayment(true, '400')}
-                    className="btn btn-default btn-radius-5 history-info "
-                  >
+                  <Button onClick={() => handleReceivedPayment(true, '400')}>
                     Invest Now
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg">
-                <div className=" card-header history-info">
+              <div className="text-center card ">
+                <div className=" card-header bg-primary">
                   <h3>Untimate</h3>
                   <div className="price_tage">
                     <h3>$5000.00</h3>
@@ -115,49 +102,7 @@ function Invest() {
                 <div className="pr_content">
                   <ul className="list_none ">
                     <li className="py-2">Normal Deposit</li>
-                    <li className="py-2">$600</li>
-                    <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$7800</li>
-                    <li className="py-2">Bonus</li>
-                    <li className="py-2">$200</li>
-                  </ul>
-                </div>
-                <div className="py-4">
-                  <button
-                    onClick={() => handleReceivedPayment(true, '600')}
-                    className="btn btn-default btn-radius history-info"
-                  >
-                    Invest Now
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="site-bg pb-5">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 col-md-12 offset-lg-2">
-              <div className="title_default_dark title_border text-center">
-                <h4 className="wow py-4">Special Plans</h4>
-              </div>
-            </div>
-          </div>
-          <div className="row small_space">
-            <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg mb-2">
-                <div className="card-header history-info">
-                  <h3>Basic</h3>
-                  <div className="price_tage">
-                    <h3>$8000.00</h3>
-                    <span>Token plan</span>
-                  </div>
-                </div>
-                <div className="pr_content">
-                  <ul className="list_none ">
-                    <li className="py-2">Normal Deposit</li>
-                    <li className="py-2">$900</li>
+                    <li className="py-2">$500</li>
                     <li className="py-2">Initial Withdrawal</li>
                     <li className="py-2">$9900</li>
                     <li className="py-2">Bonus</li>
@@ -165,111 +110,158 @@ function Invest() {
                   </ul>
                 </div>
                 <div className="py-4">
-                  <button
-                    onClick={() => handleReceivedPayment(true, '900')}
-                    className="btn btn-default btn-radius-5 history-info"
-                  >
+                  <Button onClick={() => handleReceivedPayment(true, '600')}>
                     Invest Now
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg mb-2">
-                <div className="card-header history-info">
-                  <h3>Standard</h3>
-                  <div className="price_tage">
-                    <h3>$12000.00</h3>
-                    <span>Token plan</span>
-                  </div>
-                </div>
-                <div className="pr_content">
-                  <ul className="list_none ">
-                    <li className="py-2">Normal Deposit</li>
-                    <li className="py-2">$1000</li>
-                    <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$12900</li>
-                    <li className="py-2">Bonus</li>
-                    <li className="py-2">$250</li>
-                  </ul>
-                </div>
-                <div className="py-4">
-                  <button
-                    onClick={() => handleReceivedPayment(true, '1000')}
-                    className="btn btn-default btn-radius-2 history-info"
-                  >
-                    Invest Now
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-4">
-              <div className="card text-center site-bg mb-2">
-                <div className="card-header history-info">
-                  <h3>Untimate</h3>
-                  <div className="price_tage">
-                    <h3>$15000.00</h3>
-                    <span>Token Plan</span>
-                  </div>
-                </div>
-                <div className="pr_content">
-                  <ul className="list_none ">
-                    <li className="py-2">Normal Deposit</li>
-                    <li className="py-2">$1200</li>
-                    <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$12800</li>
-                    <li className="py-2">Bonus</li>
-                    <li className="py-2">$300</li>
-                  </ul>
-                </div>
-                <div className="py-4">
-                  <button
-                    onClick={() => handleReceivedPayment(true, '1200')}
-                    className="btn btn-default btn-radius-5 history-info"
-                  >
-                    Invest Now
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      <section>
-        <div className="container">
-          <div className="row align-items-center mt-5">
-            <div className="col-lg-9">
-              <div className="action-content res_md_mb_20 ">
-                <h3 className="animation">
-                  Contact our teams for more investment methods
-                </h3>
-                <p className="m-0 animation">
-                  Let Us Help You to Find a Solution That Meets Your Needs
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-3 text-lg-right">
-              <a href="/contacts" className="btn history-info">
-                Contact Us <i className="fa fa-long-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div>
+        <section className=" pb-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-6">
-                <p className="copyright">
-                  Copyright &copy; UltimateCoins {new Date().getFullYear()} All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-8 col-md-12 offset-lg-2">
+                <div className=" title_border text-center">
+                  <h4 className="text-dark py-4">Saving Plans</h4>
+                </div>
+              </div>
+            </div>
+            <div className="row small_space">
+              <div className="col-lg-4 col-md-4">
+                <div className="text-center card  mb-2">
+                  <div className="card-header  bg-primary ">
+                    <h3>Basic</h3>
+                  </div>
+                  <div className="pr_content">
+                    <ul className="list_none ">
+                      <li className="py-2">Normal Deposit</li>
+                      <li className="py-2">$500</li>
+                      <li className="py-2">Initial Withdrawal</li>
+                      <li className="py-2">$5000</li>
+                      <li className="py-2">Bonus</li>
+                      <li className="py-2">$50</li>
+                    </ul>
+                  </div>
+                  <div className="py-4">
+                    <Button onClick={() => push('/user/savings')}>
+                      Invest Now
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-4">
+                <div className="text-center card  mb-2">
+                  <div className="card-header bg-primary">
+                    <h3>Standard</h3>
+                  </div>
+                  <div className="pr_content">
+                    <ul className="list_none ">
+                      <li className="py-2">Normal Deposit</li>
+                      <li className="py-2">$1000</li>
+                      <li className="py-2">Initial Withdrawal</li>
+                      <li className="py-2">$10000</li>
+                      <li className="py-2">Bonus</li>
+                      <li className="py-2">$100</li>
+                    </ul>
+                  </div>
+                  <div className="py-4">
+                    <Button onClick={() => push('/user/savings')}>
+                      Invest Now
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-4">
+                <div className="card text-center  mb-2">
+                  <div className="card-header bg-primary">
+                    <h3>Untimate</h3>
+                  </div>
+                  <div className="pr_content">
+                    <ul className="list_none ">
+                      <li className="py-2">Normal Deposit</li>
+                      <li className="py-2">$1500</li>
+                      <li className="py-2">Initial Withdrawal</li>
+                      <li className="py-2">$15000</li>
+                      <li className="py-2">Bonus</li>
+                      <li className="py-2">$150</li>
+                    </ul>
+                  </div>
+                  <div className="py-4">
+                    <Button onClick={() => push('/user/savings')}>
+                      Invest Now
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </section>
+
+        <div className="container ">
+          <div className="card ">
+            <div className="card-header border-0">
+              <h4 className="mb-0 text-black fs-20">Contact Us</h4>
+            </div>
+
+            <div className="card-body ">
+              <section className="mt-5">
+                <div>
+                  <div className="row align-items-center">
+                    <div className="col-lg-9">
+                      <div className="action-content res_md_mb_20">
+                        <h3 className="wow">
+                          Let Us Help You to Find a Solution That Meets Your
+                          Needs
+                        </h3>
+                        <p className="m-0 wow">
+                          contact our team for any issue on your savings account
+                        </p>
+                        <p className="m-0 wow"></p>
+                      </div>
+                    </div>
+                    <div className="col-lg-3 text-lg-right">
+                      <ul className="portofolio-social">
+                        <li>
+                          <Button
+                            onClick={() => window.location.assign('/contact')}
+                          >
+                            Contact Us <i className="fa fa-phone"></i>
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
         </div>
-      </section>
-    </>
+        <div className="footer">
+          <div className="copyright text-center">
+            <p>
+              Copyright &copy; {new Date().getFullYear()}{' '}
+              <a href="https://ultimatecoins.info" target="_blank">
+                UltimateCoins
+              </a>{' '}
+              All Rights Reserve
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="footer">
+        <div className="copyright text-center">
+          <p>
+            Copyright &copy; {new Date().getFullYear()}{' '}
+            <a href="https://ultimatecoins.info" target="_blank">
+              UltimateCoins
+            </a>{' '}
+            All Rights Reserve
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
 

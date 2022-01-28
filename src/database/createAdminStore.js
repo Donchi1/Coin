@@ -12,7 +12,7 @@ import { firebaseReducer } from 'react-redux-firebase'
 
 export let store
 
-export default (authProvider, dataProvider, history) => {
+export const adminAuthDatabase = (authProvider, dataProvider, history) => {
   const rootReducer = combineReducers({
     admin: adminReducer,
     router: connectRouter(history),

@@ -5,20 +5,29 @@
     <link rel="icon" href="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/fav-icon.png"  >
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="theme-color" content="#000000" >
+	<meta property="og:title" content="Trading Made Easy" />
+	<meta property="og:description" content="" />
+	<meta property="og:image" content="https://d22roh5inpczgk.cloudfront.net/xhtml/social-image.png" />
     <meta
       name="description"
       content="Make unlimited wealth for your future establishment  ">
-    <link rel="apple-touch-icon" href="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/fav-icon.png"  >
+    <link rel="apple-touch-icon" href="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/fav-icon.png"  >
     
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" >
     
-    <link type="image/x-icon" href="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/fav-icon.png" rel="icon">
+    
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/css/color.css">
-    <link rel="stylesheet" type="text/css" href="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/css/responsive.css"> 
-   <script src="https://kit.fontawesome.com/9704e077c0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="color.css">
+    <link rel="stylesheet" type="text/css" href="responsive.css"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="https://d22roh5inpczgk.cloudfront.net/xhtml/images/favicon.png">
+    <link rel="stylesheet" href="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/chartist/css/chartist.min.css">
+    <link href="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    
+ <link rel="stylesheet" type="text/css" href="mainHome.css"> 
+    <link href="https://d22roh5inpczgk.cloudfront.net/xhtml/css/style.css" rel="stylesheet">
+    <link href="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/lightgallery/css/lightgallery.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9704e077c0.js" crossorigin="anonymous"></script>
 
    <style>
     #bitcoin {
@@ -49,7 +58,7 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  background-color: inherit;
+  background-color: black;
 }
 
 .hide-splash{
@@ -78,16 +87,113 @@
   }
 }
 
+.wave-loader{
+ animation: wave-loader 5s linear infinite;
+}
+
+.wave-loader:nth-child(2){
+  animation-delay: 0.5s !important;
+}
+.wave-loader:nth-child(3){
+  animation-delay: 0.7s !important;
+  
+}
+.wave-loader:nth-child(4){
+  animation-delay: 0.9s !important;
+}
+.wave-loader:nth-child(5){
+  animation-delay: 1s;
+ 
+}
+.wave-loader:nth-child(6){
+  animation-delay: 1.2s !important;
+}
+.wave-loader:nth-child(7){
+  animation-delay: 1.4s !important;
+}
+.wave-loader:nth-child(8){
+  animation-delay: 1.6s !important;
+}
+.wave-loader:nth-child(9){
+  animation-delay: 1.8s !important;
+}
+.wave-loader:nth-child(10){
+  animation-delay: 2s !important;
+}
+.wave-loader:nth-child(11){
+  animation-delay: 2.2s !important;
+}
+.wave-loader:nth-child(12){
+  animation-delay: 2.4s !important;
+}
+.wave-loader:nth-child(13){
+  animation-delay: 2.6s !important;
+}
+.wave-loader:nth-child(14){
+  animation-delay: 2.8s !important;
+}
+.wave-loader:nth-child(15){
+  animation-delay: 3s !important;
+}
+.wave-loader:nth-child(16){
+  animation-delay: 3.2s !important;
+}
+.wave-loader:nth-child(17){
+  animation-delay: 3.5s !important;
+}
+.wave-loader:nth-child(18){
+  animation-delay: 4s !important;
+}
+.wave-loader:nth-child(19){
+  animation-delay: 4.5s !important;
+}
+.wave-loader:nth-child(20){
+  animation-delay: 5s !important;
+}
+.wave-loader span {
+   font-size: 2rem;
+}
+.wave-loader i:first-child {
+   margin-left: 1rem;
+}
+.wave-loader i:last-child {
+   margin-right: 1rem;
+}
+
+@keyframes wave-loader {
+ 0%{
+   transform: scale(0.2);
+   
+ }
+ 50%{
+   transform: scale(1);
+  
+
+ }
+ 100%{
+   transform: scale(0.5) ;
+  
+ }
+  
+}
+@media only screen and (max-width : 750px) {
+   .wave-loader span {
+     font-size: 1rem;
+   }
+}
 
 </style>
 
+ 
+  
 <title>Ultimatecoins</title>
 </head>
-<body>
+<body data-typography="poppins" id="bb" data-theme-version="dark" data-layout="vertical" data-nav-headerbg="color_1" data-headerbg="color_1" data-sidebar-style="overlay" data-sibebarbg="color_1" data-sidebar-position="fixed" data-header-position="fixed" data-container="wide" direction="ltr" data-primary="color_1">
   <noscript>You need to enable JavaScript to run this app.</noscript>
   
   
-  <div class="my-loader-splash " >
+ 
+<div class="my-loader-splash " >
     <div class="mb-4">
     <div id="bitcoin">
   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -114,19 +220,95 @@ C327.767,212.14,389.234,221.02,379.302,260.846z"/>
 
 </svg>
 </div>
-</div>
-</div>
 
 
-<div id="root"></div>
+
+
+<div class="wave-loader" style="font-style: italic;">
+          <span >W</span>
+          <span >e</span>
+          <span >l</span>
+          <span >c</span>
+          <span >o</span>
+          <span >m</span>
+          <span >e</span>
+            <i ></i>
+            <span >t</span>
+            <span >o</span>
+            <i ></i>
+          
+          <span >u</span>
+          <span >l</span>
+          <span >t</span>
+          <span >i</span>
+          <span >m</span>
+          <span >a</span>
+          <span >t</span>
+          <span >e</span>
+          <span >c</span>
+          <span >o</span>
+          <span >i</span>
+          <span >n</span>
+          <span >s</span>
+      `
+  </div>
+</div>
+</div> 
+
+<div id="root" style="background-color: black;"></div>
+
+
  
-<script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/jquery-3.4.1.min.js"></script>
-		<script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/bootstrap.min.js"></script>
-		<script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/owl.carousel.min.js"></script>
-		<script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/snap.svg-min.js"></script>
-		<script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/jquery.listtopie.min.js"></script>
-    <script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/animation.js"></script>
-    <script src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/js/custom.js"></script>
+<script src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/js/jquery-3.4.1.min.js"></script>
+		<script src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/js/bootstrap.min.js"></script>
+		<script src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/js/snap.svg-min.js"></script>
+		<script src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/js/jquery.listtopie.min.js"></script>
+    <script src="animation.js"></script>
+    
+     <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/global/global.min.js"></script>
+
+    <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    
+    <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/chart.js/Chart.bundle.min.js"></script>
+    
+    <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/peity/jquery.peity.min.js"></script>
+	
+    
+    <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/apexchart/apexchart.js"></script>
+  
+  <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/js/dashboard/chat.js"></script>
+  <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/js/dashboard/dashboard-1.js" ></script>
+  
+  
+  
+  
+  <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/vendor/owl-carousel/owl.carousel.js"></script>
+  <script src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/js/owl.carousel.min.js"></script>
+
+	<script src="https://d22roh5inpczgk.cloudfront.net/xhtml/js/deznav-init.js"></script>
+	
+  <script src="https://d22roh5inpczgk.cloudfront.net/xhtml/js/demo.js" ></script>
+  
+  
+
+  
+    
+    
+
+
+
+ 
+  
+ 
+  
+  <script>
+		jQuery(document).ready(function(){
+			setTimeout(function() {
+				dezSettingsOptions.version = 'light';
+				new dezSettings(dezSettingsOptions);
+			},1500)
+		});
+	</script>
       <script >
        $(window).on('load', function () {
         setTimeout(() => {
@@ -134,5 +316,8 @@ C327.767,212.14,389.234,221.02,379.302,260.846z"/>
     }, 7000)
 })
       </script>
+
+     
+
   </body>
 </html>

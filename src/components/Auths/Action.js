@@ -1,9 +1,28 @@
+import axios from 'axios'
+
+const next = (firebase, url, user, push) => {
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(user.uid)
+    .update({
+      photo: url,
+    })
+
+    .then(() => {
+      localStorage.setItem('userId', user.uid)
+      return window.location.assign('/verification/signup')
+    })
+}
+
 export const registerAction = (
   data,
   firebase,
   dispatch,
-  checkAuth,
-  setuserData,
+  setUserData,
+  push,
+  openPopUp,
+  setOpenPopUp,
 ) => {
   const email = data.email
   const password = data.password
@@ -12,7 +31,7 @@ export const registerAction = (
     .auth()
     .createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      return firebase
+      firebase
         .firestore()
         .collection('users')
         .doc(user.user.uid)
@@ -26,35 +45,47 @@ export const registerAction = (
           initial: data.firstname[0] + data.lastname[0],
           totalBalance: '0000',
           initialDeposite: '0000',
-          bonus: '25.00',
+          bonus: '10.00',
           disableWithdrawal: true,
+          disableAccount: false,
+          closedForTheWeek: false,
+          photo: '',
+          verificationCode: '',
+          accessCode: '',
+          income: '',
+          accessCodeProve: '',
+          savingsAccount: false,
+          weeklyClosingAlert: true,
+        })
+        .then(() => {
+          firebase
+            .storage()
+            .ref('users')
+            .child(user.user.uid)
+            .put(data.photo)
+            .then(() => {
+              firebase
+                .storage()
+                .ref(`users/${user.user.uid}`)
+                .getDownloadURL()
+                .then((url) => {
+                  return next(firebase, url, user.user, push)
+                  // return push('/verification/signup')
+                })
+            })
         })
     })
-    .then(() => {
-      setuserData({
-        ...data,
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        phone: '',
-        country: '',
-      })
-      dispatch({ type: 'SIGNUP_SUCCESS' })
-      window.location.assign('/login')
-    })
-    .catch((err) => {
-      setuserData({
-        ...data,
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        phone: '',
-        country: '',
-      })
-      dispatch({ type: 'SIGNUP_ERROR', error: err })
-      checkAuth()
+    .catch((error) => {
+      setUserData.setEmail('')
+      setUserData.setPassword('')
+      setUserData.setPhone('')
+      setUserData.setLastname('')
+      setUserData.setFirstname('')
+      setUserData.setPhoto('')
+      setUserData.setCountry('')
+      setUserData.setIsSubmitting('')
+      setOpenPopUp({ ...openPopUp, error: true })
+      return dispatch({ type: 'SIGNUP_ERROR', error })
     })
 }
 
@@ -62,8 +93,10 @@ export const logginAction = (
   data,
   firebase,
   dispatch,
-  checkAuth,
-  setuserData,
+  setFormData,
+  push,
+  openPopUp,
+  setOpenPopUp,
 ) => {
   const email = data.email
   const password = data.password
@@ -72,14 +105,26 @@ export const logginAction = (
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then(() => {
-      setuserData({ ...data, email: '', password: '' })
-      dispatch({ type: 'LOGIN_SUCCESS' })
-      window.location.assign('/user')
+      setFormData({
+        ...data,
+        email: '',
+        password: '',
+        isSubmitting: false,
+        openSuccess: true,
+      })
+      localStorage.setItem('userId', firebase.auth().currentUser.uid)
+      return push({ pathname: '/verification/login' })
     })
     .catch((err) => {
-      setuserData({ ...data, email: '', password: '' })
+      setFormData({
+        ...data,
+        email: '',
+        password: '',
+        isSubmitting: false,
+        openError: true,
+      })
+      setOpenPopUp({ ...openPopUp, error: true })
       dispatch({ type: 'LOGIN_ERROR', error: err })
-      checkAuth()
     })
 }
 
@@ -88,103 +133,160 @@ export const forgetAction = (
   firebase,
   creds,
   setCreds,
-  setSuccessSnacks,
-  setErrorSnacks,
+  setIsSubmitting,
+  openPopUp,
+  setOpenPopUp,
 ) => {
   firebase
     .auth()
     .sendPasswordResetEmail(creds)
     .then(() => {
       dispatch({ type: 'PASSRESET_SUCCESS' })
-      setSuccessSnacks(true)
       setCreds('')
+      setOpenPopUp({ ...openPopUp, success: true })
+      setIsSubmitting(false)
     })
     .catch((error) => {
       dispatch({ type: 'PASSRESET_ERROR', error })
-      setErrorSnacks(true)
+      setOpenPopUp({ ...openPopUp, error: true })
+      setIsSubmitting(false)
+
       setCreds('')
     })
 }
 
-export const updateProfileAction = (
-  profile,
-  firebase,
-  dispatch,
-  setuserData,
-) => {
+export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
   const uid = firebase.auth().currentUser.uid
   const userInitial = profile.firstname[0] + profile.lastname[0]
-  if (
-    profile.firstname ||
-    profile.lastname ||
-    profile.phone ||
-    profile.country
-  ) {
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(uid)
-      .update({
-        firstname: profile.firstname,
-        lastname: profile.lastname,
-        country: profile.country,
-        phone: profile.phone,
-        initial: userInitial.toString(),
-      })
-      .then(() => {
-        dispatch({ type: 'UPLOAD_SUCCESS' })
-        setuserData({
-          ...profile,
-          firstname: '',
-          lastname: '',
-          state: '',
-          phone: '',
-          country: '',
-        })
-      })
-      .catch(() => {
-        dispatch({ type: 'UPLOAD_ERROR' })
-        setuserData({
-          ...profile,
-          firstname: '',
-          lastname: '',
-          state: '',
-          phone: '',
-          country: '',
-        })
-      })
-  }
-  if (profile.password) {
-    firebase
-      .auth()
-      .currentUser.updatePassword(profile.password)
-      .then(() =>
-        setuserData({
-          ...profile,
-          password: '',
-        }),
-      )
-  }
-  if (profile.fileUpload) {
-    firebase
-      .storage()
-      .ref('users')
-      .child(uid)
-      .put(profile.fileUpload)
-      .then(() =>
+
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .update({
+      firstname: profile.firstname,
+      lastname: profile.lastname,
+      country: profile.country,
+      phone: profile.phone,
+      initial: userInitial.toString(),
+    })
+    .then(() => {
+      if (profile.img) {
         firebase
           .storage()
-          .ref(`users/${uid}`)
-          .getDownloadURL()
-          .then((imgUrl) =>
+          .ref('users')
+          .child(uid)
+          .put(profile.fileUpload)
+          .then(() =>
             firebase
-              .firestore()
-              .collection('users')
-              .doc(uid)
-              .update({ image: imgUrl }),
-          ),
-      )
-  }
+              .storage()
+              .ref(`users/${uid}`)
+              .getDownloadURL()
+              .then((imgUrl) => {
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(uid)
+                  .update({ photo: imgUrl })
+
+                dispatch({ type: 'PROFILE_UPLOAD_SUCCESS' })
+                setForm({
+                  ...profile,
+                  firstname: '',
+                  lastname: '',
+                  password: '',
+                  email: '',
+                  phone: '',
+                  country: '',
+                  img: '',
+                  oldPassword: '',
+                  isSubmitting: false,
+                })
+                return axios
+                  .post(`${process.env.REACT_APP_URL}/api/profileUpdate`)
+                  .then((res) => {
+                    firebase
+                      .firestore()
+                      .collection('notification')
+                      .doc(uid)
+                      .set({
+                        user: profile.firstname,
+                        message: 'You have successfully updated your profile',
+                        id: uid,
+                        date: firebase.firestore.FieldValue.serverTimestamp(),
+                      })
+                  })
+              }),
+          )
+      }
+      dispatch({
+        type: 'PROFILE_UPLOAD_SUCCESS',
+        message: 'Profile Successfully Updated',
+      })
+
+      return axios
+        .post(`${process.env.REACT_APP_URL}/api/profileUpdate`)
+        .then((res) => {
+          firebase.firestore().collection('notification').doc(uid).set({
+            user: profile.firstname,
+            message: 'You have successfully updated your profile',
+            id: uid,
+            date: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          setForm({
+            ...profile,
+            firstname: '',
+            lastname: '',
+            password: '',
+            email: '',
+            phone: '',
+            country: '',
+            img: '',
+            oldPassword: '',
+            isSubmitting: false,
+          })
+        })
+    })
+    .catch(() => {
+      dispatch({ type: 'UPLOAD_ERROR' })
+      setForm({
+        ...profile,
+        firstname: '',
+        lastname: '',
+        password: '',
+        email: '',
+        phone: '',
+        country: '',
+        img: '',
+        oldPassword: '',
+        isSubmitting: false,
+      })
+    })
+}
+
+export const passwordUpdate = (values, setForm, dispatch, firebase, axios) => {
+  const uid = firebase.auth().currentUser.uid
+  firebase
+    .auth()
+    .currentUser.updatePassword(values.password)
+    .then(() => {
+      dispatch({
+        type: 'PASSWORD_UPDATE_SUCCESS',
+        message: 'Your password is successfully updated',
+      })
+
+      return axios
+        .post(`${process.env.REACT_APP_URL}/api/passwordUpdate`)
+        .then((res) => {
+          firebase.firestore().collection('notification').doc(uid).set({
+            user: values.firstname,
+            message: 'Your password was recently changed',
+            id: uid,
+            date: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          setForm({ ...values, password: '', password1: '' })
+        })
+    })
 }
 
 export const withdrawalAction = (
@@ -192,34 +294,51 @@ export const withdrawalAction = (
   withdrawalData,
   firebase,
   dispatch,
-  dataCheck,
   handleLoading,
   setWithdrawalData,
+  axios,
 ) => {
   const uid = firebase.auth().currentUser.uid
 
   const firestore = firebase.firestore()
+
   firestore
     .collection('withdrawals')
     .doc(uid)
-    .set(
-      {
-        withdrawalAmount: withdrawalData.amount,
-        wallet: withdrawalData.wallet,
-        date: new Date().toLocaleString(),
-        currentUserfirstname: profile.firstname,
-        currentUserlastname: profile.lastname,
-        withdrawerName: withdrawalData.name,
-        number: withdrawalData.phone,
-        AccountNumber: withdrawalData.accountNumber,
-        uid: uid,
-      },
-      { merge: true },
-    )
+    .collection('withdrawalDatas')
+    .add({
+      withdrawalAmount: withdrawalData.amount,
+      wallet: withdrawalData.wallet,
+      date: firebase.firestore.FieldValue.serverTimestamp(),
+      currentUserfirstname: profile.firstname,
+      currentUserlastname: profile.lastname,
+      withdrawerName: withdrawalData.name,
+      number: withdrawalData.phone,
+      withdrawalMethod: withdrawalData.withdrawalMethod,
+      AccountNumber: withdrawalData.accountNumber,
+      withdrawalFee: '',
+      uid: uid,
+      idx: Math.random().toString(),
+      statusPending: true,
+      statusFailed: false,
+      statusSuccess: false,
+    })
     .then(() => {
-      dispatch({ type: 'WITHDRAWAL_ERROR' })
-      handleLoading()
-      dataCheck()
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(uid)
+        .update({
+          totalBalance: toString(
+            Number(profile.totalBalance) - Number(withdrawalData.amount),
+          ),
+        })
+      dispatch({
+        type: 'WITHDRAWAL_SUCCESS',
+        message:
+          'Your withdrawal request has been sent. We will get back to you in less than 24hours.',
+      })
+
       setWithdrawalData({
         ...withdrawalData,
         name: '',
@@ -229,9 +348,8 @@ export const withdrawalAction = (
         accountNumber: '',
       })
     })
-    .catch(() => {
-      dispatch({ type: 'WITHDRAWAL_ERROR' })
-      dataCheck()
+    .catch((e) => {
+      dispatch({ type: 'WITHDRAWAL_ERROR', message: e })
       handleLoading()
       setWithdrawalData({
         ...withdrawalData,
@@ -247,33 +365,35 @@ export const withdrawalAction = (
 export const paymentAction = (
   amount,
   profile,
-  file,
+  userProve,
   firebase,
   dispatch,
-  checkData,
-  handleLoading,
+  setUserProve,
 ) => {
   const uid = firebase.auth().currentUser.uid
   const firestore = firebase.firestore()
   firestore
     .collection('payments')
     .doc(uid)
-    .set(
-      {
-        paymentAmount: amount ? amount : 1,
-        date: new Date().toLocaleString(),
-        firstname: profile.firstname,
-        lastname: profile.lastname,
-        uid: uid,
-      },
-      { merge: true },
-    )
+    .collection('paymentDatas')
+    .add({
+      paymentAmount: amount ? amount : 1,
+      date: firebase.firestore.FieldValue.serverTimestamp(),
+      firstname: profile.firstname,
+      lastname: profile.lastname,
+      paymentMethod: userProve.method,
+      uid: uid,
+      idx: Math.random().toString(),
+      statusPending: true,
+      statusFailed: false,
+      statusSuccess: false,
+    })
     .then(() => {
       firebase
         .storage()
         .ref('paymentProves')
         .child(uid)
-        .put(file)
+        .put(userProve.prove)
         .then(() => {
           firebase
             .storage()
@@ -286,15 +406,239 @@ export const paymentAction = (
                 .update({ paymentProve: url })
                 .then(() => {
                   dispatch({ type: 'PAYMENT_SUCCESS' })
-                  checkData()
-                  handleLoading()
+                  setUserProve({ ...userProve, prove: '', method: '' })
                 })
             })
         })
     })
     .catch(() => {
-      handleLoading()
       dispatch({ type: 'PAYMENT_SUCCESS' })
+      setUserProve({ ...userProve, prove: '', method: '' })
+    })
+}
+
+export const savingAction = (
+  firebase,
+  dispatch,
+  values,
+  push,
+  setSavingInfo,
+  idCard,
+  setIdCardPhoto,
+) => {
+  const user = firebase.auth().currentUser
+  firebase
+    .storage()
+    .ref('savings')
+    .child(user.uid)
+    .put(idCard)
+    .then(() => {
+      firebase
+        .storage()
+        .ref(`savings/${user.uid}`)
+        .getDownloadURL()
+        .then((url) => {
+          firebase
+            .firestore()
+            .collection('savings')
+            .doc(user.uid)
+            .set({
+              firstname: values.firstname,
+              lastname: values.lastname,
+              email: values.email,
+              phone: values.phone,
+              country: values.country,
+              state: values.state,
+              accountNumber: values.accountNumber,
+              dateOfBirth: values.dateOfBirth,
+              accountReason: values.accountReason,
+              idNumber: values.idNumber,
+              idCardPhoto: url,
+              initialAmount: '',
+              prove: '',
+              profit: '5',
+              total: '0',
+              income: '0',
+              personalWithdrawalCode: values.PWC,
+              id: firebase.auth().currentUser.uid,
+              withdrawalAuthorization: '',
+              date: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+            .then((info) => {
+              firebase
+                .firestore()
+                .collection('users')
+                .doc(user.uid)
+                .update({ savingsAccount: true })
+              setSavingInfo({
+                ...values,
+                firstname: '',
+                lastname: '',
+                email: '',
+                phone: '',
+                country: '',
+                state: '',
+                accountNumber: '',
+                dateOfBirth: '',
+                accountReason: '',
+                idNumber: '',
+              })
+              setIdCardPhoto('')
+              dispatch({
+                type: 'SAVING_SUCCESS',
+                message: 'savings account successfully created',
+              })
+              return window.location.assign('/user/savings/dashboard')
+            })
+            .catch((e) => {
+              setSavingInfo({
+                ...values,
+                firstname: '',
+                lastname: '',
+                email: '',
+                phone: '',
+                country: '',
+                state: '',
+                accountNumber: '',
+                dateOfBirth: '',
+                accountReason: '',
+                idNumber: '',
+                idCardPhoto: '',
+              })
+              dispatch({
+                type: 'SAVING_ERROR',
+              })
+            })
+        })
+    })
+}
+export const fundingAction = (firebase, dispatch, values, setValues) => {
+  const user = firebase.auth().currentUser
+  firebase
+    .storage()
+    .ref('fundingProves')
+    .child(user.uid)
+    .put(values.prove)
+    .then(() => {
+      firebase
+        .storage()
+        .ref(`fundingProves/${user.uid}`)
+        .getDownloadURL()
+        .then((url) => {
+          firebase
+            .firestore()
+            .collection('savings')
+            .doc(user.uid)
+            .collection('savingFundings')
+            .add({
+              prove: url,
+              amount: values.amount,
+              date: firebase.firestore.FieldValue.serverTimestamp(),
+              statusSuccess: false,
+              statusFailed: false,
+              statusPending: true,
+              userEmail: user.email,
+            })
+            .then((data) => {
+              firebase
+                .firestore()
+                .collection('savings')
+                .doc(user.uid)
+                .update({
+                  prove: url,
+                })
+                .then(() => {
+                  dispatch({
+                    type: 'FUNDING_SUCCESS',
+                    message:
+                      'Your information has been sent successfully.Wait for less than 24 hours for data verification',
+                    open: true,
+                  })
+                  setValues({
+                    ...values,
+                    isSubmitting: false,
+                    prove: '',
+                    amount: '',
+                  })
+                })
+            })
+            .catch((e) => {
+              dispatch({
+                type: 'SAVING_ERROR',
+                message: e,
+                open: true,
+              })
+              setValues({
+                ...values,
+                isSubmitting: false,
+                prove: '',
+                amount: '',
+              })
+            })
+        })
+    })
+}
+
+export const savingWithdrawalAction = (
+  profileInfo,
+  values,
+  firebase,
+  dispatch,
+  setWithdrawalAmount,
+) => {
+  firebase
+    .firestore()
+    .collection('savings')
+    .doc(firebase.auth().currentUser.uid)
+    .collection('savingWithdrawals')
+    .add({
+      withdrawalMethod: values.withdrawalAmount,
+      amount: values.amount,
+      date: firebase.firestore.FieldValue.serverTimestamp(),
+      statusSuccess: false,
+      statusFailed: false,
+      statusPending: true,
+      wallet: values.wallet,
+      name: values.name,
+      accountNumber: values.accountNumber,
+      phone: values.phone,
+      bankName: values.bankName,
+      userEmail: profileInfo.email,
+    })
+    .then(() => {
+      dispatch({
+        type: 'SAVING_WITHDRAWAL_SUCCESS',
+        message:
+          'Your request has been received.Wait for less than 24hours while we process your withdrawal',
+      })
+      setWithdrawalAmount({
+        ...values,
+        amount: 1,
+        wallet: '',
+        withdrawalMethod: '',
+        name: '',
+        accountNumber: 'none',
+        phone: '',
+        bankName: '',
+        withdrawalAuthorization: '',
+      })
+    })
+    .catch((e) => {
+      dispatch({
+        type: 'SAVING_WITHDRAWAL_ERROR',
+        message: e,
+      })
+      setWithdrawalAmount({
+        ...values,
+        amount: 1,
+        wallet: '',
+        withdrawalMethod: '',
+        name: '',
+        accountNumber: 'none',
+        phone: '',
+        bankName: '',
+        withdrawalAuthorization: '',
+      })
     })
 }
 
@@ -304,7 +648,8 @@ export const LogoutAction = (firebase, dispatch, handleLogoutRoute) => {
     .signOut()
     .then(() => {
       handleLogoutRoute()
-      dispatch({ type: 'LOGOUT' })
+      localStorage.removeItem('userId')
+      return dispatch({ type: 'LOGOUT' })
     })
 }
 
@@ -314,7 +659,7 @@ export const newsLetterAction = (email, firebase, dispatch, setinput) => {
     .collection('newsletters')
     .add({
       newsLetter: email,
-      id: Date.now().toString(),
+      id: firebase.firestore.FieldValue.serverTimestamp(),
     })
     .then(() => {
       dispatch({ type: 'SUBCRIPTION_SUCCESSFUL' })

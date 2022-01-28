@@ -6,56 +6,118 @@ import { useFirebase } from 'react-redux-firebase'
 
 import { registerAction } from './Action'
 import { useDispatch, useSelector } from 'react-redux'
-import { Snackbar, makeStyles } from '@material-ui/core'
 
 import Footer from '../body/Footer'
-import NavBar from '../navigation/NavBar'
-import { Link } from 'react-router-dom'
+
+import { Link, useHistory } from 'react-router-dom'
+import { Form, InputGroup } from 'react-bootstrap'
+import * as Icons from 'react-bootstrap-icons'
+import Swal from 'sweetalert2'
+
+import withReactContent from 'sweetalert2-react-content'
+import { makeStyles, Snackbar } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   content: {
     backgroundColor: 'red',
   },
+  success: {
+    backgroundColor: 'green',
+  },
 }))
+const MySwal = withReactContent(Swal)
 
 function SignUp() {
   const classes = useStyles()
-  const [userData, setuserData] = useState({
-    firstname: '',
-    lastname: '',
-    password: '',
-    email: '',
-    phone: '',
-    country: '',
-  })
-  const [openSnack, setopenSnack] = useState(false)
-  const firebase = useFirebase()
-
   const dispatch = useDispatch()
+  const firebase = useFirebase()
+  const { push } = useHistory()
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [country, setCountry] = useState('')
+  const [phone, setPhone] = useState('')
+  const [photo, setPhoto] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const signupError = useSelector((state) => state.authReducer.signupError)
 
-  const authError = useSelector((state) => state.authReducer.signupError)
-  const [numberError, setNumberError] = useState(false)
-  const [numberErrorMessage, setNumberErrorMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
-  const checkAuth = () => setopenSnack(true)
+  const userData = {
+    lastname,
+    password,
+    firstname,
+    email,
+    phone,
+    photo,
+    country,
+    isSubmitting,
+  }
 
-  const validity = () => {
-    setNumberErrorMessage('Invalid number')
-    setNumberError(true)
+  const setUserData = {
+    setEmail,
+    setPassword,
+    setPhone,
+    setLastname,
+    setFirstname,
+    setPhoto,
+    setCountry,
+    setIsSubmitting,
+  }
+  const [openPopUp, setOpenPopUp] = useState({
+    error: false,
+    success: false,
+  })
+
+  const emptyOptions = {
+    title: <p>Required</p>,
+    text: 'Please all inputs are required',
+    icon: 'info',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const lengthOptions = {
+    title: <p>Invalid</p>,
+    text: 'Password Must be greater or equal to 5 characters long',
+    icon: 'info',
+    showCloseButton: true,
+    closeButtonText: 'OK',
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (userData.phone.match(/12345/) || userData.phone.match(/1234/)) {
-      return validity()
+    setIsSubmitting(true)
+    if (
+      password === '' ||
+      email === '' ||
+      phone === '' ||
+      photo === '' ||
+      country === '' ||
+      lastname === '' ||
+      firstname === ''
+    ) {
+      setIsSubmitting(false)
+      return MySwal.fire(emptyOptions)
+    }
+    if (password.length < 5) {
+      setIsSubmitting(false)
+      return MySwal.fire(lengthOptions)
     }
 
-    registerAction(userData, firebase, dispatch, checkAuth, setuserData)
+    registerAction(
+      userData,
+      firebase,
+      dispatch,
+      setUserData,
+      push,
+      openPopUp,
+      setOpenPopUp,
+    )
   }
 
   return (
     <>
-      <NavBar />
       <section className="sub-page-banner site-bg parallax" id="banner">
         <div className="container">
           <div className="row">
@@ -73,30 +135,23 @@ function SignUp() {
           </div>
         </div>
       </section>
+      <Snackbar
+        onClose={() => setOpenPopUp({ ...openPopUp, error: false })}
+        open={openPopUp.error}
+        message={signupError}
+        autoHideDuration={9000}
+        ContentProps={{ className: classes.content }}
+        anchorOrigin={{
+          horizontal: 'center',
+          vertical: 'bottom',
+        }}
+      />
       <div className="account-pages site-bg height-100vh">
         <div className="home-center">
           <div className="home-desc-center">
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6 col-xl-5 ">
-                  <Snackbar
-                    onClose={() => setopenSnack(false)}
-                    open={openSnack}
-                    message={authError}
-                    autoHideDuration={9000}
-                    ContentProps={{ className: classes.content }}
-                    anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-                    className="transition"
-                  ></Snackbar>
-                  <Snackbar
-                    onClose={() => setNumberError(false)}
-                    open={numberError}
-                    message={numberErrorMessage}
-                    autoHideDuration={9000}
-                    ContentProps={{ className: classes.content }}
-                    anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-                    className="transition"
-                  ></Snackbar>
                   <div className="card wow fadeInUp">
                     <div className="card-body p-4 ">
                       <div className="text-center mb-4">
@@ -105,45 +160,35 @@ function SignUp() {
                         </h4>
                       </div>
 
-                      <form className="login-form" onSubmit={handleSubmit}>
+                      <Form
+                        noValidate
+                        className="login-form"
+                        onSubmit={handleSubmit}
+                      >
                         <div className="form-group mb-4">
                           <label htmlFor="firstname " className="text-dark">
                             First Name
                           </label>
-                          <input
+                          <Form.Control
                             type="text"
                             name="firstname"
                             id="firstname"
-                            className="form-control "
-                            autoCorrect="true"
+                            value={firstname}
                             required
-                            placeholder="Enter your firstname"
-                            onChange={(e) =>
-                              setuserData({
-                                ...userData,
-                                firstname: e.target.value,
-                              })
-                            }
+                            onChange={(e) => setFirstname(e.target.value)}
                           />
                         </div>
                         <div className="form-group mb-4">
                           <label htmlFor="lastname" className="text-dark">
                             Last Name
                           </label>
-                          <input
+                          <Form.Control
                             type="text"
                             name="lastname"
                             id="lastname"
-                            placeholder="Enter your lastname"
-                            className="form-control"
                             required
-                            autoCorrect="true"
-                            onChange={(e) =>
-                              setuserData({
-                                ...userData,
-                                lastname: e.target.value,
-                              })
-                            }
+                            value={lastname}
+                            onChange={(e) => setLastname(e.target.value)}
                           />
                         </div>
 
@@ -151,82 +196,85 @@ function SignUp() {
                           <label htmlFor="emailaddress" className="text-dark">
                             Email address
                           </label>
-                          <input
+                          <Form.Control
                             type="email"
                             name="email"
                             id="emailaddress"
-                            className="form-control"
-                            placeholder="Enter your email"
-                            autoCorrect="true"
                             required
-                            onChange={(e) =>
-                              setuserData({
-                                ...userData,
-                                email: e.target.value,
-                              })
-                            }
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                           />
                         </div>
-
-                        <div className="form-group mb-4">
+                        <div className=" mb-4 form-group">
                           <label htmlFor="password" className="text-dark">
                             Password
                           </label>
-                          <input
-                            name="password"
-                            autoCorrect="true"
-                            className="form-control"
-                            type="password"
-                            required
-                            security="true"
-                            id="password"
-                            placeholder="Enter your password"
-                            onChange={(e) =>
-                              setuserData({
-                                ...userData,
-                                password: e.target.value,
-                              })
-                            }
-                          />
+                          <InputGroup>
+                            <Form.Control
+                              name="password"
+                              className="form-control"
+                              type={showPassword ? 'text' : 'password'}
+                              security="true"
+                              id="password"
+                              required
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <InputGroup.Prepend style={{ cursor: 'pointer' }}>
+                              <InputGroup.Text>
+                                {showPassword ? (
+                                  <Icons.EyeSlash
+                                    size="20px"
+                                    onClick={() => setShowPassword(false)}
+                                  />
+                                ) : (
+                                  <Icons.Eye
+                                    size="20px"
+                                    onClick={() => setShowPassword(true)}
+                                  />
+                                )}
+                              </InputGroup.Text>
+                            </InputGroup.Prepend>
+                          </InputGroup>
                         </div>
+
                         <div className="form-group mb-4">
                           <label htmlFor="country" className="text-dark">
                             Country
                           </label>
-                          <input
+                          <Form.Control
                             name="country"
-                            autoCorrect="true"
-                            className="form-control"
                             type="text"
                             id="country"
-                            placeholder="Enter your country"
                             required
-                            onChange={(e) =>
-                              setuserData({
-                                ...userData,
-                                country: e.target.value,
-                              })
-                            }
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
                           />
                         </div>
                         <div className="form-group mb-4">
                           <label htmlFor="phone" className="text-dark">
                             Number
                           </label>
-                          <input
+                          <Form.Control
                             type="tel"
                             name="phone"
                             id="phone"
-                            className="form-control"
-                            autoCorrect="true"
-                            placeholder="Enter your number"
                             required
-                            onChange={(e) =>
-                              setuserData({
-                                ...userData,
-                                phone: e.target.value,
-                              })
-                            }
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="form-group mb-4">
+                          <label htmlFor="photo" className="text-dark">
+                            Photo
+                          </label>
+                          <Form.Control
+                            type="file"
+                            name="photo"
+                            id="photo"
+                            required
+                            onChange={(e) => setPhoto(e.target.files[0])}
                           />
                         </div>
 
@@ -253,22 +301,22 @@ function SignUp() {
                           <button
                             className="btn w-100 history-info"
                             type="submit"
+                            disabled={userData.isSubmitting}
                           >
                             Sign Up
                           </button>
                         </div>
-                      </form>
+                      </Form>
                     </div>
-                  </div>
-
-                  <div className="row mt-3">
-                    <div className="col-12 text-center link-resize">
-                      <p className="text-white">
-                        Already have account?{' '}
-                        <a href="/login" className="text-white ml-1">
-                          <b>Sign In</b>
-                        </a>
-                      </p>
+                    <div className="row mt-3">
+                      <div className="col-12 text-center link-resize">
+                        <p className="text-white">
+                          Already have account?{' '}
+                          <a href="/login" className="text-white ml-1">
+                            <b>Sign In</b>
+                          </a>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

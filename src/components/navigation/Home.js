@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import Footer from '../body/Footer'
 import { Link } from 'react-router-dom'
-import NavBar from './NavBar'
 import Testimonials from '../body/Testimonials'
 import { isEmpty, isLoaded, useFirebase } from 'react-redux-firebase'
 import { contactAction } from '../Auths/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Snackbar } from '@material-ui/core'
+import OwlCarousel from 'react-owl-carousel'
+import 'owl.carousel/dist/assets/owl.carousel.css'
+import 'owl.carousel/dist/assets/owl.theme.default.css'
 
 function Home() {
   const authState = useSelector((state) => state.firebase.auth)
@@ -20,6 +22,7 @@ function Home() {
   const contactSuccess = useSelector(
     (state) => state.projectReducer.contactMessageSuccess,
   )
+  const userDataState = useSelector((state) => state.firebase.profile)
   const contactError = useSelector(
     (state) => state.projectReducer.contactMessageError,
   )
@@ -40,43 +43,56 @@ function Home() {
       setopenSnackError,
     )
   }
+
   return (
     <>
-      <NavBar />
-
-      <section className="home-banner parallax site-bg" id="banner">
+      <section
+        className="home-banner  site-bg header-bg-new paralax "
+        id="banner"
+        style={{ height: '80%', backgroundPosition: '50%' }}
+      >
         <div className="container">
           <div className="row">
-            <div className="col-lg-6 col-md-6 position-u flex-align wow fadeInLeft">
+            <div className="col-lg-6 col-md-6 position-u flex-align wow fadeInLeft animated">
               <div className="banner-contain">
-                <h1 className="banner-heading">
+                <h1 className="banner-heading text-primary">
                   Invest In Ultimatecoins Way To Trade
                 </h1>
-                <p className="banner-des">
+                <p className="banner-des text-light">
                   Stable and reliable way to crypto trading
                 </p>
                 <div className="btn-group">
-                  {isLoaded(authState) && !isEmpty(authState) ? (
-                    <a href="/user" className="btn history-info">
+                  {isLoaded(authState) &&
+                  !isEmpty(authState) &&
+                  userDataState?.verificationCode ? (
+                    <a
+                      href="/user/dashboard"
+                      className="btn bg-primary text-light"
+                    >
                       Dashboard <i className="fa fa-long-arrow-right"></i>
                     </a>
                   ) : (
-                    <a href="/login" className="btn history-info">
-                      Get started <i className="fa fa-long-arrow-right"></i>
-                    </a>
+                    <>
+                      <a href="/login" className="btn bg-primary text-light">
+                        Get started <i className="fa fa-long-arrow-right"></i>
+                      </a>
+                      <div className="ml-3 ">
+                        <a
+                          href="/signup"
+                          className="btn bg-secondary btn-radius text-light"
+                        >
+                          Register <i className="fa fa-long-arrow-right"></i>
+                        </a>
+                      </div>
+                    </>
                   )}
-                  <div className="ml-3">
-                    <a href="/signup" className="btn history-info">
-                      Register <i className="fa fa-long-arrow-right"></i>
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-6 col-md-6 position-u wow fadeInRight">
+            <div className="col-lg-6 col-md-6 position-u wow fadeInRight animated">
               <div className="banner-img">
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/banner-img.png"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/banner-img.png"
                   alt="banner"
                 />
               </div>
@@ -88,7 +104,10 @@ function Home() {
       <section className="work-part site-bg ptb-100">
         <div className="container">
           <div className="row">
-            <div className="col-md-12 wow fadeInUp">
+            <div
+              className="col-md-12 wow fadeInUp animated"
+              style={{ visibility: 'visible' }}
+            >
               <div className="section-heading text-center pb-65">
                 <label className="sub-heading">what is Ultimatecoins</label>
                 <h2 className="heading-title userTextColor">How it Works</h2>
@@ -103,17 +122,23 @@ function Home() {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 text-center flex-align justify-center wow fadeInLeft">
+            <div
+              className="col-md-6 text-center flex-align justify-center wow fadeInLeft animated"
+              style={{ visibility: 'visible' }}
+            >
               <div className="work-box">
                 <div className="work-box-bg"></div>
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/work-process.png"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/work-process.png"
                   className="rotation-img"
                   alt="Work Process"
                 />
               </div>
             </div>
-            <div className="col-md-6 flex-align wow fadeInRight">
+            <div
+              className="col-md-6 flex-align wow fadeInRight animated"
+              style={{ visibility: 'visible' }}
+            >
               <div className="work-box">
                 <h3 className="work-process-title pb-25 userTextColor">
                   We’ve built a platform to buy and invest in cryptography.
@@ -150,10 +175,10 @@ function Home() {
       </section>
 
       <section className="feature-part site-bg bg-pattern pt-100 pb-10">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 wow fadeInUp">
-              <div className="section-heading text-center pb-65">
+        <div className="container ">
+          <div className="row ">
+            <div className="col-md-12 wow text-center fadeInUp animated">
+              <div className="section-heading  pb-65">
                 <label className="sub-heading">UltimateCoin Feature</label>
                 <h2 className="heading-title userTextColor">Best Features</h2>
                 <p className="heading-des">
@@ -163,12 +188,12 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-4 wow fadeInUp pb-80">
+          <div className="row ">
+            <div className="col-sm-12 col-lg-4 wow fadeInUp pb-80 animated">
               <div className="feature-box">
-                <div className="feature-icon">
+                <div className="feature-icon ">
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-1.png"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-1.png"
                     alt="Safe & Secure"
                   />
                 </div>
@@ -186,12 +211,12 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 wow fadeInUp pb-80">
+            <div className="col-sm-12 col-lg-4 wow fadeInUp pb-80 animated">
               <div className="feature-box">
                 <div className="feature-icon">
                   <a href="/features">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-2.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-2.png"
                       alt="Early Bonus"
                     />
                   </a>
@@ -211,12 +236,12 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 wow fadeInUp pb-80">
+            <div className="col-sm-12 col-lg-4 wow fadeInUp pb-80 animated">
               <div className="feature-box">
                 <div className="feature-icon">
                   <a href="/features">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-3.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-3.png"
                       alt="Univarsal Access"
                     />
                   </a>
@@ -235,12 +260,12 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 wow fadeInUp pb-80">
+            <div className=" col-md-4 wow fadeInUp pb-80 animated">
               <div className="feature-box">
                 <div className="feature-icon">
                   <a href="/features">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-4.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-4.png"
                       alt="Secure Storage"
                     />
                   </a>
@@ -260,12 +285,12 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 wow fadeInUp pb-80">
+            <div className="col-md-4 wow fadeInUp pb-80 animated">
               <div className="feature-box">
                 <div className="feature-icon">
                   <a href="/features">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-5.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-5.png"
                       alt="Low Cost"
                     />
                   </a>
@@ -284,12 +309,12 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 wow fadeInUp pb-80">
+            <div className="col-sm-12 col-lg-4 wow fadeInUp pb-80 animated">
               <div className="feature-box">
                 <div className="feature-icon">
                   <a href="/feature">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-6.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-6.png"
                       alt="Several Profit"
                     />
                   </a>
@@ -315,7 +340,10 @@ function Home() {
       <section className="timeline site-bg ptb-100">
         <div className="container">
           <div className="row">
-            <div className="col-md-12 wow fadeInUp">
+            <div
+              className="col-md-12 wow fadeInUp animated"
+              style={{ visibility: 'visible' }}
+            >
               <div className="section-heading text-center pb-65">
                 <label className="sub-heading">roadmap</label>
                 <h2 className="heading-title userTextColor">The Timeline</h2>
@@ -330,69 +358,127 @@ function Home() {
           <div className="main-roadmap">
             <div className="row">
               <div className="col-md-12">
-                <div className="h-border wow fadeInLeft"></div>
+                <div
+                  className="h-border wow fadeInLeft  animated "
+                  style={{ visibility: 'visible' }}
+                ></div>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
-                <div className="roadmap-slider owl-carousel">
-                  <div className="roadmap wow fadeInLeft">
-                    <div className="roadmap-box text-center">
-                      <div className="date-title">March 2018</div>
-                      <div className="map-graphic">
-                        <div className="small-round">
-                          <span></span>
+                <OwlCarousel
+                  className="owl-theme  owl-loaded owl-drag"
+                  loop
+                  margin={10}
+                  dots
+                  responsive={{
+                    0: {
+                      items: 1,
+                    },
+                    420: {
+                      items: 1,
+                    },
+                    768: {
+                      items: 3,
+                    },
+                    992: {
+                      items: 4,
+                    },
+                    1200: {
+                      items: 4,
+                    },
+                  }}
+                >
+                  <div className="owl-stage-outer">
+                    <div
+                      className="owl-stage"
+                      style={{
+                        transform: 'translate3d(-1344px, 0px,0px)',
+                        transition: 'all 0.25s ease 0s',
+                        width: '2688px',
+                      }}
+                    >
+                      <div className="item cloned" style={{ width: '336px' }}>
+                        <div
+                          className="wow roadmap animated fadeInLeft"
+                          style={{ visibility: 'visible' }}
+                        >
+                          <div className="roadmap-box text-center">
+                            <div className="date-title">March 2018</div>
+                            <div className="map-graphic">
+                              <div className="small-round">
+                                <span></span>
+                              </div>
+                              <div className="v-row"></div>
+                            </div>
+                            <div className="roadmap-detail-box">
+                              <p>Initial Coin Distribution & maketing </p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="v-row"></div>
                       </div>
-                      <div className="roadmap-detail-box">
-                        <p>Inotial Coin Distribution & maketing </p>
+                      <div className="item cloned" style={{ width: '336px' }}>
+                        <div
+                          className="wow roadmap animated fadeInLeft"
+                          style={{ visibility: 'visible' }}
+                        >
+                          <div className="roadmap-box text-center">
+                            <div className="date-title">April 2018</div>
+                            <div className="map-graphic">
+                              <div className="small-round">
+                                <span></span>
+                              </div>
+                              <div className="v-row"></div>
+                            </div>
+                            <div className="roadmap-detail-box">
+                              <p>Exchange Bitcontent to Bitcoin investments</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="item cloned" style={{ width: '336px' }}>
+                        <div
+                          className="wow roadmap animated fadeInLeft"
+                          style={{ visibility: 'visible' }}
+                        >
+                          <div className="roadmap-box text-center">
+                            <div className="date-title">May 2018</div>
+                            <div className="map-graphic">
+                              <div className="small-round">
+                                <span></span>
+                              </div>
+                              <div className="v-row"></div>
+                            </div>
+                            <div className="roadmap-detail-box">
+                              <p>Online trading and investments</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="item cloned" style={{ width: '336px' }}>
+                        <div
+                          className="wow roadmap animated fadeInLeft"
+                          style={{ visibility: 'visible' }}
+                        >
+                          <div className="roadmap-box text-center">
+                            <div className="date-title">August 2018</div>
+                            <div className="map-graphic">
+                              <div className="small-round">
+                                <span></span>
+                              </div>
+                              <div className="v-row"></div>
+                            </div>
+                            <div className="roadmap-detail-box">
+                              <p>Coin Marketcap, World Coin Index</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="roadmap wow fadeInLeft">
-                    <div className="roadmap-box text-center">
-                      <div className="date-title">April 2018</div>
-                      <div className="map-graphic">
-                        <div className="small-round">
-                          <span></span>
-                        </div>
-                        <div className="v-row"></div>
-                      </div>
-                      <div className="roadmap-detail-box">
-                        <p>Exchange Bitcontent to Bitcoin investments</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="roadmap wow fadeInLeft">
-                    <div className="roadmap-box text-center">
-                      <div className="date-title">May 2018</div>
-                      <div className="map-graphic">
-                        <div className="small-round">
-                          <span></span>
-                        </div>
-                        <div className="v-row"></div>
-                      </div>
-                      <div className="roadmap-detail-box">
-                        <p>Online trading and investments</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="roadmap wow fadeInLeft">
-                    <div className="roadmap-box text-center">
-                      <div className="date-title">August 2018</div>
-                      <div className="map-graphic">
-                        <div className="small-round">
-                          <span></span>
-                        </div>
-                        <div className="v-row"></div>
-                      </div>
-                      <div className="roadmap-detail-box">
-                        <p>Coin Marketcap, World Coin Index</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                </OwlCarousel>
               </div>
             </div>
           </div>
@@ -416,7 +502,10 @@ function Home() {
           </div>
           <div className="row small_space">
             <div className="col-lg-4 col-md-4">
-              <div className=" text-center card site-bg wow fadeInLeft ">
+              <div
+                className=" text-center card bg-secondary wow fadeInLeft animated "
+                style={{ visibility: 'visible' }}
+              >
                 <div className="card-header history-info">
                   <h3>Basic</h3>
                   <div className="price_tage">
@@ -429,7 +518,7 @@ function Home() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$200</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$3900</li>
+                    <li className="py-2">$4900</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$50</li>
                   </ul>
@@ -445,7 +534,10 @@ function Home() {
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className=" text-center card site-bg wow fadeInUp price-pd">
+              <div
+                className=" text-center card bg-secondary wow fadeInUp price-pd animated "
+                style={{ visibility: 'visible' }}
+              >
                 <div className=" card-header history-info">
                   <h3>Standard</h3>
                   <div className="price_tage">
@@ -458,7 +550,7 @@ function Home() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$400</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$5900</li>
+                    <li className="py-2">$7999</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$100</li>
                   </ul>
@@ -474,7 +566,10 @@ function Home() {
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg wow fadeInRight price-pd">
+              <div
+                className="text-center card bg-secondary wow fadeInRight price-pd animated "
+                style={{ visibility: 'visible' }}
+              >
                 <div className=" card-header history-info">
                   <h3>Untimate</h3>
                   <div className="price_tage">
@@ -487,7 +582,7 @@ function Home() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$1000</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$7800</li>
+                    <li className="py-2">$19900</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$200</li>
                   </ul>
@@ -528,7 +623,7 @@ function Home() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-1.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-1.jpg"
                       alt="team member"
                     />
                   </a>
@@ -569,7 +664,7 @@ function Home() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-2.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-2.jpg"
                       alt="team member"
                     />
                   </a>
@@ -608,7 +703,7 @@ function Home() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-3.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-3.jpg"
                       alt="team member"
                     />
                   </a>
@@ -647,7 +742,7 @@ function Home() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-4.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-4.jpg"
                       alt="team member"
                     />
                   </a>
@@ -687,7 +782,7 @@ function Home() {
 
       <section
         id="tokensale-part"
-        className="token-sale site-bg parallax ptb-100"
+        className="token-sale token-bg-new parallax ptb-100"
       >
         <div className="container">
           <div className="row">
@@ -723,7 +818,7 @@ function Home() {
                 </div>
                 <div className="graph-logo">
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/fav-icon.png"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/fav-icon.png"
                     alt="Logo"
                   />
                 </div>
@@ -733,7 +828,7 @@ function Home() {
         </div>
       </section>
       <Testimonials />
-      <section className="blog-part site-bg ptb-100">
+      <section className="blog-part site-bg ptb-100 bg-pattern">
         <div className="container">
           <div className="row">
             <div className="col-md-12 wow fadeInUp">
@@ -747,12 +842,37 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="blog-slider owl-carousel">
+
+          <OwlCarousel
+            className="owl-theme blog-slider"
+            loop
+            margin={10}
+            dots
+            responsive={{
+              0: {
+                dots: true,
+                nav: false,
+                items: 1,
+              },
+              420: {
+                items: 1,
+              },
+              768: {
+                items: 3,
+              },
+              992: {
+                items: 4,
+              },
+              1200: {
+                items: 4,
+              },
+            }}
+          >
             <div className="blog-box wow fadeInUp">
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-1.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-1.jpg"
                     alt="blog"
                   />
                 </span>
@@ -784,7 +904,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-2.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-2.jpg"
                     alt="blog"
                   />
                 </span>
@@ -810,7 +930,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-3.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-3.jpg"
                     alt="blog"
                   />
                 </span>
@@ -836,7 +956,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-1.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-1.jpg"
                     alt="blog"
                   />
                 </span>
@@ -862,7 +982,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-2.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-2.jpg"
                     alt="blog"
                   />
                 </span>
@@ -888,7 +1008,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-3.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-3.jpg"
                     alt="blog"
                   />
                 </span>
@@ -913,7 +1033,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <a href="/blog">
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-1.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-1.jpg"
                     alt="blog"
                   />
                 </a>
@@ -939,7 +1059,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span href="/blogs">
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-2.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-2.jpg"
                     alt="blog"
                   />
                 </span>
@@ -965,7 +1085,7 @@ function Home() {
               <div className="blog-img mb-15">
                 <span>
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/blog-3.jpg"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/blog-3.jpg"
                     alt="blog"
                   />
                 </span>
@@ -987,7 +1107,7 @@ function Home() {
                 </Link>
               </div>
             </div>
-          </div>
+          </OwlCarousel>
         </div>
       </section>
 
@@ -997,7 +1117,7 @@ function Home() {
             <div className="col-lg-6 wow fadeInLeft flex-bottom order-r-2">
               <div className="ico-apps-img w-100 text-center">
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/ico-img.png"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/ico-img.png"
                   alt="mobile apps"
                 />
               </div>
@@ -1043,7 +1163,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="faq-part site-bg pt-100">
+      <section className="faq-part site-bg pt-100 bg-pattern">
         <div className="container">
           <div className="row">
             <div className="col-md-12 wow fadeInUp">

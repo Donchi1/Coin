@@ -35,7 +35,7 @@ function Pricing() {
           </div>
           <div className="row small_space">
             <div className="col-lg-4 col-md-4">
-              <div className=" text-center card site-bg">
+              <div className=" text-center card bg-secondary">
                 <div className="card-header history-info">
                   <h3>Basic</h3>
                   <div className="price_tage">
@@ -48,7 +48,7 @@ function Pricing() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$200</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$3900</li>
+                    <li className="py-2">$4900</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$50</li>
                   </ul>
@@ -64,7 +64,7 @@ function Pricing() {
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className=" text-center card site-bg price-pd wow fadeInDown">
+              <div className=" text-center card bg-secondary price-pd wow fadeInDown">
                 <div className=" card-header history-info">
                   <h3>Standard</h3>
                   <div className="price_tage">
@@ -77,7 +77,7 @@ function Pricing() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$400</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$5900</li>
+                    <li className="py-2">$7999</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$100</li>
                   </ul>
@@ -93,7 +93,7 @@ function Pricing() {
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg price-pd wow fadeInRight">
+              <div className="text-center card bg-secondary price-pd wow fadeInRight">
                 <div className=" card-header history-info">
                   <h3>Untimate</h3>
                   <div className="price_tage">
@@ -104,11 +104,11 @@ function Pricing() {
                 <div className="pr_content">
                   <ul className="list_none ">
                     <li className="py-2">Normal Deposit</li>
-                    <li className="py-2">$1000</li>
+                    <li className="py-2">$500</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$7800</li>
+                    <li className="py-2">$9900</li>
                     <li className="py-2">Bonus</li>
-                    <li className="py-2">$200</li>
+                    <li className="py-2">$150</li>
                   </ul>
                 </div>
                 <div className="py-4">
@@ -135,7 +135,7 @@ function Pricing() {
           </div>
           <div className="row small_space">
             <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg mb-2 wow fadeInLeft">
+              <div className="text-center card bg-secondary mb-2 wow fadeInLeft">
                 <div className="card-header history-info">
                   <h3>Basic</h3>
                   <div className="price_tage">
@@ -148,9 +148,9 @@ function Pricing() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$900</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$9900</li>
+                    <li className="py-2">$12900</li>
                     <li className="py-2">Bonus</li>
-                    <li className="py-2">$150</li>
+                    <li className="py-2">$200</li>
                   </ul>
                 </div>
                 <div className="py-4">
@@ -161,7 +161,7 @@ function Pricing() {
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className="text-center card site-bg mb-2 wow fadeInRight price-pd">
+              <div className="text-center card bg-secondary mb-2 wow fadeInRight price-pd">
                 <div className="card-header history-info">
                   <h3>Standard</h3>
                   <div className="price_tage">
@@ -174,7 +174,7 @@ function Pricing() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$1000</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$12900</li>
+                    <li className="py-2">$19900</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$250</li>
                   </ul>
@@ -187,7 +187,7 @@ function Pricing() {
               </div>
             </div>
             <div className="col-lg-4 col-md-4">
-              <div className="card text-center site-bg mb-2 wow fadeInUp price-pd">
+              <div className="card text-center bg-secondary mb-2 wow fadeInUp price-pd">
                 <div className="card-header history-info">
                   <h3>Untimate</h3>
                   <div className="price_tage">
@@ -200,7 +200,7 @@ function Pricing() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$1200</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$12800</li>
+                    <li className="py-2">$22900</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$300</li>
                   </ul>

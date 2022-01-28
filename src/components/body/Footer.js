@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Typography } from '@material-ui/core'
 
 import { Link } from 'react-router-dom'
-import Chat from './Chat'
 
 function Footer() {
   const [input, setInput] = useState('')
@@ -29,7 +28,7 @@ function Footer() {
     <>
       <footer className="bg-pattern site-bg2 ptb-100">
         <div className="container">
-          <div className="footer">
+          <div className="foote">
             <div className="row">
               <div className="col-lg-4 col-md-6">
                 <div className="footer-logo pb-25">
@@ -111,7 +110,7 @@ function Footer() {
                       <input
                         type="email"
                         id="newsletter"
-                        className="form-control"
+                        className="form-control bg-secondary"
                         value={input}
                         placeholder="Enter your email Address"
                         required
@@ -123,7 +122,7 @@ function Footer() {
                         type="submit"
                         name="submit"
                         value="Subscribe"
-                        className="submit history-info"
+                        className="submit bg-primary"
                       />
                     </div>
                   </form>
@@ -154,8 +153,6 @@ function Footer() {
             </div>
           </div>
         </div>
-
-        <Chat />
       </footer>
       <div className="transition text-right ">
         <a href="#banner" className="history-info backtop scrollTo">

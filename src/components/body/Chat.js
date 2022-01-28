@@ -5,7 +5,7 @@ const igs = '../../assets/test1.jpg'
 
 function Chat() {
   const theme = {
-    background: '#f87d18',
+    background: 'rgb(238, 111, 65)',
     fontFamily: 'Helvetica Neue',
     headerBgColor: 'purple',
     headerFontColor: '#fff',

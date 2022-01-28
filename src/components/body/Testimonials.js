@@ -1,16 +1,53 @@
-import React, { useState } from 'react'
-import ReactPlayer from 'react-player'
-import { Dialog, Link } from '@material-ui/core'
-import testimony1 from '../../assets/video/mantest1.mp4'
-import testimony from '../../assets/video/mantest.mp4'
-import testimony2 from '../../assets/video/womantest.mp4'
+import React, { useState, useEffect, Fragment } from 'react'
+
+import { useFirebase } from 'react-redux-firebase'
+import img1 from '../../assets/test1.jpg'
+import img2 from '../../assets/test2.jpg'
+import img3 from '../../assets/test3.jpg'
+import OwlCarousel from 'react-owl-carousel'
+import 'owl.carousel/dist/assets/owl.carousel.css'
+import 'owl.carousel/dist/assets/owl.theme.default.css'
 
 function Testimonials() {
-  const [openVideo, setOpenVideo] = useState({
-    video1: false,
-    video2: false,
-    video3: false,
-  })
+  const firebase = useFirebase()
+
+  const [videoData, setVideoData] = useState([
+    {
+      url: img1,
+      message:
+        ' Am so please trading unreagretably with Ultimatecoins meeting them was never a coincident and am so happy trading with then because they have increased my fund and changed my life totally',
+
+      id: Math.random() * 36575,
+    },
+
+    {
+      id: Math.random() * 2675,
+      url: img2,
+      message:
+        '   Am so please trading unreagretably with Ultimatecoins meeting them was never a coincident and am so happy trading with then because they have increased my fund and changed my life totally.',
+    },
+    {
+      id: Math.random() * 1677,
+      url: img3,
+      message:
+        'Getting in touch with this company made me understand the meaning of team work.I invested very little but there team guided me to make the best out of this platform, and am so happy to be an investor here.',
+    },
+  ])
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection('testimonials')
+      .onSnapshot((qs) => {
+        const data = qs.docs.map((doc) => doc.data())
+        setVideoData([
+          ...videoData,
+          { url: data.photo, message: data.message, id: data.uid },
+        ])
+      })
+    return unsubscribe
+  }, [])
+
   return (
     <>
       <section className="blog-part site-bg ptb-100">
@@ -30,123 +67,19 @@ function Testimonials() {
             </div>
           </div>
           <div className="blog-slider owl-carousel">
-            <div className="blog-box wow fadeInUp">
-              <div className="blog-img mb-15 work-box">
-                <img
-                  src={require('../../assets/test1.jpg')}
-                  alt="Work Process"
-                />
-                <Link
-                  to="#"
-                  className="play-icon text-center"
-                  onClick={() =>
-                    setOpenVideo({ ...openVideo, video1: !openVideo.video1 })
-                  }
-                >
-                  <span>
-                    <i className="fa fa-play" aria-hidden="true"></i>
-                  </span>
-                </Link>
-              </div>
-              <Dialog
-                open={openVideo.video1}
-                onClose={() => setOpenVideo({ ...openVideo, video1: false })}
-                maxWidth="xl"
-              >
-                <ReactPlayer
-                  controls
-                  playing
-                  url={testimony}
-                  style={{ border: 'none', outline: 'none' }}
-                />
-              </Dialog>
-              <div className="blog-des-box">
-                <p className="blog-date">
-                  Am so please trading unreagretably with Ultimatecoins meeting
-                  them was never a coincident and am so happy trading with then
-                  because they have increased my fund and changed my life
-                  totally.
-                </p>
-              </div>
-            </div>
-            <div className="blog-box wow fadeInUp">
-              <div className="blog-img mb-15 work-box">
-                <img
-                  src={require('../../assets/test2.jpg')}
-                  alt="Work Process"
-                />
-                <Link
-                  to="#"
-                  className="play-icon text-center"
-                  onClick={() =>
-                    setOpenVideo({ ...openVideo, video2: !openVideo.video2 })
-                  }
-                >
-                  <span>
-                    <i className="fa fa-play" aria-hidden="true"></i>
-                  </span>
-                </Link>
-              </div>
-              <Dialog
-                open={openVideo.video2}
-                onClose={() => setOpenVideo({ ...openVideo, video2: false })}
-                maxWidth="xl"
-              >
-                <ReactPlayer
-                  controls
-                  playing
-                  url={testimony2}
-                  style={{ border: 'none', outline: 'none' }}
-                />
-              </Dialog>
-              <div className="blog-des-box">
-                <p className="blog-date">
-                  Am so please trading unreagretably with Ultimatecoins meeting
-                  them was never a coincident and am so happy trading with then
-                  because they have increased my fund and changed my life
-                  totally.
-                </p>
-              </div>
-            </div>
-            <div className="blog-box wow fadeInRight">
-              <div className="blog-img mb-15 work-box">
-                <img
-                  src={require('../../assets/test3.jpg')}
-                  alt="Work Process"
-                />
-                <Link
-                  to="#"
-                  className="play-icon text-center"
-                  onClick={() =>
-                    setOpenVideo({ ...openVideo, video3: !openVideo.video3 })
-                  }
-                >
-                  <span>
-                    <i className="fa fa-play" aria-hidden="true"></i>
-                  </span>
-                </Link>
-              </div>
-              <Dialog
-                open={openVideo.video3}
-                onClose={() => setOpenVideo({ ...openVideo, video3: false })}
-                maxWidth="xl"
-              >
-                <ReactPlayer
-                  controls
-                  playing
-                  url={testimony1}
-                  style={{ border: 'none', outline: 'none' }}
-                />
-              </Dialog>
-              <div className="blog-des-box">
-                <p className="blog-date">
-                  Getting in touch with this company made me understand the
-                  meaning of team work.I invested very little but there team
-                  guided me to make the best out of this platform, and am so
-                  happy to be an investor here.
-                </p>
-              </div>
-            </div>
+            {videoData.map((each) => (
+              <Fragment key={each.id}>
+                <div className="blog-box item">
+                  <div className="blog-img mb-15 work-box">
+                    <img src={each.url} alt="" />
+                  </div>
+
+                  <div className="blog-des-box">
+                    <p className="blog-date">{each.message}</p>
+                  </div>
+                </div>
+              </Fragment>
+            ))}
           </div>
         </div>
       </section>

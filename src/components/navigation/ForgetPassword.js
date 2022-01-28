@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { forgetAction } from '../Auths/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFirebase } from 'react-redux-firebase'
-import { makeStyles, Snackbar } from '@material-ui/core'
 import NavBar from './NavBar'
 import Footer from '../body/Footer'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { makeStyles, Snackbar } from '@material-ui/core'
+
+const MySwal = withReactContent(Swal)
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -18,29 +22,58 @@ const useStyles = makeStyles((theme) => ({
 function ForgetPassword() {
   const dispatch = useDispatch()
   const firebase = useFirebase()
-  const [openErrorSnacks, setOpenErrorSnacks] = useState(false)
-  const [openSuccessSnacks, setOpenSuccessSnacks] = useState(false)
+  const classes = useStyles()
 
   const resetError = useSelector((state) => state.authReducer.passResetError)
   const resetSuccess = useSelector((state) => state.authReducer.passResetSuccss)
   const [resetEmail, setResetEmail] = useState('')
-
-  const classes = useStyles()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [openPopUp, setOpenPopUp] = useState({
+    error: false,
+    success: false,
+  })
 
   const handleReset = (e) => {
     e.preventDefault()
+    setIsSubmitting(true)
+
+    if (resetEmail === '') {
+      setIsSubmitting(false)
+      return MySwal.fire(emptyOptions)
+    }
+
     forgetAction(
       dispatch,
       firebase,
       resetEmail,
       setResetEmail,
-      setOpenSuccessSnacks,
-      setOpenErrorSnacks,
+      setIsSubmitting,
+      openPopUp,
+      setOpenPopUp,
     )
   }
+
+  const successOptions = {
+    title: <p>Login Success</p>,
+    text: resetSuccess,
+    icon: 'success',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const emptyOptions = {
+    title: <p>Required</p>,
+    text: 'Please all inputs are required',
+    icon: 'info',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+
+  if (openPopUp.success) {
+    return MySwal.fire(successOptions)
+  }
+
   return (
     <>
-      <NavBar />
       <section className="sub-page-banner site-bg parallax" id="banner">
         <div className="container">
           <div className="row">
@@ -61,20 +94,12 @@ function ForgetPassword() {
         </div>
       </section>
       <Snackbar
-        onClose={() => setOpenErrorSnacks(false)}
-        open={openErrorSnacks}
+        onClose={() => setOpenPopUp({ ...openPopUp, error: false })}
+        open={openPopUp.error}
         message={resetError}
         autoHideDuration={9000}
         ContentProps={{ className: classes.content }}
-        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-      />
-      <Snackbar
-        onClose={() => setOpenSuccessSnacks(false)}
-        open={openSuccessSnacks}
-        message={resetSuccess}
-        autoHideDuration={9000}
-        ContentProps={{ className: classes.success }}
-        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
       />
       <div className=" height-100vh site-bg">
         <div>
@@ -86,10 +111,10 @@ function ForgetPassword() {
                     <div className="card-body p-4">
                       <div className="text-center mb-4">
                         <h4 className="text-uppercase mt-0 userTextColor">
-                          Input an email for your password reset instruction
+                          Input your password reset email
                         </h4>
                       </div>
-                      <form onSubmit={handleReset}>
+                      <form onSubmit={handleReset} noValidate>
                         <div className="form-group form-focus mb-4">
                           <label
                             htmlFor="emailaddress "
@@ -110,6 +135,7 @@ function ForgetPassword() {
 
                         <div className="form-group mb-0 text-center">
                           <button
+                            disabled={isSubmitting}
                             className="btn history-info btn-round btn-block"
                             type="submit"
                           >

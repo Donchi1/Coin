@@ -4,47 +4,108 @@ import { useFirebase } from 'react-redux-firebase'
 import { useSelector, useDispatch } from 'react-redux'
 import { logginAction } from './Action'
 
-import { Snackbar, makeStyles } from '@material-ui/core'
 import Footer from '../body/Footer'
-import NavBar from '../navigation/NavBar'
+
+import { Form, InputGroup } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import * as Icons from 'react-bootstrap-icons'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { makeStyles, Snackbar } from '@material-ui/core'
+
+const MySwal = withReactContent(Swal)
 
 const useStyles = makeStyles((theme) => ({
   content: {
     backgroundColor: 'red',
   },
+  success: {
+    backgroundColor: 'green',
+  },
 }))
 
 function Login() {
-  const [userData, setuserData] = useState({
+  const classes = useStyles()
+
+  const [openPopUp, setOpenPopUp] = useState({
+    error: false,
+    success: false,
+  })
+  const [userData, setUserData] = useState({
     password: '',
     email: '',
     remember: '',
-    validity: false,
+    isSubmitting: false,
+    openError: false,
+    openSuccess: false,
   })
-
-  const classes = useStyles()
+  const [showPassword, setShowPassword] = useState(false)
 
   const firebase = useFirebase()
   const dispatch = useDispatch()
+  const { push } = useHistory()
 
-  const authError = useSelector((state) => state.authReducer.loginError)
-  const [openSnack, setopenSnack] = useState(false)
+  const { loginError, loginSuccess } = useSelector((state) => state.authReducer)
 
-  const checkAuth = () => setopenSnack(true)
+  const emptyOptions = {
+    title: <p>Required</p>,
+    text: 'Please all inputs are required',
+    icon: 'info',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const lengthOptions = {
+    title: <p>Invalid</p>,
+    text: 'Password Must be greater or equal to 5 characters long',
+    icon: 'info',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setUserData({ ...userData, isSubmitting: true })
+    const { email, password } = userData
+    if (email === '' || password === '') {
+      e.stopPropagation()
+      setUserData({ ...userData, isSubmitting: false })
+      return MySwal.fire(emptyOptions)
+    }
+    if (password.length < 5) {
+      e.stopPropagation()
+      setUserData({ ...userData, isSubmitting: false })
+      return MySwal.fire(lengthOptions)
+    }
+    logginAction(
+      userData,
+      firebase,
+      dispatch,
+      setUserData,
+      push,
+      openPopUp,
+      setOpenPopUp,
+    )
+  }
 
-    logginAction(userData, firebase, dispatch, checkAuth, setuserData)
+  if (openPopUp.success) {
+    MySwal.fire({
+      title: <p>Success</p>,
+      text: 'Login Successful',
+      icon: 'success',
+      timer: '3000',
+      showCloseButton: true,
+      closeButtonText: 'OK',
+    }).then(() => {
+      setOpenPopUp({ ...openPopUp, success: false })
+    })
   }
 
   return (
     <>
-      <NavBar />
       <section className="sub-page-banner site-bg parallax" id="banner">
         <div className="container">
           <div className="row">
-            <div className="col-md-12 wow fadeInUp">
+            <div className="col-md-12 ">
               <div className="page-banner text-center">
                 <h1 className="sub-banner-title userTextColor">Login</h1>
                 <ul>
@@ -60,35 +121,34 @@ function Login() {
       </section>
 
       <div className="authentication-bg site-bg ">
-        <div className="home-btn d-none d-sm-block">
-          <a href="/">
-            <i className="mdi mdi-home h2 text-white"></i>
-          </a>
-        </div>
-
-        <Snackbar
-          onClose={() => setopenSnack(false)}
-          open={openSnack}
-          message={authError}
-          autoHideDuration={9000}
-          ContentProps={{ className: classes.content }}
-          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-          className="transition"
-        />
         <div className=" height-100vh ">
           <div>
             <div>
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-md-8 col-lg-6 col-xl-5 pt-2 ">
-                    <div className="card wow fadeInUp">
+                    <div className="card ">
                       <div className="card-body p-4">
                         <div className="text-center mb-4">
+                          <Snackbar
+                            onClose={() =>
+                              setOpenPopUp({ ...openPopUp, error: false })
+                            }
+                            open={openPopUp.error}
+                            message={loginError}
+                            autoHideDuration={9000}
+                            ContentProps={{ className: classes.content }}
+                            anchorOrigin={{
+                              horizontal: 'center',
+                              vertical: 'top',
+                            }}
+                          />
                           <h4 className="text-uppercase mt-0 userTextColor">
                             Login to get started
                           </h4>
                         </div>
-                        <form onSubmit={handleSubmit}>
+
+                        <Form onSubmit={handleSubmit} noValidate>
                           <div className="form-group form-focus mb-4">
                             <label
                               htmlFor="emailaddress "
@@ -96,15 +156,13 @@ function Login() {
                             >
                               Email address
                             </label>
-                            <input
-                              className="form-control"
+                            <Form.Control
                               type="email"
                               id="emailaddress"
-                              required
-                              placeholder="Enter your email"
+                              name="email"
                               value={userData.email}
                               onChange={(e) =>
-                                setuserData({
+                                setUserData({
                                   ...userData,
                                   email: e.target.value,
                                 })
@@ -116,74 +174,68 @@ function Login() {
                             <label htmlFor="password " className="text-dark ">
                               Password
                             </label>
-                            <input
-                              className="form-control"
-                              type="password"
-                              required
-                              security="true"
-                              id="password"
-                              placeholder="Enter your password"
-                              value={userData.password}
-                              onChange={(e) =>
-                                setuserData({
-                                  ...userData,
-                                  password: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-
-                          <div className="form-group mb-4">
-                            <div className="custom-control custom-checkbox">
-                              <input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="checkbox-signin"
-                                checked={userData.remember}
-                                onChange={() =>
-                                  setuserData({
+                            <InputGroup>
+                              <Form.Control
+                                type={showPassword ? 'text' : 'password'}
+                                security="true"
+                                id="password"
+                                minLength={5}
+                                maxLength={30}
+                                value={userData.password}
+                                onChange={(e) =>
+                                  setUserData({
                                     ...userData,
-                                    remember: !userData.remember,
+                                    password: e.target.value,
                                   })
                                 }
                               />
-                              <label
-                                className="custom-control-label text-dark"
-                                htmlFor="checkbox-signin"
-                              >
-                                Remember me
-                              </label>
-                            </div>
+                              <InputGroup.Prepend style={{ cursor: 'pointer' }}>
+                                <InputGroup.Text>
+                                  {showPassword ? (
+                                    <Icons.EyeSlash
+                                      size="20px"
+                                      onClick={() => setShowPassword(false)}
+                                    />
+                                  ) : (
+                                    <Icons.Eye
+                                      size="20px"
+                                      onClick={() => setShowPassword(true)}
+                                    />
+                                  )}
+                                </InputGroup.Text>
+                              </InputGroup.Prepend>
+                            </InputGroup>
                           </div>
 
                           <div className="form-group mb-0 text-center">
                             <button
                               className="btn  history-info w-100"
                               type="submit"
+                              disabled={userData.isSubmitting}
                             >
                               {' '}
                               Log In{' '}
                             </button>
                           </div>
-                        </form>
+                        </Form>
                       </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-12 text-center link-resize pb-2 pt-2 ">
-                        <p>
-                          {' '}
-                          <a href="/passReset" className="text-primary ml-1">
-                            <i className="fa fa-lock mr-1"></i>Forgot your
-                            password?
-                          </a>
-                        </p>
-                        <p>
-                          Don't have an account?{' '}
-                          <a href="/signup" className=" ml-1">
-                            <b className="text-primary">Sign Up</b>
-                          </a>
-                        </p>
+                      <div className="row mt-3">
+                        <div className="col-12 text-center link-resize pb-2 pt-2 ">
+                          <p>
+                            {' '}
+                            <a href="/passReset" className="text-primary ml-1">
+                              <i className="fa fa-lock mr-1"></i>Forgot your
+                              password?
+                            </a>
+                          </p>
+                          <p>
+                            Don't have an account?{' '}
+                            <a href="/signup" className=" ml-1">
+                              <b className="text-primary">Sign Up</b>
+                            </a>
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>

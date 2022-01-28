@@ -1,19 +1,37 @@
 const initialAuth = {
-  loginError: null,
+  loginError: '',
   loginSuccess: '',
-  logout: null,
+  logout: '',
   signupSuccess: '',
-  signupError: null,
+  signupError: '',
   passResetSuccss: '',
-  passError: null,
+  passError: '',
+  userData: [],
+  profileMessage: '',
+  passwordMessage: '',
 }
 
 export const authReducer = (state = initialAuth, action) => {
   switch (action.type) {
+    case 'PROFILE_UPLOAD_SUCCESS':
+      return {
+        ...state,
+        profileMessage: action.message,
+      }
+    case 'PASSWORD_UPDATE_SUCCESS':
+      return {
+        ...state,
+        passwordMessage: action.message,
+      }
     case 'LOGIN_SUCCESS':
       return {
         ...state,
         loginSuccess: 'login Success',
+      }
+    case 'VERIFY_USER':
+      return {
+        ...state,
+        userData: action.user,
       }
     case 'LOGIN_ERROR':
       return {
@@ -44,6 +62,16 @@ export const authReducer = (state = initialAuth, action) => {
       return {
         ...state,
         passResetError: action.error.message,
+      }
+    case 'USER_TYPING':
+      return {
+        ...state,
+        userData: [...state.userData, { typing: true }],
+      }
+    case 'USER_NOT_TYPING':
+      return {
+        ...state,
+        userData: [...state.userData, { typing: false }],
       }
 
     default:
