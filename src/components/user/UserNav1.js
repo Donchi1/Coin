@@ -118,7 +118,7 @@ function UserNav1() {
         if (jQuery(this).hasClass('active')) {
           jQuery('body').attr('data-theme-version', 'dark')
         } else {
-          jQuery('body').attr('data-theme-version', 'light')
+          jQuery('body').attr('data-theme-version', 'dark')
         }
       })
     }
@@ -595,7 +595,7 @@ function UserNav1() {
                                 <div className="media-body">
                                   <h6 className="mb-1">{each.message}</h6>
                                   <small className="d-block">
-                                    {moment(each.date).calendar()}
+                                    {moment(each.date.toDate()).calendar()}
                                   </small>
                                 </div>
                               </div>
@@ -614,7 +614,7 @@ function UserNav1() {
                           )}
                       </ul>
                     </div>
-                    <a className="all-notification" href="user/notifications">
+                    <a className="all-notification" href="/user/history">
                       See all notifications <i className="ti-arrow-right"></i>
                     </a>
                   </div>
@@ -855,7 +855,7 @@ function UserNav1() {
           <ListItem
             button
             component="a"
-            href="/user/chat"
+            href="/user/chats"
             className="side-bar-item "
           >
             <ListItemIcon>

@@ -181,10 +181,10 @@ function Withdrawals() {
     closeButtonText: 'Ok',
   }
 
-  //if (!profileInfo.totalBalance && !profileInfo.accessCode) {
-  //  dispatch({ type: 'NO_WITHDRAWAL_ACCESS', accessPopUp: true })
-  //  return <Redirect to="/user" />
-  //}
+  if (!profileInfo.totalBalance && !profileInfo.accessCode) {
+    dispatch({ type: 'NO_WITHDRAWAL_ACCESS', accessPopUp: true })
+    return <Redirect to="/user" />
+  }
 
   const handleAccess = () => {
     const uid = firebase.auth().currentUser.uid
@@ -201,11 +201,10 @@ function Withdrawals() {
           .then((url) => {
             firebase
               .firestore()
-              .collection('withdrawals')
+              .collection('users')
               .doc(firebase.auth().currentUser.uid)
-              .collection('withdrawalDatas')
               .update({
-                withdrawalFee: url,
+                withdrawalProve: url,
               })
             MySwal.fire({
               title: <p>SUCCESS</p>,

@@ -60,7 +60,7 @@ function AccountVerifySignup() {
           date: firebase.firestore.FieldValue.serverTimestamp(),
           message: 'Welcome to Ultimatecoins. Trade with ease.',
           id: userDataState.uid,
-          user: userDataState.email,
+          user: userDataState.firstname,
         })
         .then(() => {
           dispatch({ type: 'SIGNUP_SUCCESS' })
@@ -202,7 +202,7 @@ function AccountVerifySignup() {
                             className="btn  history-info w-100"
                             type="submit"
                           >
-                            Delete Account
+                            Logout
                           </button>
                         </div>
                       </div>

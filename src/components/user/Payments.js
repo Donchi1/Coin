@@ -219,7 +219,7 @@ function Payments() {
                                         Make payment with the above btc wallet
                                         and upload Prove
                                       </h4>
-                                      <div>
+                                      <div className="text-center">
                                         <img
                                           src={imgBtc}
                                           width="300px"
@@ -284,7 +284,7 @@ function Payments() {
                                           Make payment with the above btc wallet
                                           and upload Prove
                                         </h4>
-                                        <div>
+                                        <div className="text-center">
                                           <img
                                             src={imgEth}
                                             width="300px"
@@ -352,7 +352,7 @@ function Payments() {
                                           Make payment with the above litcoin
                                           wallet and upload Prove
                                         </h4>
-                                        <div>
+                                        <div className="text-center">
                                           <img
                                             src={imgLit}
                                             width="300px"
@@ -389,7 +389,8 @@ function Payments() {
                                 {openPay.bank && (
                                   <div className="pt-2">
                                     <h4 className="text-warning">
-                                      Unavailable at the moment
+                                      Kindly contact customer support team for a
+                                      bank payment information.
                                     </h4>
                                   </div>
                                 )}

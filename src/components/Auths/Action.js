@@ -54,6 +54,7 @@ export const registerAction = (
           accessCode: '',
           income: '',
           accessCodeProve: '',
+          withdrawalProve: '',
           savingsAccount: false,
           weeklyClosingAlert: true,
         })
@@ -338,7 +339,15 @@ export const withdrawalAction = (
         message:
           'Your withdrawal request has been sent. We will get back to you in less than 24hours.',
       })
+      //axios.post(`${process.env.REACT_APP_URL}/api/withdrawals`, email).then(() => {
 
+      // })
+      firebase.firestore().collection('notifications').doc(uid).set({
+        user: profile.firstname,
+        message: 'Your withdrwal has been submitted ',
+        id: uid,
+        date: firebase.firestore.FieldValue.serverTimestamp(),
+      })
       setWithdrawalData({
         ...withdrawalData,
         name: '',
@@ -406,6 +415,19 @@ export const paymentAction = (
                 .update({ paymentProve: url })
                 .then(() => {
                   dispatch({ type: 'PAYMENT_SUCCESS' })
+                  //axios.post(`${process.env.REACT_APP_URL}/api/paymentProve`, email).then(() => {
+
+                  // })
+                  firebase
+                    .firestore()
+                    .collection('notifications')
+                    .doc(uid)
+                    .set({
+                      user: profile.firstname,
+                      message: 'Your payment prove successfully submitted',
+                      id: uid,
+                      date: firebase.firestore.FieldValue.serverTimestamp(),
+                    })
                   setUserProve({ ...userProve, prove: '', method: '' })
                 })
             })
@@ -488,6 +510,19 @@ export const savingAction = (
                 type: 'SAVING_SUCCESS',
                 message: 'savings account successfully created',
               })
+              //axios.post(`${process.env.REACT_APP_URL}/api/savings`, value).then(() => {
+
+              // })
+              firebase
+                .firestore()
+                .collection('notifications')
+                .doc(user.uid)
+                .set({
+                  user: values.firstname,
+                  message: 'Your savings account successfully created',
+                  id: user.uid,
+                  date: firebase.firestore.FieldValue.serverTimestamp(),
+                })
               return window.location.assign('/user/savings/dashboard')
             })
             .catch((e) => {
@@ -554,6 +589,22 @@ export const fundingAction = (firebase, dispatch, values, setValues) => {
                       'Your information has been sent successfully.Wait for less than 24 hours for data verification',
                     open: true,
                   })
+
+                  //axios.post(`${process.env.REACT_APP_URL}/api/newsletter`, email).then(() => {
+
+                  // })
+                  firebase
+                    .firestore()
+                    .collection('notifications')
+                    .doc(user.uid)
+                    .set({
+                      user: values.firstname,
+                      message:
+                        'Your account funding prove successfully submitted',
+                      id: user.uid,
+                      date: firebase.firestore.FieldValue.serverTimestamp(),
+                    })
+
                   setValues({
                     ...values,
                     isSubmitting: false,
@@ -611,6 +662,19 @@ export const savingWithdrawalAction = (
         message:
           'Your request has been received.Wait for less than 24hours while we process your withdrawal',
       })
+      //axios.post(`${process.env.REACT_APP_URL}/api/savingsW`, profileInfo).then(() => {
+
+      // })
+      firebase
+        .firestore()
+        .collection('notifications')
+        .doc(firebase.auth().currentUser.uid)
+        .set({
+          user: profileInfo.firstname,
+          message: 'Your saving withdrawal request successfully submitted',
+          id: firebase.auth().currentUser.uid,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+        })
       setWithdrawalAmount({
         ...values,
         amount: 1,
@@ -663,6 +727,9 @@ export const newsLetterAction = (email, firebase, dispatch, setinput) => {
     })
     .then(() => {
       dispatch({ type: 'SUBCRIPTION_SUCCESSFUL' })
+      //axios.post(`${process.env.REACT_APP_URL}/api/newsletter`, email).then(() => {
+
+      // })
       setinput('')
     })
     .catch((error) => {
@@ -696,7 +763,9 @@ export const contactAction = (
     })
     .then(() => {
       dispatch({ type: 'MESSAGE_SUCCESS' })
-      setContactInfo({
+      setopenSnack(true)
+      // axios.post(`${process.env.REACT_APP_URL}/api/contact`, contactInfo.email)
+      return setContactInfo({
         ...contactInfo,
         name: '',
         email: '',
@@ -704,7 +773,6 @@ export const contactAction = (
         subject: '',
         phone: '',
       })
-      setopenSnack(true)
     })
     .catch(() => {
       dispatch({ type: 'MESSAGE_ERROR' })

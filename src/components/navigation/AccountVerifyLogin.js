@@ -47,7 +47,7 @@ function AccountVerifyLogin() {
       dispatch({ type: 'LOGIN_SUCCESS' })
       setUserData({ ...userData, code: '', isSubmitting: false })
       return MySwal.fire(successOptionsLogin).then(() => {
-        return window.location.assign('/user')
+        return window.location.assign('/user/dashboard')
       })
     }
 

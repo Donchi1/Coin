@@ -321,7 +321,7 @@ function Savings() {
                       <div className="col-lg-3 text-lg-right">
                         <ul className="portofolio-social">
                           <li>
-                            <a href="https://wa.me/+5(241)8112-4319">
+                            <a href="https://wa.me/+447775303036">
                               <i className="fa fa-whatsapp"></i>
                             </a>
                           </li>
@@ -331,7 +331,7 @@ function Savings() {
                             </a>
                           </li>
                           <li>
-                            <a href="tel:+1(567)3656-7664">
+                            <a href="tel:+447775303036">
                               <i className="fa fa-phone"></i>
                             </a>
                           </li>

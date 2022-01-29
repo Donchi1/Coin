@@ -4,12 +4,31 @@ import { useFirebase } from 'react-redux-firebase'
 import img1 from '../../assets/test1.jpg'
 import img2 from '../../assets/test2.jpg'
 import img3 from '../../assets/test3.jpg'
-import OwlCarousel from 'react-owl-carousel'
-import 'owl.carousel/dist/assets/owl.carousel.css'
-import 'owl.carousel/dist/assets/owl.theme.default.css'
+import img4 from '../../assets/team-4-470x470.png'
+
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 function Testimonials() {
+  const [show, setShow] = useState(4)
+
+  const slickOption = {
+    slidesToShow: show,
+    slidesToScroll: 1,
+    lazyLoad: true,
+    autoplay: true,
+  }
+
   const firebase = useFirebase()
+  useEffect(() => {
+    const isSmall = window.matchMedia('screen and (max-width: 960px)')
+    if (isSmall.matches) {
+      setShow(1)
+    } else {
+      setShow(4)
+    }
+  }, [])
 
   const [videoData, setVideoData] = useState([
     {
@@ -27,10 +46,16 @@ function Testimonials() {
         '   Am so please trading unreagretably with Ultimatecoins meeting them was never a coincident and am so happy trading with then because they have increased my fund and changed my life totally.',
     },
     {
-      id: Math.random() * 1677,
+      id: Math.random() * 1577,
       url: img3,
       message:
         'Getting in touch with this company made me understand the meaning of team work.I invested very little but there team guided me to make the best out of this platform, and am so happy to be an investor here.',
+    },
+    {
+      id: Math.random() * 1677,
+      url: img4,
+      message:
+        'The best platform i have invested and gotten my return in real time for a better and future establishments. Join this platform and invest and never regret. ',
     },
   ])
 
@@ -66,21 +91,19 @@ function Testimonials() {
               </div>
             </div>
           </div>
-          <div className="blog-slider owl-carousel">
+          <Slider {...slickOption} swipe arrows={false} swipeToSlide dots>
             {videoData.map((each) => (
-              <Fragment key={each.id}>
-                <div className="blog-box item">
-                  <div className="blog-img mb-15 work-box">
-                    <img src={each.url} alt="" />
-                  </div>
-
-                  <div className="blog-des-box">
-                    <p className="blog-date">{each.message}</p>
-                  </div>
+              <div className="blog-box " key={each.id}>
+                <div className="blog-img mb-15 work-box">
+                  <img src={each.url} alt="" />
                 </div>
-              </Fragment>
+
+                <div className="blog-des-box">
+                  <p className="blog-date">{each.message}</p>
+                </div>
+              </div>
             ))}
-          </div>
+          </Slider>
         </div>
       </section>
     </>

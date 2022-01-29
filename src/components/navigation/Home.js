@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Footer from '../body/Footer'
 import { Link } from 'react-router-dom'
 import Testimonials from '../body/Testimonials'
@@ -6,9 +6,9 @@ import { isEmpty, isLoaded, useFirebase } from 'react-redux-firebase'
 import { contactAction } from '../Auths/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Snackbar } from '@material-ui/core'
-import OwlCarousel from 'react-owl-carousel'
-import 'owl.carousel/dist/assets/owl.carousel.css'
-import 'owl.carousel/dist/assets/owl.theme.default.css'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 function Home() {
   const authState = useSelector((state) => state.firebase.auth)
@@ -28,9 +28,26 @@ function Home() {
   )
   const [openSnack, setopenSnack] = useState(false)
   const [openSnackError, setopenSnackError] = useState(false)
+  const [show, setShow] = useState(4)
 
   const dispatch = useDispatch()
   const firebase = useFirebase()
+
+  const slickOption = {
+    slidesToShow: show,
+    slidesToScroll: 1,
+    lazyLoad: true,
+    autoplay: true,
+  }
+
+  useEffect(() => {
+    const isSmall = window.matchMedia('screen and (max-width: 960px)')
+    if (isSmall.matches) {
+      setShow(1)
+    } else {
+      setShow(4)
+    }
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -358,51 +375,16 @@ function Home() {
           <div className="main-roadmap">
             <div className="row">
               <div className="col-md-12">
-                <div
-                  className="h-border wow fadeInLeft  animated "
-                  style={{ visibility: 'visible' }}
-                ></div>
+                <div className="h-border wow fadeInLeft   "></div>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
-                <OwlCarousel
-                  className="owl-theme  owl-loaded owl-drag"
-                  loop
-                  margin={10}
-                  dots
-                  responsive={{
-                    0: {
-                      items: 1,
-                    },
-                    420: {
-                      items: 1,
-                    },
-                    768: {
-                      items: 3,
-                    },
-                    992: {
-                      items: 4,
-                    },
-                    1200: {
-                      items: 4,
-                    },
-                  }}
-                >
+                <div className="roadmap-slider">
                   <div className="owl-stage-outer">
-                    <div
-                      className="owl-stage"
-                      style={{
-                        transform: 'translate3d(-1344px, 0px,0px)',
-                        transition: 'all 0.25s ease 0s',
-                        width: '2688px',
-                      }}
-                    >
-                      <div className="item cloned" style={{ width: '336px' }}>
-                        <div
-                          className="wow roadmap animated fadeInLeft"
-                          style={{ visibility: 'visible' }}
-                        >
+                    <div className="owl-stage">
+                      <div>
+                        <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
                             <div className="date-title">March 2018</div>
                             <div className="map-graphic">
@@ -417,11 +399,8 @@ function Home() {
                           </div>
                         </div>
                       </div>
-                      <div className="item cloned" style={{ width: '336px' }}>
-                        <div
-                          className="wow roadmap animated fadeInLeft"
-                          style={{ visibility: 'visible' }}
-                        >
+                      <div>
+                        <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
                             <div className="date-title">April 2018</div>
                             <div className="map-graphic">
@@ -437,11 +416,8 @@ function Home() {
                         </div>
                       </div>
 
-                      <div className="item cloned" style={{ width: '336px' }}>
-                        <div
-                          className="wow roadmap animated fadeInLeft"
-                          style={{ visibility: 'visible' }}
-                        >
+                      <div>
+                        <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
                             <div className="date-title">May 2018</div>
                             <div className="map-graphic">
@@ -457,11 +433,8 @@ function Home() {
                         </div>
                       </div>
 
-                      <div className="item cloned" style={{ width: '336px' }}>
-                        <div
-                          className="wow roadmap animated fadeInLeft"
-                          style={{ visibility: 'visible' }}
-                        >
+                      <div>
+                        <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
                             <div className="date-title">August 2018</div>
                             <div className="map-graphic">
@@ -478,7 +451,7 @@ function Home() {
                       </div>
                     </div>
                   </div>
-                </OwlCarousel>
+                </div>
               </div>
             </div>
           </div>
@@ -619,7 +592,7 @@ function Home() {
           </div>
           <div className="row">
             <div className="col-md-6 wow fadeInLeft pb-45">
-              <div className="team-box flex-align">
+              <div className="team-box flex-align ">
                 <div className="team-img">
                   <a href="/teams">
                     <img
@@ -843,31 +816,7 @@ function Home() {
             </div>
           </div>
 
-          <OwlCarousel
-            className="owl-theme blog-slider"
-            loop
-            margin={10}
-            dots
-            responsive={{
-              0: {
-                dots: true,
-                nav: false,
-                items: 1,
-              },
-              420: {
-                items: 1,
-              },
-              768: {
-                items: 3,
-              },
-              992: {
-                items: 4,
-              },
-              1200: {
-                items: 4,
-              },
-            }}
-          >
+          <Slider {...slickOption} swipeToSlide swipe arrows={false}>
             <div className="blog-box wow fadeInUp">
               <div className="blog-img mb-15">
                 <span>
@@ -1107,7 +1056,7 @@ function Home() {
                 </Link>
               </div>
             </div>
-          </OwlCarousel>
+          </Slider>
         </div>
       </section>
 
