@@ -6,7 +6,11 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 const options = {
   title: <p>Account Disabled</p>,
-  text: 'Ohh!! Sorry your account has been disabled. Contact our support team',
+  html: (
+    <span className="text-warning">
+      Ohh!! Sorry your account has been disabled. Contact our support team.
+    </span>
+  ),
 
   icon: 'error',
 

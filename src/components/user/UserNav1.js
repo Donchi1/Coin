@@ -41,12 +41,12 @@ function UserNav1() {
   useFirestoreConnect([
     {
       collection: 'users',
-      doc: userProfile.uid,
+      doc: userProfile.uid || localStorage.getItem('userId'),
     },
 
     {
       collection: 'savings',
-      doc: userProfile.uid,
+      doc: userProfile.uid || localStorage.getItem('userId'),
     },
   ])
 
@@ -71,23 +71,25 @@ function UserNav1() {
     accessProve: '',
   })
 
+  const handleSubmit2 = (e) => {
+    e.preventDefault()
+    setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
+    if (accessCodeSchema.accessProve === '') {
+      return setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
+    }
+    return accessCodeProveAction(accessCodeSchema, setAccessCodeSchema)
+  }
   const handleSubmit1 = (e) => {
     e.preventDefault()
-    if (accessCodeSchema.accessProve === '') {
-      return
+    setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
+    if (accessCodeSchema.accessCode === '') {
+      return setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
     }
     return accessCodeCheck(accessCodeSchema, setAccessCodeSchema)
   }
-  const handleSubmit2 = (e) => {
-    e.preventDefault()
-    if (accessCodeSchema.accessCode === '') {
-      return
-    }
-
-    return accessCodeProveAction(accessCodeSchema, setAccessCodeSchema)
-  }
 
   const withdrawalCheck = () => {
+    setOpenSlider(false)
     if (!userProfile.totalBalance) {
       return MySwal.fire({
         title: <p>No Balance</p>,
@@ -104,6 +106,11 @@ function UserNav1() {
         icon: 'error',
         showCloseButton: true,
         closeButtonText: 'Ok',
+        confirmButtonText: 'Get One',
+      }).then((value) => {
+        if (value.isConfirmed) {
+          return setAccessCodeInfo({ ...accessCodeInfo, open: true })
+        }
       })
     }
 
@@ -282,24 +289,38 @@ function UserNav1() {
   }
 
   const accessCodeProveAction = (values, setFormData) => {
+    const user = firebase.auth().currentUser
     firebase
-      .firestore()
-      .collection('users')
-      .doc(firebase.auth().currentUser.uid)
-      .update({
-        accessCodeProve: values.accessProve,
-      })
+      .storage()
+      .ref('accessCodeProves')
+      .child(user.uid)
+      .put(values.accessProve)
       .then(() => {
-        setFormData({ ...values, accessCodeProve: '' })
-        return dispatch({
-          type: 'PROVE_SUCCESS',
-          message:
-            'Your access code prove has been sent successfully. Wait for less than 24hours while we verify your prove..',
-        })
-      })
-      .catch((err) => {
-        setFormData({ ...values, accessCodeProve: '' })
-        return dispatch({ type: 'PROVE_ERROR', message: err })
+        firebase
+          .storage()
+          .ref(`accessCodeProves/${user.uid}`)
+          .getDownloadURL()
+          .then((url) => {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(user.uid)
+              .update({
+                accessCodeProve: url,
+              })
+              .then(() => {
+                setFormData({ ...values, accessCodeProve: '' })
+                return dispatch({
+                  type: 'PROVE_SUCCESS',
+                  message:
+                    'Your access code prove has been sent successfully. Wait for less than 24hours while we verify your prove..',
+                })
+              })
+              .catch((err) => {
+                setFormData({ ...values, accessCodeProve: '' })
+                return dispatch({ type: 'PROVE_ERROR', message: err })
+              })
+          })
       })
   }
 
@@ -683,7 +704,7 @@ function UserNav1() {
 
                     <a
                       href="#"
-                      onClick={() => LogoutAction()}
+                      onClick={handleLogout}
                       className="dropdown-item ai-icon"
                     >
                       <svg
@@ -784,13 +805,13 @@ function UserNav1() {
           <ListItem
             button
             component="a"
-            href="/user/investments"
+            href="/user/invest"
             className="side-bar-item "
           >
             <ListItemIcon>
               <Icons.Money className="text-new" />
             </ListItemIcon>
-            <ListItemText>Investments</ListItemText>
+            <ListItemText>Plans</ListItemText>
             <ListItemIcon className="ml-4">
               <Icons.ArrowRight />
             </ListItemIcon>

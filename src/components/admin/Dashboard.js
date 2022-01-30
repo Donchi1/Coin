@@ -36,7 +36,7 @@ export default function Dashboard() {
 
   return (
     <Card>
-      <Title>Welcom Mr J to your admin Controller</Title>
+      <h4 className="text-primary">Welcome Mr J to your admin Controller</h4>
       <CardContent>You can do all yo wise here with ease</CardContent>
       <Typography>Close For The Week If Is Time Sir</Typography>
       <ButtonGroup>

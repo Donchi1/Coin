@@ -60,10 +60,14 @@ const MySideBar = (props) => {
 const MyAppBar = (props) => {
   const useAppbarStyles = makeStyles({
     headerWidth: {
-      height: '6vh',
+      height: '8vh',
+      paddingTop: 0,
+      position: 'absolute',
+      top: '-2px',
     },
   })
   const classes = useAppbarStyles()
+
   return <AppBar className={classes.headerWidth} {...props} />
 }
 

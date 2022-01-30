@@ -29,7 +29,7 @@ function Savings() {
     dateOfBirth: '',
     accountReason: '',
     idNumber: '',
-
+    occupation: '',
     amount: '',
     prove: '',
     PWC: '',
@@ -71,6 +71,7 @@ function Savings() {
     dateOfBirth,
     accountReason,
     idNumber,
+    occupation,
   } = savingInfo
 
   const handleSubmit = (e) => {
@@ -86,6 +87,7 @@ function Savings() {
       accountNumber === '' ||
       dateOfBirth === '' ||
       accountReason === '' ||
+      occupation === '' ||
       idNumber === '' ||
       idCardPhoto === ''
     ) {
@@ -236,6 +238,16 @@ function Savings() {
                       onChange={handleChange}
                     />
                   </Col>
+                  <Col className="mt-4">
+                    <Form.Control
+                      required
+                      type="text"
+                      value={savingInfo.occupation}
+                      name="occupation"
+                      placeholder="Your Occupation"
+                      onChange={handleChange}
+                    />
+                  </Col>
                 </Row>
                 <Row>
                   <Col className="mt-4">
@@ -281,7 +293,7 @@ function Savings() {
                   <Row className="my-4 ">
                     <Button
                       onClick={() =>
-                        window.location.assign('/user/savings/dashboard')
+                        window.location.assign('/savings/dashboard')
                       }
                       type="submit"
                       className="w-75 mx-auto bg-secondary"

@@ -25,11 +25,12 @@ function CostomMenu({ onMenuClick, logout }) {
         />
       ))}
       <MenuItemLink
-        to="/users/chats"
+        to="#"
         primaryText="Chat"
         leftIcon={<LabelIcon />}
         onClick={onMenuClick}
         sidebarIsOpen={open}
+        onClickCapture={() => window.location.assign('/admin/chats')}
       />
       {isXSmall && logout}
     </div>

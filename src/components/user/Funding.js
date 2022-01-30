@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Form, Modal, Button } from 'react-bootstrap'
 import * as Icons from '@material-ui/icons'
 
-import { useFirebase } from 'react-redux-firebase'
+import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
 import { useDispatch, useSelector } from 'react-redux'
 
 import UserNav1 from './UserNav1'
@@ -23,20 +23,25 @@ function Funding() {
   const dispatch = useDispatch()
 
   const { push } = useHistory()
+  const userData = useSelector((state) => state.firebase.profile)
+
+  useFirestoreConnect({
+    collection: 'savings',
+    doc: userData.uid || localStorage.getItem('userId'),
+  })
 
   const { fundingData, savingWithdrawalData } = useSelector(
     (state) => state.projectReducer,
   )
   const dataHistory = useSelector((state) => state.projectReducer)
   const reducerData = useSelector((state) => state.projectReducer)
-  const userData = useSelector((state) => state.firebase.profile)
   const savings = useSelector((state) => state.firestore.ordered.savings)
+
   const KEY = '18704fddee12def29f6ce4cc2ae8b8247c6612b36e716e47e54f315152bfa806'
 
-  const savingsData = savings.map((each) => each)
   const [emptyBal, setEmptyBal] = useState(false)
-  console.log(savingsData)
-  console.log(savings)
+  const savingsData = savings?.map((each) => each)
+
   useEffect(() => {
     firebase
       .firestore()
@@ -170,7 +175,7 @@ function Funding() {
   if (reducerData.openSuccess) {
     MySwal.fire(successOptions).then(() => {
       dispatch({ type: 'PWC_SUCCESS', openSuccess: false })
-      push('/user/savings/withdrawals')
+      push('/savings/withdrawals')
     })
   }
   if (reducerData.openFundingSuccess) {
@@ -261,7 +266,7 @@ function Funding() {
     if (initialNumber <= 500 && initialNumber > 200) {
       return 50
     }
-    if (initialNumber <= 1000 && initialNumber < 500) {
+    if (initialNumber <= 1000 && initialNumber > 500) {
       return 70
     }
     if (initialNumber >= 1000) {

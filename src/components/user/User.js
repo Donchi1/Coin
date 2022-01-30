@@ -24,9 +24,12 @@ function User() {
   const dataHistory = useSelector((state) => state.projectReducer)
   const savings = useSelector((state) => state.firestore.ordered.savings)
 
-  useFirestoreConnect([{ collection: 'savings' }])
+  useFirestoreConnect({
+    collection: 'savings',
+    doc: userProfile.uid || localStorage.getItem('userId'),
+  })
 
-  const savingsData = savings && savings.map((each) => each)
+  const savingsData = savings?.map((each) => each)
 
   const [btcValue, setBtcValue] = useState({
     totalBalance: Number('0000'),
@@ -221,7 +224,7 @@ function User() {
             userProfile.initialDeposite ? userProfile.initialDeposite : '0',
           ) * BTC
         const bonusBtc =
-          Number(userProfile.bonus ? userProfile.bonus : '10') * BTC
+          Number(userProfile.bonus ? userProfile.bonus : '0') * BTC
         const savingBtc =
           Number(savingsData.total ? savingsData.total : '0') * BTC
         setBtcValue({
@@ -1324,7 +1327,7 @@ function User() {
                             <h2 className="num-text text-black mb-5 font-w600">
                               $
                               {userProfile.bonus
-                                ? Number(userProfile.bonus) + 2
+                                ? Number(userProfile.bonus)
                                 : '0000'}
                             </h2>
                           </div>

@@ -45,7 +45,7 @@ function Login() {
   const dispatch = useDispatch()
   const { push } = useHistory()
 
-  const { loginError, loginSuccess } = useSelector((state) => state.authReducer)
+  const { loginError } = useSelector((state) => state.authReducer)
 
   const emptyOptions = {
     title: <p>Required</p>,

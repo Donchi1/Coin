@@ -32,7 +32,7 @@ function Profile() {
     firstname: '',
     lastname: '',
     password: '',
-    email: '',
+    email: userProfile.email,
     phone: '',
     country: '',
     img: '',

@@ -481,6 +481,7 @@ export const savingAction = (
               profit: '5',
               total: '0',
               income: '0',
+              occupation: values.occupation,
               personalWithdrawalCode: values.PWC,
               id: firebase.auth().currentUser.uid,
               withdrawalAuthorization: '',

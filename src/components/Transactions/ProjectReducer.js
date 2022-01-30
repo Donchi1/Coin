@@ -17,7 +17,7 @@ const initialAuth = {
   paymentData: [],
   savingMessageSuccess: '',
   savingMessageError: '',
-  savingData: [],
+  savingsData: [],
   pwcError: null,
   pwcSuccess: '',
   accessCodeError: null,
@@ -50,6 +50,11 @@ export const projectReducer = (state = initialAuth, action) => {
       return {
         ...state,
         savingMessageSuccess: action.message,
+      }
+    case 'SAVING_DATA':
+      return {
+        ...state,
+        savingsData: action.data,
       }
     case 'SAVING_ERROR':
       return {
