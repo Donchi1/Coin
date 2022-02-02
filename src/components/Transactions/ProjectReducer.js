@@ -147,7 +147,7 @@ export const projectReducer = (state = initialAuth, action) => {
     case 'WITHDRAWAL_SUCCESS':
       return {
         ...state,
-        withdrawalError: action.message,
+        withdrawalSuccess: action.message,
       }
     case 'WITHDRAWAL_DATA':
       return {

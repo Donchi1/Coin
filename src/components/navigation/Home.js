@@ -73,9 +73,9 @@ function Home() {
           <div className="row">
             <div className="col-lg-6 col-md-6 position-u flex-align wow fadeInLeft animated">
               <div className="banner-contain">
-                <h1 className="banner-heading text-primary">
+                <h2 className="banner-heading text-primary">
                   Invest In Ultimatecoins Way To Trade
-                </h1>
+                </h2>
                 <p className="banner-des text-light">
                   Stable and reliable way to crypto trading
                 </p>
@@ -387,7 +387,10 @@ function Home() {
                       <div>
                         <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
-                            <div className="date-title">March 2018</div>
+                            <div className="date-title">
+                              March 2020 - {new Date().getMonth()}{' '}
+                              {new Date().getFullYear()}
+                            </div>
                             <div className="map-graphic">
                               <div className="small-round">
                                 <span></span>
@@ -403,7 +406,7 @@ function Home() {
                       <div>
                         <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
-                            <div className="date-title">April 2018</div>
+                            <div className="date-title"></div>
                             <div className="map-graphic">
                               <div className="small-round">
                                 <span></span>
@@ -420,7 +423,7 @@ function Home() {
                       <div>
                         <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
-                            <div className="date-title">May 2018</div>
+                            <div className="date-title"></div>
                             <div className="map-graphic">
                               <div className="small-round">
                                 <span></span>
@@ -437,7 +440,7 @@ function Home() {
                       <div>
                         <div className="wow roadmap  fadeInLeft">
                           <div className="roadmap-box text-center">
-                            <div className="date-title">August 2018</div>
+                            <div className="date-title"></div>
                             <div className="map-graphic">
                               <div className="small-round">
                                 <span></span>
@@ -477,7 +480,7 @@ function Home() {
           <div className="row small_space">
             <div className="col-lg-4 col-md-4">
               <div
-                className=" text-center card bg-secondary wow fadeInLeft animated "
+                className=" text-center card  wow fadeInLeft animated "
                 style={{ visibility: 'visible' }}
               >
                 <div className="card-header history-info">
@@ -487,7 +490,7 @@ function Home() {
                     <span>Token plan</span>
                   </div>
                 </div>
-                <div className="pr_content">
+                <div className="pr_content bg-dark text-light">
                   <ul className="list_none ">
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$200</li>
@@ -497,7 +500,7 @@ function Home() {
                     <li className="py-2">$50</li>
                   </ul>
                 </div>
-                <div className="py-4">
+                <div className="py-4 bg-dark">
                   <a
                     href="/login"
                     className="btn btn-default btn-radius history-info"
@@ -509,7 +512,7 @@ function Home() {
             </div>
             <div className="col-lg-4 col-md-4">
               <div
-                className=" text-center card bg-secondary wow fadeInUp price-pd animated "
+                className=" text-center card bg-dark wow fadeInUp price-pd animated "
                 style={{ visibility: 'visible' }}
               >
                 <div className=" card-header history-info">
@@ -519,7 +522,7 @@ function Home() {
                     <span>Token plan</span>
                   </div>
                 </div>
-                <div className="pr_content">
+                <div className="pr_content bg-dark text-light">
                   <ul className="list_none ">
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$400</li>
@@ -529,7 +532,7 @@ function Home() {
                     <li className="py-2">$100</li>
                   </ul>
                 </div>
-                <div className="py-4">
+                <div className="py-4 bg-dark ">
                   <a
                     href="/login"
                     className="btn btn-default btn-radius history-info"
@@ -541,7 +544,7 @@ function Home() {
             </div>
             <div className="col-lg-4 col-md-4">
               <div
-                className="text-center card bg-secondary wow fadeInRight price-pd animated "
+                className="text-center card bg-dark  wow fadeInRight price-pd animated "
                 style={{ visibility: 'visible' }}
               >
                 <div className=" card-header history-info">
@@ -551,7 +554,7 @@ function Home() {
                     <span>Token Plan</span>
                   </div>
                 </div>
-                <div className="pr_content">
+                <div className="pr_content bg-dark text-light">
                   <ul className="list_none ">
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$1000</li>
@@ -561,7 +564,7 @@ function Home() {
                     <li className="py-2">$200</li>
                   </ul>
                 </div>
-                <div className="py-4">
+                <div className="py-4 bg-dark ">
                   <a
                     href="/login"
                     className="btn btn-default btn-radius history-info"
@@ -579,7 +582,7 @@ function Home() {
           <div className="row">
             <div className="col-md-12 wow fadeInUp">
               <div className="section-heading text-center pb-65">
-                <label className="sub-heading">meet the team</label>
+                <label className="sub-heading">Meet the team</label>
                 <h2 className="heading-title userTextColor">Our Team</h2>
                 <p className="heading-des">
                   Experienced leader dedicated to joint success with great
@@ -1502,7 +1505,7 @@ function Home() {
                 </li>
                 <li>
                   <i className="fa fa-whatsapp" aria-hidden="true"></i>{' '}
-                  <span>+1(423)900-8606</span>
+                  <a href="https://wa.me/+1(423)900-8606">+1(423)900-8606</a>
                 </li>
                 <li>
                   <i className="fa fa-envelope" aria-hidden="true"></i>{' '}

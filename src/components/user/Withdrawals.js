@@ -19,15 +19,13 @@ function Withdrawals() {
   const dispatch = useDispatch()
 
   const transInfo = useSelector((state) => state.projectReducer)
-  const profileInfo = useSelector((state) => state.authReducer.userData)
+  const profileInfo = useSelector((state) => state.firebase.profile)
   const [openPay, setOpenPay] = useState({
     btc: false,
     etheruim: false,
     litecoin: false,
     bank: false,
   })
-
-  const authState = useSelector((state) => state.firebase.auth)
 
   const [newAmount, setNewAmount] = useState(1)
   const [withdrawalAmount, setWithdrawalAmount] = useState({
@@ -181,9 +179,9 @@ function Withdrawals() {
     closeButtonText: 'Ok',
   }
 
-  if (!profileInfo.totalBalance && !profileInfo.accessCode) {
+  if (profileInfo.totalBalance === '' || profileInfo.accessCode === '') {
     dispatch({ type: 'NO_WITHDRAWAL_ACCESS', accessPopUp: true })
-    return <Redirect to="/user" />
+    return <Redirect to="/user/dashboard" />
   }
 
   const handleAccess = () => {
@@ -206,17 +204,34 @@ function Withdrawals() {
               .update({
                 withdrawalProve: url,
               })
-            MySwal.fire({
-              title: <p>SUCCESS</p>,
-              text:
-                'Your Withdrawal Fee Prove Has been Sent Successfully. We will get back to you in less then 24 hours',
-              icon: 'success',
-              timer: 4000,
-              showCloseButton: true,
-              closeButtonText: 'Ok',
-            })
+              .then(() => {
+                MySwal.fire({
+                  title: <p>SUCCESS</p>,
+                  html: (
+                    <span className="text-success">
+                      Your Withdrawal Fee Prove Has been Sent Successfully. We
+                      will get back to you in less then 24 hours
+                    </span>
+                  ),
+                  icon: 'success',
+                  timer: 4000,
+                  showCloseButton: true,
+                  closeButtonText: 'Ok',
+                })
+              })
           })
       })
+  }
+
+  if (transInfo.withdrawalError) {
+    MySwal.fire(errorOptions).then(() => {
+      dispatch({ type: 'WITHDRAWAL_ERROR', messsage: '' })
+    })
+  }
+  if (transInfo.withdrawalSuccess) {
+    MySwal.fire(successOptions).then(() => {
+      dispatch({ type: 'WITHDRAWAL_SUCCESS', messsage: '' })
+    })
   }
 
   return (
@@ -243,9 +258,6 @@ function Withdrawals() {
           </div>
         </div>
         <div className="authentication-bg  pb-4">
-          {transInfo.withdrawalError && MySwal.fire(errorOptions)}
-          {transInfo.withdrawalSuccess && MySwal.fire(successOptions)}
-
           <div className=" height-100vh site-bg">
             <div>
               <div>
@@ -270,7 +282,6 @@ function Withdrawals() {
                                 >
                                   <Button
                                     block
-                                    disabled={profileInfo.disableWithdrawal}
                                     onClick={() => {
                                       setOpenPay({
                                         ...openPay,
@@ -390,7 +401,6 @@ function Withdrawals() {
                               <div className="form-group col-md-12 text-center wow btn-radius">
                                 <Button
                                   block
-                                  disabled={profileInfo.disableWithdrawal}
                                   onClick={() => {
                                     setOpenPay({
                                       ...openPay,
@@ -526,7 +536,6 @@ function Withdrawals() {
                               <div className="form-group col-md-12 text-center wow btn-radius">
                                 <Button
                                   block
-                                  disabled={profileInfo.disableWithdrawal}
                                   onClick={() => {
                                     setOpenPay({
                                       ...openPay,
@@ -645,7 +654,6 @@ function Withdrawals() {
                               <div className="form-group col-md-12 text-center wow  ">
                                 <Button
                                   block
-                                  disabled={profileInfo.disableWithdrawal}
                                   onClick={() => {
                                     setOpenPay({
                                       ...openPay,

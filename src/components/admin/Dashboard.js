@@ -5,8 +5,12 @@ import Typography from '@material-ui/core/Typography'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 import CardContent from '@material-ui/core/CardContent'
-import { Title } from 'react-admin'
+
 import { useFirebase } from 'react-redux-firebase'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 export default function Dashboard() {
   const firebase = useFirebase()
@@ -17,7 +21,19 @@ export default function Dashboard() {
       .get()
       .then((users) => {
         users.forEach((user) => {
-          data.doc(user.id).update({ closedForTheWeek: true })
+          data
+            .doc(user.id)
+            .update({ closedForTheWeek: true })
+            .then(() => {
+              return MySwal.fire({
+                title: <p>Success</p>,
+                text: 'Successful Closed for the week',
+                icon: 'success',
+                timer: '5000',
+                showCloseButton: true,
+                closeButtonText: 'OK',
+              })
+            })
         })
       })
   }
@@ -29,7 +45,19 @@ export default function Dashboard() {
       .get()
       .then((users) => {
         users.forEach((user) => {
-          data.doc(user.id).update({ closedForTheWeek: false })
+          data
+            .doc(user.id)
+            .update({ closedForTheWeek: false })
+            .the(() => {
+              return MySwal.fire({
+                title: <p>Success</p>,
+                text: 'Successful opened for the week',
+                icon: 'success',
+                timer: '5000',
+                showCloseButton: true,
+                closeButtonText: 'OK',
+              })
+            })
         })
       })
   }

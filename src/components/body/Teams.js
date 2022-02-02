@@ -49,7 +49,7 @@ function Teams() {
                 <div className="team-img">
                   <a href="clone.html">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-1.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-1.jpg"
                       alt="team member"
                     />
                   </a>
@@ -90,7 +90,7 @@ function Teams() {
                 <div className="team-img">
                   <Link to="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-2.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-2.jpg"
                       alt="team member"
                     />
                   </Link>
@@ -129,7 +129,7 @@ function Teams() {
                 <div className="team-img">
                   <Link to="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-3.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-3.jpg"
                       alt="team member"
                     />
                   </Link>
@@ -168,7 +168,7 @@ function Teams() {
                 <div className="team-img">
                   <Link to="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-4.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-4.jpg"
                       alt="team member"
                     />
                   </Link>

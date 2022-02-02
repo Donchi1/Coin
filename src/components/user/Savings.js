@@ -32,6 +32,10 @@ function Savings() {
     occupation: '',
     amount: '',
     prove: '',
+    nFirstname: '',
+    nLastname: '',
+    nEmail: '',
+    nPhone: '',
     PWC: '',
     isSubmitting: false,
   })
@@ -72,6 +76,10 @@ function Savings() {
     accountReason,
     idNumber,
     occupation,
+    nFirstname,
+    nLastname,
+    nEmail,
+    nPhone,
   } = savingInfo
 
   const handleSubmit = (e) => {
@@ -89,7 +97,11 @@ function Savings() {
       accountReason === '' ||
       occupation === '' ||
       idNumber === '' ||
-      idCardPhoto === ''
+      idCardPhoto === '' ||
+      nFirstname === '' ||
+      nLastname === '' ||
+      nEmail === '' ||
+      nPhone === ''
     ) {
       setSavingInfo({ ...savingInfo, isSubmitting: false })
       return MySwal.fire(emptyOptions)
@@ -245,6 +257,51 @@ function Savings() {
                       value={savingInfo.occupation}
                       name="occupation"
                       placeholder="Your Occupation"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                </Row>
+                <h6 className="text-center mt-2">Next Of Kings</h6>
+                <Row>
+                  <Col>
+                    <Form.Control
+                      required
+                      type="text"
+                      value={savingInfo.nFirstname}
+                      name="nFirstname"
+                      placeholder="nFirstname"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      required
+                      type="text"
+                      value={savingInfo.nLastname}
+                      name="nLastname"
+                      placeholder="nLastname"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="mt-4">
+                    <Form.Control
+                      required
+                      type="text"
+                      value={savingInfo.nPhone}
+                      name="nPhone"
+                      placeholder="nPhone"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                  <Col className="mt-4">
+                    <Form.Control
+                      required
+                      type="email"
+                      value={savingInfo.nEmail}
+                      name="nEmail"
+                      placeholder="nEmail"
                       onChange={handleChange}
                     />
                   </Col>

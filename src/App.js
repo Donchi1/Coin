@@ -62,8 +62,8 @@ function App() {
     }
     if (
       isLoaded(authState) &&
-      userInfo.verificationCode === '' &&
-      !isEmpty(authState)
+      !isEmpty(authState) &&
+      !!userInfo.verificationCode
     ) {
       return <Redirect to="/verification/login" />
     }

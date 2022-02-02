@@ -94,20 +94,29 @@ function Profile() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setUserData({ ...userData, isSubmitting: true })
-    if (
-      firstname === '' ||
-      lastname === '' ||
-      password === '' ||
-      phone === '' ||
-      country === '' ||
-      img === '' ||
-      oldPassword === ''
-    ) {
-      setUserData({ ...userData, isSubmitting: false })
-      return MySwal.fire(requiredOption)
+    if (userData.email) {
+      firebase
+        .auth()
+        .currentUser.updateEmail(userData.email)
+        .then(() => {
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(firebase.auth().currentUser.uid)
+            .update({ email: userData.email })
+            .then(() => {
+              setUserData({ ...userData, isSubmitting: false })
+              return updateProfileAction(
+                userData,
+                firebase,
+                dispatch,
+                setUserData,
+              )
+            })
+        })
     }
 
-    updateProfileAction(userData, firebase, dispatch, setUserData)
+    return updateProfileAction(userData, firebase, dispatch, setUserData)
   }
 
   const handlePasswordUpdate = (e) => {
@@ -265,13 +274,12 @@ function Profile() {
                                 }
                               />
                             </div>
-                            <div className="form-group col-md-12 animation">
+                            <div className="form-group col-md-12 animation ">
                               <Form.Control
                                 type="email"
                                 name="email"
                                 id="email"
                                 size="sm"
-                                disabled
                                 placeholder="Enter Email "
                                 value={email}
                                 onChange={(e) =>
@@ -340,7 +348,7 @@ function Profile() {
                           <h3 className="m-b-0">
                             ${userProfile.totalBalance || '0000'}
                           </h3>
-                          <span>Total Investment</span>
+                          <span>Total Balance</span>
                         </div>
                         <div className="col">
                           <h3 className="m-b-0">

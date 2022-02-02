@@ -31,7 +31,6 @@ function UserNav1() {
 
   const [openSlider, setOpenSlider] = useState(false)
 
-  const accessCodeData = useSelector((state) => state.projectReducer)
   const notificationInDatabase = useSelector(
     (state) => state.projectReducer.notifications,
   )
@@ -79,34 +78,45 @@ function UserNav1() {
     }
     return accessCodeProveAction(accessCodeSchema, setAccessCodeSchema)
   }
-  const handleSubmit1 = (e) => {
-    e.preventDefault()
-    setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
-    if (accessCodeSchema.accessCode === '') {
-      return setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
-    }
-    return accessCodeCheck(accessCodeSchema, setAccessCodeSchema)
-  }
 
   const withdrawalCheck = () => {
     setOpenSlider(false)
+
     if (!userProfile.totalBalance) {
       return MySwal.fire({
         title: <p>No Balance</p>,
-        text: 'No or Low balance for withdrawal',
+        html: <span className="text-warning">No balance for withdrawal</span>,
         icon: 'error',
         showCloseButton: true,
         closeButtonText: 'Ok',
       })
     }
-    if (!userProfile.accessCode) {
+    if (Number(userProfile.totalBalance) <= 5000) {
       return MySwal.fire({
-        title: <p>No Access Code</p>,
-        text: 'No access code found for withdrawal',
+        title: <p>Low Balance</p>,
+        html: <span className="text-warning">Low balance for withdrawal</span>,
         icon: 'error',
         showCloseButton: true,
-        closeButtonText: 'Ok',
-        confirmButtonText: 'Get One',
+
+        footer: (
+          <p className="text-light">
+            You must have a minimum of 5000 dollars balance before withdrawal
+          </p>
+        ),
+      })
+    }
+    if (userProfile.accessCode === '') {
+      return MySwal.fire({
+        title: <p>Access Code Required</p>,
+        html: (
+          <span className="text-warning">
+            Access code required to further your withdrawal
+          </span>
+        ),
+        icon: 'error',
+        showCloseButton: true,
+
+        confirmButtonText: 'Check Or Get One',
       }).then((value) => {
         if (value.isConfirmed) {
           return setAccessCodeInfo({ ...accessCodeInfo, open: true })
@@ -125,7 +135,7 @@ function UserNav1() {
         if (jQuery(this).hasClass('active')) {
           jQuery('body').attr('data-theme-version', 'dark')
         } else {
-          jQuery('body').attr('data-theme-version', 'dark')
+          jQuery('body').attr('data-theme-version', 'light')
         }
       })
     }
@@ -185,10 +195,10 @@ function UserNav1() {
   useEffect(() => {
     if (userProfile.accessCode === 'weekly') {
       const weeklyToken = JWT.sign(
-        'weeklyJwt',
+        { value: 'weeklyJwt' },
         process.env.REACT_APP_JWT_TOKEN,
         {
-          expiresIn: '7d',
+          expiresIn: '7days',
         },
       )
       setAccessCodeInfo({
@@ -199,9 +209,11 @@ function UserNav1() {
     }
     if (userProfile.accessCode === 'monthly') {
       const monthlyToken = JWT.sign(
-        'monthlyJwt',
+        { value: 'monthlyJwt' },
         process.env.REACT_APP_JWT_TOKEN,
-        { expiresIn: '30d' },
+        {
+          expiresIn: '30days',
+        },
       )
       setAccessCodeInfo({
         ...accessCodeInfo,
@@ -211,10 +223,10 @@ function UserNav1() {
     }
     if (userProfile.accessCode === 'yearly') {
       const yearlyToken = JWT.sign(
-        'yearlyJwt',
+        { value: 'yearlyJwt' },
         process.env.REACT_APP_JWT_TOKEN,
         {
-          expiresIn: '365d',
+          expiresIn: '7days',
         },
       )
       setAccessCodeInfo({
@@ -223,69 +235,88 @@ function UserNav1() {
         open: false,
       })
     }
-  }, [])
+    if (userProfile.accessCode === '') {
+      const Token = JWT.sign(
+        { value: 'noneJwt' },
+        process.env.REACT_APP_JWT_TOKEN,
+        {
+          expiresIn: '1m',
+        },
+      )
+      setAccessCodeInfo({
+        ...accessCodeInfo,
+        accessCode: Token,
+        open: false,
+      })
+    }
+  }, [userProfile.accessCode])
+  const handleSubmit1 = (e) => {
+    e.preventDefault()
+    setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
+    if (accessCodeInfo.accessCode === '') {
+      MySwal.fire({
+        title: <p>No Access</p>,
+        html: <span className="text-warning">Access Code Required</span>,
+        showCloseButton: true,
+      })
+      return setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
+    }
+    return accessCodeCheck()
+  }
 
-  const accessAction = (values, setValues, status) => {
+  const accessCodeCheck = () => {
+    JWT.verify(
+      accessCodeInfo.accessCode,
+      process.env.REACT_APP_JWT_TOKEN,
+      (error, data) => {
+        if (error) {
+          return accessAction('notVerified', error.expiredAt)
+        }
+        return accessAction('verified')
+      },
+    )
+  }
+
+  const accessAction = (status, date) => {
     if (status === 'notVerified') {
       return new Promise((resolve, reject) => {
-        setTimeout(reject('Expired or Invalid Access Code'), 2000)
+        setTimeout(reject('Expired or Invalid Access Code'), 5000)
       }).catch((e) => {
-        dispatch({ type: 'ACCESS_ERROR', message: e })
-        setValues({ ...values, accessCode: '' })
+        setAccessCodeInfo({
+          ...accessCodeInfo,
+          isSubmitting: false,
+        })
+        return MySwal.fire({
+          title: <p>Access Code Error</p>,
+          html: <span className="text-warning">{e}</span>,
+          icon: 'error',
+          showCloseButton: true,
+          closeButtonText: 'Ok',
+          footer: <p>Access code expired at {date}</p>,
+        })
       })
     }
     if (status === 'verified') {
       return new Promise((resolve, reject) => {
-        setTimeout(resolve('Access Code Success'), 2000)
+        setTimeout(resolve('Access Code Success'), 4000)
       }).then((message) => {
-        dispatch({ type: 'ACCESS_SUCCESS', message })
-        setValues({ ...values, accessCode: '' })
-        push('/user/withdrawal')
+        setAccessCodeInfo({
+          ...accessCodeInfo,
+
+          isSubmitting: false,
+        })
+        MySwal.fire({
+          title: <p>Access Success</p>,
+          html: <span className="text-success">{message}</span>,
+          icon: 'success',
+          timer: 4000,
+          showCloseButton: true,
+          closeButtonText: 'Ok',
+        }).then(() => {
+          return window.location.assign('/user/withdrawals')
+        })
       })
     }
-  }
-
-  const accessCodeCheck = async (value, setValues) => {
-    const verified = await JWT.verify(
-      accessCodeInfo.accessCode,
-      process.env.REACT_APP_JWT_TOKEN,
-    )
-    if (!verified) {
-      return accessAction(value, setValues, 'notVerified')
-    }
-    return accessAction(value, setValues, 'verified')
-  }
-
-  const errorOptions = {
-    title: <p>Access Code Error</p>,
-    text: accessCodeData.accessCodeError,
-    icon: 'error',
-    showCloseButton: true,
-    closeButtonText: 'Ok',
-  }
-  const successOptions = {
-    title: <p>Access Success</p>,
-    text: accessCodeData.accessCodeSuccess,
-    icon: 'success',
-    timer: 3000,
-    showCloseButton: true,
-    closeButtonText: 'Ok',
-  }
-  const accessProveSuccessOptions = {
-    title: <p>Access prove</p>,
-    text: accessCodeData.accessCodeProveSuccess,
-    icon: 'success',
-    timer: 3000,
-    showCloseButton: true,
-    closeButtonText: 'Ok',
-  }
-  const accessProveErrorOptions = {
-    title: <p>Access prove Error</p>,
-    text: accessCodeData.accessCodeProveError,
-    icon: 'error',
-    timer: 3000,
-    showCloseButton: true,
-    closeButtonText: 'Ok',
   }
 
   const accessCodeProveAction = (values, setFormData) => {
@@ -310,15 +341,31 @@ function UserNav1() {
               })
               .then(() => {
                 setFormData({ ...values, accessCodeProve: '' })
-                return dispatch({
-                  type: 'PROVE_SUCCESS',
-                  message:
-                    'Your access code prove has been sent successfully. Wait for less than 24hours while we verify your prove..',
+                return MySwal.fire({
+                  title: <p>Access prove success</p>,
+                  html: (
+                    <span>
+                      {' '}
+                      Your access code prove has been sent successfully. Wait
+                      for less than 24hours while we verify your prove..
+                    </span>
+                  ),
+                  icon: 'success',
+                  timer: 3000,
+                  showCloseButton: true,
+                  closeButtonText: 'Ok',
                 })
               })
               .catch((err) => {
                 setFormData({ ...values, accessCodeProve: '' })
-                return dispatch({ type: 'PROVE_ERROR', message: err })
+                return MySwal.fire({
+                  title: <p>Access prove error</p>,
+                  html: <span>{err}</span>,
+                  icon: 'error',
+                  timer: 3000,
+                  showCloseButton: true,
+                  closeButtonText: 'Ok',
+                })
               })
           })
       })
@@ -327,13 +374,6 @@ function UserNav1() {
   return (
     <>
       <>
-        {accessCodeData.accessCodeError && MySwal.fire(errorOptions)}
-        {accessCodeData.accessCodeSuccess && MySwal.fire(successOptions)}
-        {accessCodeData.accessCodeProveSuccess &&
-          MySwal.fire(accessProveSuccessOptions)}
-        {accessCodeData.accessCodeProveError &&
-          MySwal.fire(accessProveErrorOptions)}
-
         <Modal
           show={accessCodeInfo.open}
           centered
@@ -355,12 +395,12 @@ function UserNav1() {
                 required
                 placeholder="Enter Access Code"
                 onChange={(e) =>
-                  setAccessCodeSchema({
-                    ...accessCodeSchema,
+                  setAccessCodeInfo({
+                    ...accessCodeInfo,
                     accessCode: e.target.value,
                   })
                 }
-                value={accessCodeSchema.accessCode}
+                value={accessCodeInfo.accessCode}
               />
 
               <h6 className="text-dark text-center py-4">Access Code Prices</h6>
@@ -457,7 +497,7 @@ function UserNav1() {
         </Modal.Body>
       </Modal>
       <div className="nav-header">
-        <a href="/user" className="brand-logo">
+        <a href="/" className="brand-logo">
           <svg
             className="logo-abbr"
             width="50"
@@ -748,7 +788,10 @@ function UserNav1() {
         </div>
       </div>
       <Drawer open={openSlider} onClose={() => setOpenSlider(false)}>
-        <List>
+        <List
+          className=" text-light h-100"
+          style={{ backgroundColor: '#3B3363' }}
+        >
           <div className="text-center " style={{ position: 'relative' }}>
             <div className="main-profile">
               <div className="image-bx">
@@ -774,14 +817,14 @@ function UserNav1() {
                   <span className="line"></span>
                 </div>
               </div>
-              <h5 className="name">
+              <h5 className="name mt-1">
                 <span className="font-w400">Hello,</span>{' '}
                 {userProfile?.firstname || 'John Doe'}
               </h5>
               <p className="email">
                 {userProfile?.email || 'marquezzzz@mail.com'}
+                <p>${userProfile?.totalBalance || '0000'}</p>
               </p>
-              <p className="email">${userProfile?.totalBalance || '0000'}</p>
             </div>
           </div>
           <Divider />
@@ -889,7 +932,7 @@ function UserNav1() {
           </ListItem>
         </List>
 
-        <List>
+        <List className=" text-light" style={{ backgroundColor: '#3B3363' }}>
           <ListItem
             button
             component="a"
@@ -907,8 +950,8 @@ function UserNav1() {
           </ListItem>
         </List>
 
-        <List>
-          <div className="copyright">
+        <List className=" text-light " style={{ backgroundColor: '#3B3363' }}>
+          <div className="copyright mx-2">
             <p>
               <strong>Ultimatecoins Dashboard</strong> ©{' '}
               {new Date().getFullYear()} All Rights Reserved
@@ -937,14 +980,14 @@ function UserNav1() {
             <p className="email">
               {userProfile?.email || 'marquezzzz@mail.com'}
             </p>
-            <p className="email">${userProfile?.totalBalance || '0000'}</p>
+            <p className="email ">${userProfile?.totalBalance || '0000'}</p>
           </div>
           <ul className="metismenu" id="menu">
             <li className="nav-label first">Main Menu</li>
             <li>
               <a
                 className="has-arrow ai-icon"
-                href="/user"
+                href="/user/dashboard"
                 aria-expanded="false"
               >
                 <Icons.Home />

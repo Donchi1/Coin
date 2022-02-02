@@ -203,50 +203,59 @@ export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
                   oldPassword: '',
                   isSubmitting: false,
                 })
-                return axios
-                  .post(`${process.env.REACT_APP_URL}/api/profileUpdate`)
-                  .then((res) => {
-                    firebase
-                      .firestore()
-                      .collection('notification')
-                      .doc(uid)
-                      .set({
-                        user: profile.firstname,
-                        message: 'You have successfully updated your profile',
-                        id: uid,
-                        date: firebase.firestore.FieldValue.serverTimestamp(),
-                      })
+                firebase
+                  .firestore()
+                  .collection('notifications')
+                  .doc(uid)
+                  .set({
+                    user: profile.firstname,
+                    message: 'You have successfully updated your profile',
+                    id: uid,
+                    date: firebase.firestore.FieldValue.serverTimestamp(),
+                  })
+                  .then(() => {
+                    //return axios
+                    //  .post(
+                    //    `${process.env.REACT_APP_URL}/api/profileUpdate`,
+                    //    firebase.auth().currentUser.email,
+                    //  )
+                    //  .then((res) => {
+                    //    console.log(res)
+                    //  })
                   })
               }),
           )
-      }
-      dispatch({
-        type: 'PROFILE_UPLOAD_SUCCESS',
-        message: 'Profile Successfully Updated',
-      })
-
-      return axios
-        .post(`${process.env.REACT_APP_URL}/api/profileUpdate`)
-        .then((res) => {
-          firebase.firestore().collection('notification').doc(uid).set({
-            user: profile.firstname,
-            message: 'You have successfully updated your profile',
-            id: uid,
-            date: firebase.firestore.FieldValue.serverTimestamp(),
-          })
-          setForm({
-            ...profile,
-            firstname: '',
-            lastname: '',
-            password: '',
-            email: '',
-            phone: '',
-            country: '',
-            img: '',
-            oldPassword: '',
-            isSubmitting: false,
-          })
+      } else {
+        dispatch({
+          type: 'PROFILE_UPLOAD_SUCCESS',
+          message: 'Profile Successfully Updated',
         })
+
+        firebase.firestore().collection('notification').doc(uid).set({
+          user: profile.firstname,
+          message: 'You have successfully updated your profile',
+          id: uid,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+        return setForm({
+          ...profile,
+          firstname: '',
+          lastname: '',
+          password: '',
+          email: '',
+          phone: '',
+          country: '',
+          img: '',
+          oldPassword: '',
+          isSubmitting: false,
+        })
+        //return axios
+        //  .post(
+        //    `${process.env.REACT_APP_URL}/api/profileUpdate`,
+        //    firebase.auth().currentUser.uid,
+        //  )
+        //  .then((res) => {})
+      }
     })
     .catch(() => {
       dispatch({ type: 'UPLOAD_ERROR' })
@@ -276,17 +285,17 @@ export const passwordUpdate = (values, setForm, dispatch, firebase, axios) => {
         message: 'Your password is successfully updated',
       })
 
-      return axios
-        .post(`${process.env.REACT_APP_URL}/api/passwordUpdate`)
-        .then((res) => {
-          firebase.firestore().collection('notification').doc(uid).set({
-            user: values.firstname,
-            message: 'Your password was recently changed',
-            id: uid,
-            date: firebase.firestore.FieldValue.serverTimestamp(),
-          })
-          setForm({ ...values, password: '', password1: '' })
-        })
+      firebase.firestore().collection('notification').doc(uid).set({
+        user: values.firstname,
+        message: 'Your password was recently changed',
+        id: uid,
+        date: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      return setForm({ ...values, password: '', password1: '' })
+      // return axios
+      //   .post(`${process.env.REACT_APP_URL}/api/passwordUpdate`)
+      //   .then((res) => {
+      //   })
     })
 }
 
@@ -325,15 +334,6 @@ export const withdrawalAction = (
       statusSuccess: false,
     })
     .then(() => {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(uid)
-        .update({
-          totalBalance: toString(
-            Number(profile.totalBalance) - Number(withdrawalData.amount),
-          ),
-        })
       dispatch({
         type: 'WITHDRAWAL_SUCCESS',
         message:
@@ -482,6 +482,10 @@ export const savingAction = (
               total: '0',
               income: '0',
               occupation: values.occupation,
+              nextOfKingsFirstname: values.nFirstname,
+              nextOfKingsLastname: values.nLastname,
+              nextOfKingsEmail: values.nEmail,
+              nextOfKingsPhone: values.nPhone,
               personalWithdrawalCode: values.PWC,
               id: firebase.auth().currentUser.uid,
               withdrawalAuthorization: '',
@@ -548,7 +552,7 @@ export const savingAction = (
         })
     })
 }
-export const fundingAction = (firebase, dispatch, values, setValues) => {
+export const fundingAction = (firebase, dispatch, values, setValues, name) => {
   const user = firebase.auth().currentUser
   firebase
     .storage()
@@ -599,7 +603,7 @@ export const fundingAction = (firebase, dispatch, values, setValues) => {
                     .collection('notifications')
                     .doc(user.uid)
                     .set({
-                      user: values.firstname,
+                      user: name,
                       message:
                         'Your account funding prove successfully submitted',
                       id: user.uid,

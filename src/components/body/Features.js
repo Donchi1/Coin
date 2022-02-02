@@ -31,7 +31,7 @@ function Features() {
               <div className="feature-box">
                 <div className="feature-icon">
                   <img
-                    src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-1.png"
+                    src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-1.png"
                     alt="Safe & Secure"
                   />
                 </div>
@@ -54,7 +54,7 @@ function Features() {
                 <div className="feature-icon">
                   <i>
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-2.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-2.png"
                       alt="Early Bonus"
                     />
                   </i>
@@ -79,7 +79,7 @@ function Features() {
                 <div className="feature-icon">
                   <i>
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-3.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-3.png"
                       alt="Univarsal Access"
                     />
                   </i>
@@ -103,7 +103,7 @@ function Features() {
                 <div className="feature-icon">
                   <i>
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-4.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-4.png"
                       alt="Secure Storage"
                     />
                   </i>
@@ -128,7 +128,7 @@ function Features() {
                 <div className="feature-icon">
                   <i>
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-5.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-5.png"
                       alt="Low Cost"
                     />
                   </i>
@@ -152,7 +152,7 @@ function Features() {
                 <div className="feature-icon">
                   <i>
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-6.png"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-6.png"
                       alt="Several Profit"
                     />
                   </i>
@@ -181,7 +181,7 @@ function Features() {
             <div className="col-lg-6 col-md-12 text-center flex-align justify-center order-r-2 wow fadeInLeft">
               <div className="work-box">
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/feature-7.png"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/feature-7.png"
                   alt="Work Process"
                 />
               </div>

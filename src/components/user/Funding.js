@@ -36,11 +36,12 @@ function Funding() {
   const dataHistory = useSelector((state) => state.projectReducer)
   const reducerData = useSelector((state) => state.projectReducer)
   const savings = useSelector((state) => state.firestore.ordered.savings)
+  console.log(savings)
 
   const KEY = '18704fddee12def29f6ce4cc2ae8b8247c6612b36e716e47e54f315152bfa806'
 
   const [emptyBal, setEmptyBal] = useState(false)
-  const savingsData = savings?.map((each) => each)
+  const savingsData = savings && savings.map((each) => each)
 
   useEffect(() => {
     firebase
@@ -78,7 +79,8 @@ function Funding() {
   }, [])
 
   const sumTotal =
-    Number(savingsData[0].initialAmount) + Number(savingsData[0]?.profit)
+    Number(savingsData && savingsData[0].initialAmount) +
+    Number(savingsData && savingsData[0].profit)
 
   const [openPWC, setOpenPWC] = useState(false)
 
@@ -91,9 +93,7 @@ function Funding() {
 
   const [PWC, setPWC] = useState({
     isSubmitting: false,
-    value: savingsData[0]?.personalWithdrawalCode
-      ? savingsData[0].personalWithdrawalCode
-      : '',
+    value: savingsData ? savingsData[0].personalWithdrawalCode : '',
   })
   const [investInfo, setInvestInfo] = useState({
     amount: '',
@@ -106,7 +106,7 @@ function Funding() {
     e.preventDefault()
     setPWC({ ...PWC, isSubmitting: true })
     return new Promise((resolve, reject) => {
-      if (savingsData[0].personalWithdrawalCode !== PWC.value) {
+      if (savingsData && savingsData[0].personalWithdrawalCode !== PWC.value) {
         return setTimeout(reject('Invalid Personal Withdrawal Code'), 2000)
       } else {
         return setTimeout(resolve('Success'), 2000)
@@ -134,20 +134,24 @@ function Funding() {
     text: reducerData.pwcError,
     icon: 'error',
     showCloseButton: true,
+    color: 'orange',
     closeButtonText: 'OK',
   }
   const successOptions = {
     title: <p>Personal Withdrawal Success</p>,
-    text: reducerData.pwcSuccess,
+    html: <span className="text-success">{reducerData.pwcSuccess}</span>,
     icon: 'success',
     showCloseButton: true,
-    timer: '4000',
+    timer: 4000,
     closeButtonText: 'OK',
   }
   const fundingProveOptions = {
     title: <p>Funding Success</p>,
-    text: reducerData.fundingProveSuccess,
+    html: (
+      <span className="text-success">{reducerData.fundingProveSuccess}</span>
+    ),
     icon: 'success',
+    timer: 5000,
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -160,6 +164,7 @@ function Funding() {
       title: <p>No Balance</p>,
       text: 'No or Low balance for withdrawal',
       icon: 'error',
+      color: 'orange',
       showCloseButton: true,
       closeButtonText: 'Ok',
     }).then(() => {
@@ -187,11 +192,21 @@ function Funding() {
   const handleSubmitInvest = (e) => {
     e.preventDefault()
     setInvestInfo({ ...investInfo, isSubmitting: true })
-    if (investInfo.amount === '' || investInfo.prove === '') {
+    if (
+      investInfo.amount === '' ||
+      investInfo.prove === '' ||
+      investInfo.method === ''
+    ) {
       setInvestInfo({ ...investInfo, isSubmitting: false })
       return MySwal.fire(emptyOptions)
     }
-    return fundingAction(firebase, dispatch, investInfo, setInvestInfo)
+    return fundingAction(
+      firebase,
+      dispatch,
+      investInfo,
+      setInvestInfo,
+      userData.firstname,
+    )
   }
 
   const [balanceInCrypto, setBalanceInCryto] = useState({
@@ -202,14 +217,14 @@ function Funding() {
   })
 
   const initialDCheck = () => {
-    const initialNumber = Number(savingsData[0]?.total)
+    const initialNumber = Number(savingsData && savingsData[0]?.total)
     if (initialNumber === 200) {
       return 10
     }
     if (initialNumber <= 500 && initialNumber > 200) {
       return 50
     }
-    if (initialNumber <= 1000 && initialNumber < 500) {
+    if (initialNumber <= 1000 && initialNumber > 500) {
       return 70
     }
     if (initialNumber >= 1000) {
@@ -224,7 +239,7 @@ function Funding() {
         `https://min-api.cryptocompare.com/data/price?fsym=USDT&tsyms=BTC,ETH,ZEC,LTC,USD,${KEY}`,
       )
       .then((res) => {
-        const { BTC, ETH, ZEC, LTC, USD } = res.data
+        const { BTC, ETH, ZEC, LTC } = res.data
         const { total } = savingsData[0]
         const btc = Number(total ? total : '0') * BTC
         const eth = Number(total ? total : '0') * ETH
@@ -240,10 +255,10 @@ function Funding() {
       })
 
       .catch((err) => {})
-  }, [savingsData[0]?.total])
+  }, [savingsData && savingsData[0]?.total])
 
   const savingsDCheck = () => {
-    const initialNumber = Number(savingsData[0]?.total)
+    const initialNumber = Number(savingsData && savingsData[0]?.total)
     if (initialNumber === 200) {
       return 10
     }
@@ -259,7 +274,7 @@ function Funding() {
     return 0
   }
   const totalDCheck = () => {
-    const initialNumber = Number(savingsData[0]?.total)
+    const initialNumber = Number(savingsData && savingsData[0].total)
     if (initialNumber === 200) {
       return 10
     }
@@ -385,7 +400,9 @@ function Funding() {
                             </div>
                             <div className="ml-3">
                               <h2 className="mb-0 text-white coin-font-1">
-                                ${savingsData[0]?.total || '0000'}
+                                $
+                                {(savingsData && savingsData[0].total) ||
+                                  '0000'}
                               </h2>
                             </div>
                           </div>
@@ -592,7 +609,9 @@ function Funding() {
                             </div>
                             <div className="ml-3">
                               <h2 className="mb-0 text-white coin-font-1">
-                                ${savingsData[0]?.total || '0000'}
+                                $
+                                {(savingsData && savingsData[0].total) ||
+                                  '0000'}
                               </h2>
                             </div>
                           </div>
@@ -807,7 +826,9 @@ function Funding() {
                             </div>
                             <div className="ml-3">
                               <h2 className="mb-0 text-white coin-font-1">
-                                ${savingsData[0]?.total || '0000'}
+                                $
+                                {(savingsData && savingsData[0].total) ||
+                                  '0000'}
                               </h2>
                             </div>
                           </div>
@@ -1018,7 +1039,9 @@ function Funding() {
                             </div>
                             <div className="ml-3">
                               <h2 className="mb-0 text-white coin-font-1">
-                                ${savingsData[0]?.total || '0000'}
+                                $
+                                {(savingsData && savingsData[0]?.total) ||
+                                  '0000'}
                               </h2>
                             </div>
                           </div>
@@ -1262,7 +1285,7 @@ function Funding() {
                                       </span>
                                     </td>
                                     <td className="wspace-no">
-                                      {each.paymentMethod == 'bitcoin' && (
+                                      {each.paymentMethod == 'Bitcoin' && (
                                         <svg
                                           className="mr-2"
                                           width="24"
@@ -1285,7 +1308,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'litecoins' ||
+                                      {each.paymentMethod == 'Litecoin' ||
                                         'litcoins' ||
                                         ('litcoin' && (
                                           <svg
@@ -1302,7 +1325,7 @@ function Funding() {
                                             />
                                           </svg>
                                         ))}
-                                      {each.paymentMethod == 'ethereum' && (
+                                      {each.paymentMethod == 'Ethereum' && (
                                         <svg
                                           className="mr-1"
                                           width="24"
@@ -1325,7 +1348,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'bank' && (
+                                      {each.paymentMethod == 'Bank' && (
                                         <Icons.Money />
                                       )}
                                       <span className="font-w600 text-black">
@@ -1455,7 +1478,7 @@ function Funding() {
                                       </span>
                                     </td>
                                     <td className="wspace-no">
-                                      {each.paymentMethod == 'bitcoin' && (
+                                      {each.paymentMethod == 'Bitcoin' && (
                                         <svg
                                           className="mr-2"
                                           width="24"
@@ -1478,7 +1501,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'paypal' && (
+                                      {each.paymentMethod == 'Paypal' && (
                                         <svg
                                           className="mr-1"
                                           width="24"
@@ -1493,7 +1516,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'ethereum' && (
+                                      {each.paymentMethod == 'Ethereum' && (
                                         <svg
                                           className="mr-1"
                                           width="24"
@@ -1516,7 +1539,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'bank' && (
+                                      {each.paymentMethod == 'Bank' && (
                                         <Icons.Money />
                                       )}
                                       <span className="font-w600 text-black">
@@ -1663,26 +1686,34 @@ function Funding() {
                             className="rounded"
                           />
                           /{' '}
-                          <a href="javascript:void(0);">
+                          <Link to="#">
                             <i className="fa fa-pencil" aria-hidden="true"></i>
-                          </a>
+                          </Link>
                         </div>
                         <h4 className="mt-3 font-w600 text-black mb-0 name-text">
-                          {savingsData[0]?.firstname}
+                          {savingsData && savingsData[0].firstname}
                         </h4>
-                        <span>{savingsData[0]?.email}</span>
+                        <span>{savingsData && savingsData[0].email}</span>
                         <p className="mb-0 mt-2">
-                          {moment(savingsData[0]?.date.toDate()).calendar()}
+                          {moment(
+                            savingsData && savingsData[0].date.toDate(),
+                          ).calendar()}
                         </p>
                       </div>
                       <ul className="portofolio-social">
                         <li>
-                          <a href={`tel:${savingsData[0]?.phone}`}>
+                          <a
+                            href={`tel:${savingsData && savingsData[0].phone}`}
+                          >
                             <i className="fa fa-phone"></i>
                           </a>
                         </li>
                         <li>
-                          <a href={`mailto:${savingsData[0]?.email}`}>
+                          <a
+                            href={`mailto:${
+                              savingsData && savingsData[0].email
+                            }`}
+                          >
                             <i className="fa fa-envelope-o"></i>
                           </a>
                         </li>
@@ -1756,15 +1787,23 @@ function Funding() {
                     <div className="card-footer">
                       <div className="d-flex justify-content-between">
                         <h6> Total Deposite</h6>{' '}
-                        <p> ${savingsData[0]?.initialAmount || '0000'}</p>
+                        <p>
+                          {' '}
+                          $
+                          {(savingsData && savingsData[0].initialAmount) ||
+                            '0000'}
+                        </p>
                       </div>
                       <div className="d-flex justify-content-between">
                         <h6> Total Income</h6>{' '}
-                        <p> ${savingsData[0]?.income || '0000'}</p>
+                        <p>
+                          {' '}
+                          ${(savingsData && savingsData[0]?.income) || '0000'}
+                        </p>
                       </div>
                       <div className="d-flex justify-content-between">
                         <h6> Total Profit</h6>{' '}
-                        <p> ${savingsData[0]?.profit || '5'}</p>
+                        <p> ${(savingsData && savingsData[0].profit) || '5'}</p>
                       </div>
                       <div className="d-flex justify-content-between">
                         <h6> Total Saved</h6> <p> ${sumTotal || '0000'}</p>
@@ -1786,7 +1825,7 @@ function Funding() {
                       >
                         <div className="form-group  animation">
                           <Form.Control
-                            type="text"
+                            type="number"
                             label="Input Amount"
                             name="amount"
                             placeholder="Enter Amount"
@@ -1806,9 +1845,11 @@ function Funding() {
                           data-animation-delay="0.7s"
                         >
                           <Form.Control
+                            as="select"
                             type="text"
-                            name="amount"
-                            placeholder="Enter withdrawal Method"
+                            name="method"
+                            id="my-select"
+                            placeholder="Enter funding Method"
                             onChange={(e) =>
                               setInvestInfo({
                                 ...investInfo,
@@ -1817,7 +1858,49 @@ function Funding() {
                             }
                             value={investInfo.method}
                             required
-                          />
+                          >
+                            <option
+                              className="text-dark"
+                              style={{ color: 'black' }}
+                            >
+                              Account Funding Method
+                            </option>
+                            <option
+                              className="text-dark"
+                              style={{ color: 'black' }}
+                              value="Bank"
+                            >
+                              Bank
+                            </option>
+                            <option
+                              className="text-dark"
+                              style={{ color: 'black' }}
+                              value="Bitcoin"
+                            >
+                              Bitcoin
+                            </option>
+                            <option
+                              className="text-dark"
+                              style={{ color: 'black' }}
+                              value="Etherium"
+                            >
+                              Etherium
+                            </option>
+                            <option
+                              className="text-dark"
+                              style={{ color: 'black' }}
+                              value="Litcoin"
+                            >
+                              Litcoin
+                            </option>
+                            <option
+                              className="text-dark"
+                              style={{ color: 'black' }}
+                              value="Paypal"
+                            >
+                              Paypal
+                            </option>
+                          </Form.Control>
                         </div>
                         <div
                           className="form-group   animation"
@@ -1857,9 +1940,9 @@ function Funding() {
                         <h6 className=" mb-1">Already have fund withdraw</h6>
                         <Button
                           onClick={() =>
-                            savingsData[0].total
-                              ? setOpenPWC(true)
-                              : fireEmpty()
+                            savingsData && savingsData[0].total === '0'
+                              ? fireEmpty()
+                              : setOpenPWC(true)
                           }
                           type="btn"
                           className="btn bg-primary btn-radius btn-normal  w-100"

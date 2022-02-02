@@ -72,6 +72,7 @@ function AdminChat() {
       .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
         const chatsList = snapshot.docs.map((each) => each.data())
+        console.log(chatList)
         return setChatList(chatsList)
       })
     return unsubscribe

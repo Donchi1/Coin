@@ -52,7 +52,7 @@ function Invest() {
                     <li className="py-2">Normal Deposit</li>
                     <li className="py-2">$200</li>
                     <li className="py-2">Initial Withdrawal</li>
-                    <li className="py-2">$4900</li>
+                    <li className="py-2">$4999</li>
                     <li className="py-2">Bonus</li>
                     <li className="py-2">$50</li>
                   </ul>
