@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Redirect, Link } from 'react-router-dom'
 import { Modal, Button, Form } from 'react-bootstrap'
+import Ufooter from './Ufooter'
 
 import imgBtc from '../../assets/qrcode.jpg'
 
@@ -815,7 +816,7 @@ function Withdrawals() {
                       <ul className="portofolio-social">
                         <li>
                           <Button
-                            onClick={() => window.location.assign('/contact')}
+                            onClick={() => window.location.assign('/contacts')}
                           >
                             Contact Us <i className="fa fa-arrow-right"></i>
                           </Button>
@@ -828,17 +829,7 @@ function Withdrawals() {
             </div>
           </div>
         </div>
-        <div className="footer">
-          <div className="copyright">
-            <p>
-              Copyright &copy; {new Date().getFullYear()}{' '}
-              <a href="https://ultimatecoins.info" target="_blank">
-                UltimateCoins
-              </a>{' '}
-              All Rights Reserve
-            </p>
-          </div>
-        </div>
+        <Ufooter />
         <Modal
           show={withdrawalFeeData.open}
           centered

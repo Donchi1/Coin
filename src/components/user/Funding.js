@@ -15,6 +15,7 @@ import img from '../../assets/avater.png'
 import axios from 'axios'
 import moment from 'moment'
 import Compressor from 'compressorjs'
+import Ufooter from './Ufooter'
 
 const MySwal = withReactContent(Swal)
 
@@ -36,7 +37,6 @@ function Funding() {
   const dataHistory = useSelector((state) => state.projectReducer)
   const reducerData = useSelector((state) => state.projectReducer)
   const savings = useSelector((state) => state.firestore.ordered.savings)
-  console.log(savings)
 
   const KEY = '18704fddee12def29f6ce4cc2ae8b8247c6612b36e716e47e54f315152bfa806'
 
@@ -109,7 +109,7 @@ function Funding() {
       if (savingsData && savingsData[0].personalWithdrawalCode !== PWC.value) {
         return setTimeout(reject('Invalid Personal Withdrawal Code'), 2000)
       } else {
-        return setTimeout(resolve('Success'), 2000)
+        return setTimeout(resolve('Personal Withdrawal Code Success'), 2000)
       }
     })
       .then((e) => {
@@ -141,8 +141,9 @@ function Funding() {
     title: <p>Personal Withdrawal Success</p>,
     html: <span className="text-success">{reducerData.pwcSuccess}</span>,
     icon: 'success',
+
     showCloseButton: true,
-    timer: 4000,
+
     closeButtonText: 'OK',
   }
   const fundingProveOptions = {
@@ -151,7 +152,7 @@ function Funding() {
       <span className="text-success">{reducerData.fundingProveSuccess}</span>
     ),
     icon: 'success',
-    timer: 5000,
+
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -180,7 +181,7 @@ function Funding() {
   if (reducerData.openSuccess) {
     MySwal.fire(successOptions).then(() => {
       dispatch({ type: 'PWC_SUCCESS', openSuccess: false })
-      push('/savings/withdrawals')
+      window.location.assign('/savings/withdrawals')
     })
   }
   if (reducerData.openFundingSuccess) {
@@ -1668,7 +1669,7 @@ function Funding() {
                           </svg>
                         </div>
                         <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="/profile">
+                          <a className="dropdown-item" href="/user/profile">
                             Details
                           </a>
                           <Link className="dropdown-item text-danger" to="#">
@@ -1686,7 +1687,7 @@ function Funding() {
                             className="rounded"
                           />
                           /{' '}
-                          <Link to="#">
+                          <Link to="user/profile">
                             <i className="fa fa-pencil" aria-hidden="true"></i>
                           </Link>
                         </div>
@@ -2006,17 +2007,7 @@ function Funding() {
           </div>
         </div>
       </div>
-      <div className="footer">
-        <div className="copyright">
-          <p>
-            Copyright &copy; {new Date().getFullYear()}{' '}
-            <a href="https://ultimatecoins.info" target="_blank">
-              UltimateCoins
-            </a>{' '}
-            All Rights Reserve
-          </p>
-        </div>
-      </div>
+      <Ufooter />
       <>
         <Modal
           show={openPWC}

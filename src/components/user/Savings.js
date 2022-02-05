@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import UserNav from './UserNav1'
 import Compressor from 'compressorjs'
+import Ufooter from './Ufooter'
 
 const MySwal = withReactContent(Swal)
 
@@ -414,17 +415,7 @@ function Savings() {
           </div>
         </div>
       </div>
-      <div className="footer">
-        <div className="copyright">
-          <p>
-            Copyright &copy; {new Date().getFullYear()}{' '}
-            <a href="https://ultimatecoins.info" target="_blank">
-              UltimateCoins
-            </a>{' '}
-            All Rights Reserve
-          </p>
-        </div>
-      </div>
+      <Ufooter />
     </div>
   )
 }

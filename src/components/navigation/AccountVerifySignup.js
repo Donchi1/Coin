@@ -63,10 +63,19 @@ function AccountVerifySignup() {
           user: userDataState.firstname,
         })
         .then(() => {
-          dispatch({ type: 'SIGNUP_SUCCESS' })
-          MySwal.fire(successOptionsSignup)
-          setUserData({ ...userData, code: '', isSubmitting: false })
-          return window.location.assign('/user/dashboard')
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(userDataState.uid || localStorage.getItem('userId'))
+            .update({
+              verified: true,
+            })
+            .then(() => {
+              dispatch({ type: 'SIGNUP_SUCCESS' })
+              MySwal.fire(successOptionsSignup)
+              setUserData({ ...userData, code: '', isSubmitting: false })
+              return window.location.assign('/user/dashboard')
+            })
         })
       //return axios.post("http://localhost:5000/api", userDataState)
     }
@@ -101,7 +110,7 @@ function AccountVerifySignup() {
       .auth()
       .currentUser.delete()
       .then(() => {
-        return firebase
+        firebase
           .firestore()
           .collection('users')
           .doc(

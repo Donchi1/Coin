@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
 
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import UserNav1 from './UserNav1'
 import { Button, Form } from 'react-bootstrap'
 import img1 from '../../assets/avater.png'
+import Ufooter from './Ufooter'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -32,7 +33,7 @@ function Profile() {
     firstname: '',
     lastname: '',
     password: '',
-    email: userProfile.email,
+    email: '',
     phone: '',
     country: '',
     img: '',
@@ -40,27 +41,29 @@ function Profile() {
     isSubmitting: false,
   })
 
+  useEffect(() => {
+    setUserData({
+      ...userData,
+      firstname: userProfile.firstname,
+      lastname: userProfile.lastname,
+      phone: userProfile.phone,
+      country: userProfile.country,
+    })
+  }, [userProfile])
+
   const [userPassword, setUserPassword] = useState({
     password: '',
     password1: '',
     isSubmitting: false,
   })
 
-  const {
-    firstname,
-    lastname,
-    password,
-    email,
-    phone,
-    country,
-    img,
-    oldPassword,
-    isSubmitting,
-  } = userData
+  const { firstname, lastname, phone, country, isSubmitting } = userData
 
   const profileOptions = {
     title: <p>Profile Update</p>,
-    text: profileUpdateInfo.profileMessage,
+    html: (
+      <span className="text-success">{profileUpdateInfo.profileMessage}</span>
+    ),
     icon: 'success',
     closeButtonColor: 'red',
     showCloseButton: true,
@@ -68,7 +71,9 @@ function Profile() {
   }
   const passwordOptions = {
     title: <p>Password Update</p>,
-    text: profileUpdateInfo.passwordMessage,
+    html: (
+      <span className="text-success">{profileUpdateInfo.passwordMessage}</span>
+    ),
     icon: 'success',
     closeButtonColor: 'red',
     showCloseButton: true,
@@ -78,6 +83,7 @@ function Profile() {
     title: <p>Required</p>,
     text: 'All fields are required',
     icon: 'error',
+    color: 'red',
     closeButtonColor: 'red',
     showCloseButton: true,
     closeButtonText: 'OK',
@@ -86,37 +92,23 @@ function Profile() {
     title: <p>Must Match</p>,
     text: 'Password Must Match',
     icon: 'error',
+    color: 'red',
     closeButtonColor: 'red',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
 
+  console.log(userData)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setUserData({ ...userData, isSubmitting: true })
-    if (userData.email) {
-      firebase
-        .auth()
-        .currentUser.updateEmail(userData.email)
-        .then(() => {
-          firebase
-            .firestore()
-            .collection('users')
-            .doc(firebase.auth().currentUser.uid)
-            .update({ email: userData.email })
-            .then(() => {
-              setUserData({ ...userData, isSubmitting: false })
-              return updateProfileAction(
-                userData,
-                firebase,
-                dispatch,
-                setUserData,
-              )
-            })
-        })
+    if ((firstname, lastname, phone, country)) {
+      return updateProfileAction(userData, firebase, dispatch, setUserData)
+    } else {
+      setUserData({ ...userData, isSubmitting: false })
+      return MySwal.fire(requiredOption)
     }
-
-    return updateProfileAction(userData, firebase, dispatch, setUserData)
   }
 
   const handlePasswordUpdate = (e) => {
@@ -134,10 +126,18 @@ function Profile() {
     passwordUpdate(userPassword, setUserPassword)
   }
 
+  if (profileUpdateInfo.profileMessage) {
+    MySwal.fire(profileOptions).then(() => {
+      dispatch({ type: 'PROFILE_UPLOAD_SUCCESS', message: '' })
+    })
+  }
+  if (profileUpdateInfo.passwordMessage) {
+    MySwal.fire(passwordOptions).then(() => {
+      dispatch({ type: 'PASSWORD_UPLOAD_SUCCESS', message: '' })
+    })
+  }
   return (
     <>
-      {profileUpdateInfo.profileMessage && MySwal.fire(profileOptions)}
-      {profileUpdateInfo.passwordMessage && MySwal.fire(passwordOptions)}
       <UserNav1 />
       <div className="content-body " style={{ minHeight: '780px' }}>
         <div className="container-fluid">
@@ -234,7 +234,7 @@ function Profile() {
                                 onChange={(e) =>
                                   setUserData({
                                     ...userData,
-                                    img: e.target.value,
+                                    img: e.target.files[0],
                                   })
                                 }
                               />
@@ -274,22 +274,7 @@ function Profile() {
                                 }
                               />
                             </div>
-                            <div className="form-group col-md-12 animation ">
-                              <Form.Control
-                                type="email"
-                                name="email"
-                                id="email"
-                                size="sm"
-                                placeholder="Enter Email "
-                                value={email}
-                                onChange={(e) =>
-                                  setUserData({
-                                    ...userData,
-                                    email: e.target.value,
-                                  })
-                                }
-                              />
-                            </div>
+
                             <div className="form-group col-md-12 animation">
                               <Form.Control
                                 type="tel"
@@ -533,18 +518,7 @@ function Profile() {
           </div>
         </div>
       </div>
-
-      <div className="footer">
-        <div className="copyright">
-          <p>
-            Copyright © Designed by{' '}
-            <a href="http://ultimatecoins.info" target="_blank">
-              Ultimatecoins
-            </a>
-            {new Date().getFullYear()}
-          </p>
-        </div>
-      </div>
+      <Ufooter />
     </>
   )
 }

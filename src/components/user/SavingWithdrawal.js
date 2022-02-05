@@ -6,6 +6,7 @@ import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
 import { savingWithdrawalAction } from '../Auths/Action'
 import UserNav1 from './UserNav1'
 import { Redirect, Link } from 'react-router-dom'
+import Ufooter from './Ufooter'
 import { Button } from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -837,17 +838,7 @@ function SavingWithdrawal() {
             </div>
           </div>
         </div>
-        <div className="footer">
-          <div className="copyright">
-            <p>
-              Copyright &copy; {new Date().getFullYear()}{' '}
-              <a href="https://ultimatecoins.info" target="_blank">
-                UltimateCoins
-              </a>{' '}
-              All Rights Reserve
-            </p>
-          </div>
-        </div>
+        <Ufooter />
       </div>
     </>
   )

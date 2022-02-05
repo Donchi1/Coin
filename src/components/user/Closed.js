@@ -9,7 +9,7 @@ const options = {
 
   icon: 'info',
   customClass: {
-    footer: 'text-light',
+    footer: 'text-black',
   },
   html: (
     <span className="text-warning">
@@ -22,7 +22,7 @@ const options = {
 }
 function Closed() {
   MySwal.fire(options).then(() => {
-    return window.location.assign('/')
+    window.location.assign('/')
   })
   return <div></div>
 }

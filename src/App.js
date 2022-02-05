@@ -19,19 +19,12 @@ import AdminPage from './components/admin/AdminPage'
 import Empty from './components/navigation/Empty'
 import User from './components/user/User'
 import Profile from './components/user/Profile'
-
-import { isLoaded, isEmpty } from 'react-redux-firebase'
-
 import ForgetPassword from './components/navigation/ForgetPassword'
-
 import Teams from './components/body/Teams'
 import FAQ from './components/body/AskedQuestions'
-
 import Features from './components/body/Features'
-
 import Payments from './components/user/Payments'
 import Withdrawals from './components/user/Withdrawals'
-
 import { useSelector } from 'react-redux'
 import Invest from './components/user/Invest'
 import Savings from './components/user/Savings'
@@ -48,27 +41,12 @@ import NavBar from './components/navigation/NavBar'
 import HistoryData from './components/user/HistoryData'
 import AccountVerifyLogin from './components/navigation/AccountVerifyLogin'
 import ProtectedRoute from './ProtectedRoute'
+import ProtectedRoute1 from './ProtectedRoute1'
 import Closed from './components/user/Closed'
 import Disable from './components/user/Disable'
 
 function App() {
-  const authState = useSelector((state) => state.firebase.auth)
-
   const userInfo = useSelector((state) => state.firebase.profile)
-
-  const protectRoute1 = (Component) => {
-    if (isLoaded(authState) && isEmpty(authState)) {
-      return Component
-    }
-    if (
-      isLoaded(authState) &&
-      !isEmpty(authState) &&
-      !!userInfo.verificationCode
-    ) {
-      return <Redirect to="/verification/login" />
-    }
-    return <Redirect to="/" />
-  }
 
   return (
     <Router>
@@ -77,12 +55,16 @@ function App() {
           <NavBar />
           <Home />
         </Route>
-        <Route exact path="/login" component={() => protectRoute1(<Login />)} />
-        <Route
-          exact
-          path="/signup"
-          component={() => protectRoute1(<SignUp />)}
-        />
+        <ProtectedRoute1 exact path="/login">
+          {userInfo.closedForTheWeek && <Closed />}
+
+          <Login />
+        </ProtectedRoute1>
+        <ProtectedRoute1 exact path="/signup">
+          {userInfo.closedForTheWeek && <Closed />}
+
+          <SignUp />
+        </ProtectedRoute1>
         <Route exact path="/pricing" component={Pricing} />
         <Route exact path="/contacts" component={contacts} />
         <Route exact path="/about" component={About} />
@@ -94,84 +76,63 @@ function App() {
         <Route exact path="/admin/chats" component={AdminChat} />
         <Route exact path="/admin" component={Admin} />
         <ProtectedRoute exact path="/user/chats">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <ChatAuth />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/savings">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Savings />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/user/savings">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Savings />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/notifications">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Notifications />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/history">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <HistoryData />
         </ProtectedRoute>
         <ProtectedRoute exact path="/savings/withdrawals">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <SavingWithdrawal />
         </ProtectedRoute>
         <ProtectedRoute exact path="/savings/dashboard">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           {userInfo.savingsAccount ? <Funding /> : <Savings />}
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/dashboard">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
-
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <User />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/profile">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Profile />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/user/profile">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Profile />
         </ProtectedRoute>
 
@@ -195,38 +156,23 @@ function App() {
             return <Redirect to="/login" />
           }}
         />
-        <Route
-          exact
-          path="user/verification/login"
-          render={() => {
-            if (localStorage.getItem('userId')) {
-              return <AccountVerifyLogin />
-            }
-            return <Redirect to="/login" />
-          }}
-        />
+
         <ProtectedRoute exact path="/user/payments">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Payments />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/invest">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Invest />
         </ProtectedRoute>
         <ProtectedRoute exact path="/user/withdrawals">
-          {userInfo.verificationCode === '' && (
-            <Redirect to="/verification/login" />
-          )}
           {userInfo.closedForTheWeek && <Closed />}
           {userInfo.disableAccount && <Disable />}
+          {userInfo.verified === false && <Redirect to="/verification/login" />}
           <Withdrawals />
         </ProtectedRoute>
         <Route component={Empty} />

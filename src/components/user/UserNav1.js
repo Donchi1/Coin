@@ -31,7 +31,7 @@ function UserNav1() {
 
   const [openSlider, setOpenSlider] = useState(false)
 
-  const notificationInDatabase = useSelector(
+  const notification = useSelector(
     (state) => state.projectReducer.notifications,
   )
 
@@ -82,7 +82,7 @@ function UserNav1() {
   const withdrawalCheck = () => {
     setOpenSlider(false)
 
-    if (!userProfile.totalBalance) {
+    if (userProfile.totalBalance === '') {
       return MySwal.fire({
         title: <p>No Balance</p>,
         html: <span className="text-warning">No balance for withdrawal</span>,
@@ -226,26 +226,12 @@ function UserNav1() {
         { value: 'yearlyJwt' },
         process.env.REACT_APP_JWT_TOKEN,
         {
-          expiresIn: '7days',
+          expiresIn: '365days',
         },
       )
       setAccessCodeInfo({
         ...accessCodeInfo,
         accessCode: yearlyToken,
-        open: false,
-      })
-    }
-    if (userProfile.accessCode === '') {
-      const Token = JWT.sign(
-        { value: 'noneJwt' },
-        process.env.REACT_APP_JWT_TOKEN,
-        {
-          expiresIn: '1m',
-        },
-      )
-      setAccessCodeInfo({
-        ...accessCodeInfo,
-        accessCode: Token,
         open: false,
       })
     }
@@ -628,8 +614,8 @@ function UserNav1() {
                       className="widget-media dz-scroll p-3 "
                     >
                       <ul className="timeline">
-                        {notificationInDatabase &&
-                          notificationInDatabase.map((each) => (
+                        {notification &&
+                          notification.map((each) => (
                             <li key={each.date}>
                               <div className="timeline-panel">
                                 <div className="media mr-2">
@@ -662,17 +648,16 @@ function UserNav1() {
                               </div>
                             </li>
                           ))}
-                        {notificationInDatabase &&
-                          notificationInDatabase.length === 0 && (
-                            <li>
-                              <div className="timeline-panel">
-                                <div className="media mr-2"></div>
-                                <div className="media-body">
-                                  <h6 className="mb-1">No notification Yet</h6>
-                                </div>
+                        {notification && notification.length === 0 && (
+                          <li>
+                            <div className="timeline-panel">
+                              <div className="media mr-2"></div>
+                              <div className="media-body">
+                                <h6 className="mb-1">No notification Yet</h6>
                               </div>
-                            </li>
-                          )}
+                            </div>
+                          </li>
+                        )}
                       </ul>
                     </div>
                     <a className="all-notification" href="/user/history">

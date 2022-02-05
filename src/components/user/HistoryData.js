@@ -6,6 +6,7 @@ import UserNav1 from './UserNav1'
 import moment from 'moment'
 import { useFirestoreConnect, useFirebase } from 'react-redux-firebase'
 import * as Icons from '@material-ui/icons'
+import Ufooter from './Ufooter'
 
 function HistoryData() {
   const dataHistory = useSelector((state) => state.projectReducer)
@@ -21,14 +22,12 @@ function HistoryData() {
   useFirestoreConnect([{ collection: 'users' }])
 
   useEffect(() => {
-    firebase
+    const subscribe = firebase
       .firestore()
       .collection('payments')
       .doc(localStorage.getItem('userId'))
       .collection('paymentDatas')
-
-      .limit(20)
-      .orderBy('date')
+      .orderBy('date', 'desc')
       .onSnapshot((qsnapshot) => {
         qsnapshot.docs.map((each) => {
           return dispatch({
@@ -37,16 +36,15 @@ function HistoryData() {
           })
         })
       })
+    return subscribe
   }, [])
   useEffect(() => {
-    firebase
+    const subscribe = firebase
       .firestore()
       .collection('withdrawals')
       .doc(localStorage.getItem('userId'))
       .collection('withdrawalDatas')
-
-      .limit(20)
-      .orderBy('date')
+      .orderBy('date', 'desc')
       .onSnapshot((qsnapshot) => {
         qsnapshot.docs.map((each) => {
           return dispatch({
@@ -55,10 +53,11 @@ function HistoryData() {
           })
         })
       })
+    return subscribe
   }, [])
 
   useEffect(() => {
-    firebase
+    const subscribe = firebase
       .firestore()
       .collection('notifications')
       .doc(userProfile.uid ? userProfile.uid : localStorage.getItem('userId'))
@@ -73,6 +72,7 @@ function HistoryData() {
           })
         })
       })
+    return subscribe
   }, [])
   return (
     <div className="main-wrapper">
@@ -518,8 +518,8 @@ function HistoryData() {
                   className="widget-media dz-scroll p-3 "
                 >
                   <ul className="timeline">
-                    {notificationInDatabase &&
-                      notificationInDatabase.map((each) => (
+                    {dataHistory.notification &&
+                      dataHistory.notification.map((each) => (
                         <li key={each.date}>
                           <div className="timeline-panel">
                             <div className="media mr-2">
@@ -609,17 +609,7 @@ function HistoryData() {
           </div>
         </div>
       </div>
-      <div className="footer">
-        <div className="copyright">
-          <p>
-            Copyright &copy; {new Date().getFullYear()}{' '}
-            <a href="https://ultimatecoins.info" target="_blank">
-              UltimateCoins
-            </a>{' '}
-            All Rights Reserve
-          </p>
-        </div>
-      </div>
+      <Ufooter />
     </div>
   )
 }

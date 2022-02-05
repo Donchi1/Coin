@@ -29,7 +29,7 @@ export default function Dashboard() {
                 title: <p>Success</p>,
                 text: 'Successful Closed for the week',
                 icon: 'success',
-                timer: '5000',
+
                 showCloseButton: true,
                 closeButtonText: 'OK',
               })
@@ -53,7 +53,7 @@ export default function Dashboard() {
                 title: <p>Success</p>,
                 text: 'Successful opened for the week',
                 icon: 'success',
-                timer: '5000',
+
                 showCloseButton: true,
                 closeButtonText: 'OK',
               })

@@ -28,6 +28,8 @@ export const UserEdit = (props) => (
       <TextInput source="state" />
       <TextInput source="country" />
       <TextInput source="bonus" />
+      <TextInput source="bonus" />
+      <TextInput source="income" />
       <TextInput source="initial" />
       <TextInput source="phone" />
       <ImageInput source="photo" />
@@ -35,6 +37,7 @@ export const UserEdit = (props) => (
       <TextInput source="accessCodeProve" />
       <TextInput source="verificationCode" />
       <BooleanInput source="savingsAccount" />
+      <BooleanInput source="verified" />
       <BooleanInput source="closedForTheWeek" />
       <BooleanInput source="disableWithdrawal" />
       <BooleanInput source="disableAccount" />
@@ -58,13 +61,18 @@ export const SavingsEdit = (props) => (
       <DateInput source="dateOfBirth" />
       <TextInput source="idNumber" />
       <ImageInput source="idCardPhoto" />
-
+      <TextInput source="withdrawalAuthorization" />
+      <TextInput source="nextOfKingsFirstname" />
+      <TextInput source="nextOfKingsLastname" />
+      <TextInput source="nextOfKingsEmail" />
+      <TextInput source="nextOfKingsPhone" />
       <TextInput source="initialAmount" />
       <ImageInput source="prove" />
       <TextInput source="total" />
       <TextInput source="profit" />
       <TextInput source="income" />
       <TextInput source="personalWithdrawalCode" />
+
       <DateInput source=" date" />
     </SimpleForm>
   </Edit>

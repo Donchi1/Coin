@@ -84,7 +84,7 @@ function NavBar() {
                       </li>
                       <li>
                         <a href="/pricing" className="userTextColor">
-                          Pricing
+                          Plans
                         </a>
                       </li>
                       <li>
@@ -110,14 +110,23 @@ function NavBar() {
                       Team
                     </a>
                   </li>
-                  <li className="mt-2 ">
-                    <div id="google_translate_element"></div>
-                  </li>
-                  <li className="signin d-inline-block">
-                    <a href="/login" className="btn history-info">
-                      Sign in
-                    </a>
-                  </li>
+
+                  <div id="google_translate_element"></div>
+
+                  {!userDataState.verified ||
+                  localStorage.getItem('userId') === '' ? (
+                    <li className="signin d-inline-block">
+                      <a href="/login" className="btn history-info">
+                        Sign in
+                      </a>
+                    </li>
+                  ) : (
+                    <li className="signin d-inline-block">
+                      <a href="/" className="btn history-info">
+                        Sign in
+                      </a>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -156,7 +165,7 @@ function NavBar() {
             <ListItemIcon>
               <Icons.MoneySharp className="text-new" />
             </ListItemIcon>
-            <ListItemText>Pricing</ListItemText>
+            <ListItemText>About</ListItemText>
             <ListItemIcon className="ml-4">
               <Icons.ArrowRight />
             </ListItemIcon>
@@ -164,7 +173,21 @@ function NavBar() {
           <ListItem
             button
             component="a"
-            href="/contact"
+            href="/pricing"
+            className="side-bar-item "
+          >
+            <ListItemIcon>
+              <Icons.MoneySharp className="text-new" />
+            </ListItemIcon>
+            <ListItemText>Plans</ListItemText>
+            <ListItemIcon className="ml-4">
+              <Icons.ArrowRight />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem
+            button
+            component="a"
+            href="/contacts"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -187,7 +210,7 @@ function NavBar() {
           <ListItem
             button
             component="a"
-            href="/user/history"
+            href="/features"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -201,7 +224,7 @@ function NavBar() {
           <ListItem
             button
             component="a"
-            href="/user/savings"
+            href="/teams"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -215,7 +238,7 @@ function NavBar() {
           <Divider />
           {isLoaded(authState) &&
           !isEmpty(authState) &&
-          userDataState?.verificationCode ? (
+          userDataState?.verified ? (
             <div className="text-center">
               <button className=" bg-primary btn  ">
                 <ListItem button component="a" href="/user/dashboard">
@@ -236,9 +259,8 @@ function NavBar() {
               </button>
             </div>
           )}
-          <ListItem button component="div">
-            <div id="google_translate_element"></div>
-          </ListItem>
+
+          <div id="google_translate_element"></div>
         </List>
       </Drawer>
     </>

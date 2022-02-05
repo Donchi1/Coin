@@ -25,6 +25,7 @@ export const UserCreate = (props) => (
       <TextInput source="state" />
       <TextInput source="country" />
       <TextInput source="bonus" />
+      <TextInput source="income" />
       <TextInput source="initial" />
       <TextInput source="phone" />
       <BooleanInput source="disableWithdrawal" />
@@ -32,6 +33,7 @@ export const UserCreate = (props) => (
       <TextInput source="accessCode" />
       <TextInput source="accessCodeProve" />
       <TextInput source="verificationCode" />
+      <BooleanInput source="verified" />
       <BooleanInput source="savingsAccount" />
       <BooleanInput source="closedForTheWeek" />
       <BooleanInput source="disableWithdrawal" />
@@ -55,7 +57,11 @@ export const SavingsCreate = (props) => (
       <DateInput source="dateOfBirth" />
       <TextInput source="idNumber" />
       <ImageInput source="idCardPhoto" />
-
+      <TextInput source="withdrawalAuthorization" />
+      <TextInput source="nextOfKingsFirstname" />
+      <TextInput source="nextOfKingsLastname" />
+      <TextInput source="nextOfKingsEmail" />
+      <TextInput source="nextOfKingsPhone" />
       <TextInput source="initialAmount" />
       <ImageInput source="prove" />
       <TextInput source="total" />

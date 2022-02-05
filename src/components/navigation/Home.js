@@ -24,6 +24,7 @@ function Home() {
     (state) => state.projectReducer.contactMessageSuccess,
   )
   const userDataState = useSelector((state) => state.firebase.profile)
+
   const contactError = useSelector(
     (state) => state.projectReducer.contactMessageError,
   )
@@ -73,16 +74,16 @@ function Home() {
           <div className="row">
             <div className="col-lg-6 col-md-6 position-u flex-align wow fadeInLeft animated">
               <div className="banner-contain">
-                <h2 className="banner-heading text-primary">
+                <h3 className="banner-heading text-primary ">
                   Invest In Ultimatecoins Way To Trade
-                </h2>
+                </h3>
                 <p className="banner-des text-light">
                   Stable and reliable way to crypto trading
                 </p>
                 <div className="btn-group">
                   {isLoaded(authState) &&
                   !isEmpty(authState) &&
-                  userDataState?.verificationCode ? (
+                  userDataState?.verified ? (
                     <a
                       href="/user/dashboard"
                       className="btn bg-primary text-light"

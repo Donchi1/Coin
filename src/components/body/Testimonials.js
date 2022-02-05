@@ -59,19 +59,27 @@ function Testimonials() {
     },
   ])
 
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('testimonials')
-      .onSnapshot((qs) => {
-        const data = qs.docs.map((doc) => doc.data())
-        setVideoData([
-          ...videoData,
-          { url: data.photo, message: data.message, id: data.uid },
-        ])
-      })
-    return unsubscribe
-  }, [])
+  // useEffect(() => {
+  //   const unsubscribe = firebase
+  //     .firestore()
+  //     .collection('testimonials')
+  //     .onSnapshot((qs) => {
+  //       const data = qs.docs.map((doc) => doc.data())
+  //       data.map((each) => {
+  //         if (each) {
+  //           setVideoData([
+  //             ...videoData,
+  //             {
+  //               url: each.photo,
+  //               message: each.message,
+  //               id: each.createdate.toDate(),
+  //             },
+  //           ])
+  //         }
+  //       })
+  //     })
+  //   return unsubscribe
+  // }, [])
 
   return (
     <>

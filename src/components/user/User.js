@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
-
 import ApexCharts from 'apexcharts'
 import { ProgressBar } from 'react-bootstrap'
-//import * as Icons from 'react-bootstrap-icons'
 import * as Icons from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import UserNav1 from './UserNav1'
 import moment from 'moment'
-import axios from 'axios'
+import Ufooter from './Ufooter'
 
 const PopUp = withReactContent(Swal)
 const MySwal = withReactContent(Swal)
@@ -23,13 +22,20 @@ function User() {
   const withdrawalPop = useSelector((state) => state.projectReducer)
   const dataHistory = useSelector((state) => state.projectReducer)
   const savings = useSelector((state) => state.firestore.ordered.savings)
+  const userInfo = useSelector((state) => state.firebase.profile)
 
-  useFirestoreConnect({
-    collection: 'savings',
-    doc: userProfile.uid || localStorage.getItem('userId'),
-  })
+  useFirestoreConnect([
+    {
+      collection: 'savings',
+      doc: userProfile.uid || localStorage.getItem('userId'),
+    },
+    {
+      collection: 'users',
+      doc: userProfile.uid || localStorage.getItem('userId'),
+    },
+  ])
 
-  const savingsData = savings?.map((each) => each)
+  const savingsData = savings && savings.map((each) => each)
 
   const [btcValue, setBtcValue] = useState({
     totalBalance: Number('0000'),
@@ -354,6 +360,7 @@ function User() {
       title: <p>Notice</p>,
       text: 'We close our weekly trading every friday',
       icon: 'info',
+      color: 'orange',
       showCloseButton: true,
       closeButtonText: 'OK',
     }).then((value) => {
@@ -367,16 +374,8 @@ function User() {
     <>
       <div id="main-wrapper" className="show">
         <UserNav1 />
-        <div className="content-body">
-          {/*<!-- <div className="form-head" 
-          style="background-image:url('images/background/bg3.jpg');background-position: bottom; ">
-				<div className="container max d-flex align-items-center mt-0">
-					<h2 className="font-w600 title text-white mb-2 mr-auto ">Dashboard</h2>
-				
-					<a href="javascript:void(0);" className="btn white-transparent mb-2"><i className="las la-calendar scale5 mr-3"></i>Filter Periode</a>
-				</div>
-  </div> -->*/}
 
+        <div className="content-body">
           <div className="container-fluid">
             <div className="form-head mb-sm-5 mb-3 d-flex flex-wrap align-items-center">
               <h2 className="font-w600 title mb-2 mr-auto text-primary">
@@ -1389,9 +1388,9 @@ function User() {
                             </p>
                             <h2 className="num-text text-black mb-5 font-w600">
                               $
-                              {savingsData?.amount
-                                ? Number(savingsData?.amount)
-                                : '0000'}
+                              {(savingsData &&
+                                Number(savingsData && savingsData[0]?.total)) ||
+                                '0000'}
                             </h2>
                           </div>
 
@@ -1895,17 +1894,7 @@ function User() {
           </div>
         </div>
 
-        <div className="footer">
-          <div className="copyright">
-            <p>
-              Copyright &copy; {new Date().getFullYear()}{' '}
-              <a href="https://ultimatecoins.info" target="_blank">
-                UltimateCoins
-              </a>{' '}
-              All Rights Reserve
-            </p>
-          </div>
-        </div>
+        <Ufooter />
       </div>
     </>
   )

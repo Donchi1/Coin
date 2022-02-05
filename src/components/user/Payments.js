@@ -8,6 +8,7 @@ import withReactContent from 'sweetalert2-react-content'
 import { paymentAction } from '../Auths/Action'
 import UserNav1 from './UserNav1'
 import { Button } from 'react-bootstrap'
+import Ufooter from './Ufooter'
 import imgLit from '../../assets/qrcodeLit.png'
 import imgEth from '../../assets/qrcodeEth.png'
 import imgBtc from '../../assets/qrcode.jpg'
@@ -505,17 +506,7 @@ function Payments() {
           </div>
         </div>
       </div>
-      <div className="footer  ">
-        <div className="copyright">
-          <p>
-            Copyright &copy; {new Date().getFullYear()}{' '}
-            <a href="https://ultimatecoins.info" target="_blank">
-              UltimateCoins
-            </a>{' '}
-            All Rights Reserve
-          </p>
-        </div>
-      </div>
+      <Ufooter />
     </div>
   )
 }

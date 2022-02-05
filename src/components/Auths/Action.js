@@ -53,6 +53,7 @@ export const registerAction = (
           verificationCode: '',
           accessCode: '',
           income: '',
+          verified: false,
           accessCodeProve: '',
           withdrawalProve: '',
           savingsAccount: false,
@@ -173,11 +174,11 @@ export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
     })
     .then(() => {
       if (profile.img) {
-        firebase
+        return firebase
           .storage()
           .ref('users')
           .child(uid)
-          .put(profile.fileUpload)
+          .put(profile.img)
           .then(() =>
             firebase
               .storage()
@@ -189,39 +190,38 @@ export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
                   .collection('users')
                   .doc(uid)
                   .update({ photo: imgUrl })
-
-                dispatch({ type: 'PROFILE_UPLOAD_SUCCESS' })
-                setForm({
-                  ...profile,
-                  firstname: '',
-                  lastname: '',
-                  password: '',
-                  email: '',
-                  phone: '',
-                  country: '',
-                  img: '',
-                  oldPassword: '',
-                  isSubmitting: false,
-                })
-                firebase
-                  .firestore()
-                  .collection('notifications')
-                  .doc(uid)
-                  .set({
-                    user: profile.firstname,
-                    message: 'You have successfully updated your profile',
-                    id: uid,
-                    date: firebase.firestore.FieldValue.serverTimestamp(),
-                  })
                   .then(() => {
-                    //return axios
-                    //  .post(
-                    //    `${process.env.REACT_APP_URL}/api/profileUpdate`,
-                    //    firebase.auth().currentUser.email,
-                    //  )
-                    //  .then((res) => {
-                    //    console.log(res)
-                    //  })
+                    dispatch({
+                      type: 'PROFILE_UPLOAD_SUCCESS',
+                      message: 'Profile Successfully Updated',
+                    })
+                    setForm({
+                      ...profile,
+
+                      isSubmitting: false,
+                    })
+
+                    firebase
+                      .firestore()
+                      .collection('notifications')
+                      .doc(uid)
+                      .set({
+                        user: profile.firstname,
+                        message: 'You have successfully updated your profile',
+                        id: uid,
+                        date: firebase.firestore.FieldValue.serverTimestamp(),
+                      })
+                      .then(() => {
+                        //return axios
+                        //  .post(
+                        //    `${process.env.REACT_APP_URL}/api/profileUpdate`,
+                        //    firebase.auth().currentUser.email,
+                        //  )
+                        //  .then((res) => {
+                        //    console.log(res)
+                        //  })
+                        return
+                      })
                   })
               }),
           )
@@ -239,14 +239,7 @@ export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
         })
         return setForm({
           ...profile,
-          firstname: '',
-          lastname: '',
-          password: '',
-          email: '',
-          phone: '',
-          country: '',
-          img: '',
-          oldPassword: '',
+
           isSubmitting: false,
         })
         //return axios
@@ -261,14 +254,7 @@ export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
       dispatch({ type: 'UPLOAD_ERROR' })
       setForm({
         ...profile,
-        firstname: '',
-        lastname: '',
-        password: '',
-        email: '',
-        phone: '',
-        country: '',
-        img: '',
-        oldPassword: '',
+
         isSubmitting: false,
       })
     })
@@ -528,7 +514,7 @@ export const savingAction = (
                   id: user.uid,
                   date: firebase.firestore.FieldValue.serverTimestamp(),
                 })
-              return window.location.assign('/user/savings/dashboard')
+              return window.location.assign('/savings/dashboard')
             })
             .catch((e) => {
               setSavingInfo({

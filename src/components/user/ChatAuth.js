@@ -9,6 +9,7 @@ import moment from 'moment'
 import * as Icons from '@material-ui/icons'
 import { List, ListItem, Divider, Drawer } from '@material-ui/core'
 import { Scrollbars } from 'react-custom-scrollbars-2'
+import Ufooter from './Ufooter'
 
 function ChatAuth() {
   const firebase = useFirebase()
@@ -54,6 +55,9 @@ function ChatAuth() {
   }, [])
 
   const handleSubmit = (text) => {
+    if (messages === '') {
+      return
+    }
     firebase
       .firestore()
       .collection('chats')
@@ -125,7 +129,10 @@ function ChatAuth() {
                     onClose={() => setOpenSlider(false)}
                     variant="persistent"
                   >
-                    <List>
+                    <List
+                      className="text-light h-100"
+                      style={{ backgroundColor: '#3B3363' }}
+                    >
                       <Divider />
                       <ListItem component="div">
                         <div>
@@ -145,6 +152,21 @@ function ChatAuth() {
                                 <button className="input-group-text">
                                   <i className="flaticon-381-search-2"></i>
                                 </button>
+                              </div>
+                            </div>
+                            <div
+                              className="nav-control"
+                              style={{
+                                right: 0,
+                                top: 20,
+                                position: 'absolute',
+                              }}
+                              onClick={() => setOpenSlider(false)}
+                            >
+                              <div className="hamburger">
+                                <span className="line"></span>
+                                <span className="line"></span>
+                                <span className="line"></span>
                               </div>
                             </div>
                           </div>
@@ -243,11 +265,7 @@ function ChatAuth() {
                       </ul>
                     </div>
                     <div className="card-body message-bx px-0 pt-3">
-                      <div
-                        className="tab-content dz-scroll ps ps--active-y"
-                        id="message-bx"
-                        style={{ overflowY: 'auto' }}
-                      >
+                      <div className="tab-content " id="message-bx">
                         <div
                           className="tab-pane fade show active"
                           id="AllMessage"
@@ -398,32 +416,8 @@ function ChatAuth() {
                               </div>
                             ))}
                           </div>
-
-                          <div
-                            className="ps__rail-x"
-                            style={{ left: '0px', bottom: '0px' }}
-                          >
-                            <div
-                              className="ps__thumb-x"
-                              tabIndex="0"
-                              style={{ left: '0px', width: '0px' }}
-                            ></div>
-                          </div>
-                          <div
-                            className="ps__rail-y"
-                            style={{
-                              top: '0px',
-                              height: '340px',
-                              right: '0px',
-                            }}
-                          >
-                            <div
-                              className="ps__thumb-y"
-                              tabindex="0"
-                              style={{ top: '0px', height: '337px' }}
-                            ></div>
-                          </div>
                         </div>
+                        <div ref={scroll}></div>
                       </Scrollbars>
                       <div className="card-footer border-0 type-massage">
                         <div className="input-group">
@@ -443,7 +437,6 @@ function ChatAuth() {
                               SEND
                             </button>
                           </div>
-                          <div ref={scroll}></div>
                         </div>
                       </div>
                     </div>
@@ -453,21 +446,7 @@ function ChatAuth() {
             </div>
           </div>
         </div>
-        <div className="footer">
-          <div className="copyright">
-            <p>
-              Copyright &copy; {new Date().getFullYear()}{' '}
-              <a
-                href="https://ultimatecoins.info"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                UltimateCoins
-              </a>{' '}
-              All Rights Reserve
-            </p>
-          </div>
-        </div>
+        <Ufooter />
       </div>
     </div>
   )

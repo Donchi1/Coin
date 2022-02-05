@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useHistory, Link } from 'react-router-dom'
 import UserNav1 from './UserNav1'
+import Ufooter from './Ufooter'
 
 function Invest() {
   const { push } = useHistory()
@@ -250,17 +251,7 @@ function Invest() {
           </div>
         </div>
       </div>
-      <div className="footer">
-        <div className="copyright text-center">
-          <p>
-            Copyright &copy; {new Date().getFullYear()}{' '}
-            <a href="https://ultimatecoins.info" target="_blank">
-              UltimateCoins
-            </a>{' '}
-            All Rights Reserve
-          </p>
-        </div>
-      </div>
+      <Ufooter />
     </div>
   )
 }

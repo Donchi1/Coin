@@ -21,15 +21,17 @@ function AccountVerifyLogin() {
     title: <p>Code Error</p>,
     text: 'Incorrect or Wrong Verification Code',
     icon: 'error',
+    color: 'orange',
     showCloseButton: true,
     closeButtonText: 'OK',
     timer: '5000',
   }
   const successOptionsLogin = {
     title: <p>Success</p>,
-    text: 'Login Successful',
+    html: <span className="text-success">Login Successful</span>,
     icon: 'success',
     timer: '5000',
+
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -38,17 +40,27 @@ function AccountVerifyLogin() {
     title: <p>Required</p>,
     text: 'Please all inputs are required',
     icon: 'info',
+    color: 'orange',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
 
   const processData = () => {
     if (userData.code === userDataState.verificationCode) {
-      dispatch({ type: 'LOGIN_SUCCESS' })
-      setUserData({ ...userData, code: '', isSubmitting: false })
-      return MySwal.fire(successOptionsLogin).then(() => {
-        return window.location.assign('/user/dashboard')
-      })
+      return firebase
+        .firestore()
+        .collection('users')
+        .doc(userDataState.uid || localStorage.getItem('userId'))
+        .update({
+          verified: true,
+        })
+        .then(() => {
+          dispatch({ type: 'LOGIN_SUCCESS' })
+          setUserData({ ...userData, code: '', isSubmitting: false })
+          return MySwal.fire(successOptionsLogin).then(() => {
+            return window.location.assign('/user/dashboard')
+          })
+        })
     }
 
     setUserData({ ...userData, code: '', isSubmitting: false })
