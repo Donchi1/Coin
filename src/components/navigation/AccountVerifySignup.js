@@ -105,26 +105,6 @@ function AccountVerifySignup() {
         return window.location.assign('/')
       })
   }
-  const handleDelete = () => {
-    return firebase
-      .auth()
-      .currentUser.delete()
-      .then(() => {
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(
-            userDataState.uid
-              ? userDataState.uid
-              : localStorage.getItem('userId'),
-          )
-          .delete()
-          .then(() => {
-            localStorage.removeItem('userId')
-            return window.location.assign('/')
-          })
-      })
-  }
 
   return (
     <>
@@ -196,15 +176,7 @@ function AccountVerifySignup() {
                             </button>
                           </div>
                         </Form>
-                        <div className="form-group mb-0 mt-4 text-center">
-                          <button
-                            onClick={handleDelete}
-                            className="btn  history-info w-100"
-                            type="submit"
-                          >
-                            Delete Account
-                          </button>
-                        </div>
+
                         <div className="form-group mb-0 mt-4 text-center">
                           <button
                             onClick={handleLogout}
