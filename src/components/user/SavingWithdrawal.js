@@ -24,12 +24,24 @@ function SavingWithdrawal() {
 
   const savings = useSelector((state) => state.firestore.ordered.savings)
 
-  console.log(savings)
   const { savingWithdrawalMessage } = useSelector(
     (state) => state.projectReducer,
   )
+  const [saveInfo, setSafeInfo] = useState({
+    total: '',
+    authorize: '',
+  })
 
-  const savingsData = []
+  useEffect(() => {
+    savings &&
+      savings.map((each) => {
+        setSafeInfo({
+          ...saveInfo,
+          total: each.total,
+          authorize: each.withdrawalAuthorization,
+        })
+      })
+  }, [savings])
 
   const transError = useSelector(
     (state) => state.projectReducer.withdrawalError,
@@ -50,13 +62,7 @@ function SavingWithdrawal() {
     showCloseButton: true,
     closeButtonText: 'OK',
   }
-  const errorOptionsInit = {
-    title: <p> Withdrawal Authorization Error</p>,
-    text: 'No Withdrawal Authorization Code or amount for withdrawal',
-    icon: 'error',
-    showCloseButton: true,
-    closeButtonText: 'OK',
-  }
+
   const successOptions = {
     title: <p>Success</p>,
     text: savingWithdrawalMessage,
@@ -110,10 +116,7 @@ function SavingWithdrawal() {
   const handleWithdrawal = (e) => {
     e.preventDefault()
 
-    if (
-      savingsData[0]?.withdrawalAuthorization !==
-      withdrawalAmount.withdrawalAuthorization
-    ) {
+    if (saveInfo.authorize !== withdrawalAmount.withdrawalAuthorization) {
       return MySwal.fire(errorOptions)
     }
 
@@ -134,18 +137,14 @@ function SavingWithdrawal() {
     )
   }
 
-  if (!savingsData[0]?.total && !savingsData[0]?.withdrawalAuthorization) {
-    return MySwal.fire(errorOptionsInit).then(() => {
-      return <redirect to="/user/dashboard" />
+  if (savingWithdrawalMessage) {
+    MySwal.fire(successOptions).then(() => {
+      dispatch({ type: 'SAVING_WITHDRAWAL_SUCCESS', message: '' })
     })
   }
 
   return (
     <>
-      {savingWithdrawalMessage &&
-        MySwal.fire(successOptions).then(() => {
-          dispatch({ type: 'SAVING_WITHDRAWAL_SUCCESS', message: '' })
-        })}
       <div>
         <UserNav1 />
         <div className="content-body pb-4">
@@ -225,7 +224,7 @@ function SavingWithdrawal() {
                                       {withdrawalAmount.amount}
                                     </p>
                                     <p>Bitcoin : {newAmount && newAmount}</p>
-                                    <p className="text-secondary">
+                                    <p>
                                       with {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal method.
                                     </p>
@@ -358,7 +357,7 @@ function SavingWithdrawal() {
                                       {withdrawalAmount.amount}
                                     </p>
                                     <p>Etherium : {newAmount && newAmount}</p>
-                                    <p className="text-secondary">
+                                    <p>
                                       with {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal method.
                                     </p>
@@ -513,7 +512,7 @@ function SavingWithdrawal() {
                                       {withdrawalAmount.amount}
                                     </p>
                                     <p>Bitcoin : {newAmount && newAmount}</p>
-                                    <p className="text-secondary">
+                                    <p>
                                       with {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal method.
                                     </p>
@@ -651,7 +650,7 @@ function SavingWithdrawal() {
                                       {withdrawalAmount.amount}
                                     </p>
                                     <p>Bitcoin : {newAmount && newAmount}</p>
-                                    <p className="text-secondary">
+                                    <p>
                                       with {withdrawalAmount.withdrawalMethod}{' '}
                                       withdrawal method.
                                     </p>

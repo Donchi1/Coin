@@ -36,7 +36,7 @@ function About() {
               <div className="work-box w-100">
                 <div className="work-box-bg"></div>
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/work-process.png"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/work-process.png"
                   className="rotation-img"
                   alt="Work Process"
                 />
@@ -105,7 +105,7 @@ function About() {
             <div className="col-lg-6 col-md-12 text-center flex-align justify-center wow fadeInRight">
               <div className="work-box">
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/about-1.jpg"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/about-1.jpg"
                   alt="Work Process"
                 />
                 <Link
@@ -159,7 +159,7 @@ function About() {
             <div className="col-lg-6 col-md-12 text-center flex-align justify-center order-r-2 wow fadeInLeft">
               <div className="work-box">
                 <img
-                  src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/about-2.png"
+                  src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/about-2.png"
                   alt="Work Process"
                 />
               </div>
@@ -212,7 +212,7 @@ function About() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-1.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-1.jpg"
                       alt="team member"
                     />
                   </a>
@@ -253,7 +253,7 @@ function About() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-2.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-2.jpg"
                       alt="team member"
                     />
                   </a>
@@ -292,7 +292,7 @@ function About() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-3.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-3.jpg"
                       alt="team member"
                     />
                   </a>
@@ -331,7 +331,7 @@ function About() {
                 <div className="team-img">
                   <a href="/teams">
                     <img
-                      src="https://themes.templatescoder.com/crypton/html/demo/1-0/01-Dark-Theme/images/team-4.jpg"
+                      src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-4.jpg"
                       alt="team member"
                     />
                   </a>

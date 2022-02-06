@@ -518,8 +518,8 @@ function HistoryData() {
                   className="widget-media dz-scroll p-3 "
                 >
                   <ul className="timeline">
-                    {dataHistory.notification &&
-                      dataHistory.notification.map((each) => (
+                    {dataHistory.notifications &&
+                      dataHistory.notifications.map((each) => (
                         <li key={each.date}>
                           <div className="timeline-panel">
                             <div className="media mr-2">

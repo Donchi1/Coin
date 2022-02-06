@@ -212,7 +212,7 @@ function User() {
       })
 
       .catch((err) => {})
-  }, [userProfile.totalBalance])
+  }, [userProfile])
 
   useEffect(() => {
     axios
