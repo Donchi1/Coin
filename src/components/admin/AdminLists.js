@@ -67,7 +67,7 @@ export const UserList = (props) => {
           <TextField source="initial" color="primary" />
           <TextField source="phone" color="primary" />
           <TextField source="accessCode" color="primary" />
-          <TextField source="accessCodeProve" color="primary" />
+          <ImageField source="accessCodeProve" color="primary" />
           <TextField source="verificationCode" color="primary" />
           <BooleanField source="verified" color="primary" />
           <BooleanField source="savingsAccount" color="primary" />

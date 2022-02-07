@@ -47,7 +47,8 @@ function Withdrawals() {
     title: <p>ERROR</p>,
     text: 'No or low balance for withdrawal',
     icon: 'error',
-    timer: 4000,
+    color: 'orange',
+    timer: 5000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
@@ -105,7 +106,7 @@ function Withdrawals() {
 
       return MySwal.fire(withdrawalErrorOptions)
     }
-    if (Number(profileInfo.totalBalance) >= 5000) {
+    if (Number(profileInfo.totalBalance) < 5000) {
       if (!profileInfo.disableWithdrawal) {
         setOpenPay({
           ...openPay,
@@ -114,15 +115,7 @@ function Withdrawals() {
           litecoin: false,
           bank: false,
         })
-        setWithdrawalAmount({
-          ...withdrawalAmount,
-          amount: 1,
-          wallet: '',
-          withdrawalMethod: '',
-          name: '',
-          accountNumber: 'none',
-          phone: '',
-        })
+
         return withdrawalAction(
           profileInfo,
           withdrawalAmount,
@@ -132,7 +125,7 @@ function Withdrawals() {
           axios,
         )
       } else {
-        setWithdrawalFeeData({ ...withdrawalFeeData, open: true })
+        return setWithdrawalFeeData({ ...withdrawalFeeData, open: true })
       }
     }
 
@@ -167,20 +160,21 @@ function Withdrawals() {
     title: <p>ERROR</p>,
     text: transInfo.withdrawalError,
     icon: 'error',
-    timer: 4000,
+    timer: 6000,
+    color: 'orange',
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
   const successOptions = {
     title: <p>SUCCESS</p>,
-    text: transInfo.withdrawalSuccess,
+    html: <span className="text-success">{transInfo.withdrawalSuccess}</span>,
     icon: 'success',
-    timer: 4000,
+    timer: 6000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
 
-  if (profileInfo.totalBalance === '' || profileInfo.accessCode === '') {
+  if (profileInfo.totalBalance === '0000' || profileInfo.accessCode === '') {
     dispatch({ type: 'NO_WITHDRAWAL_ACCESS', accessPopUp: true })
     return <Redirect to="/user/dashboard" />
   }
@@ -211,7 +205,7 @@ function Withdrawals() {
                   html: (
                     <span className="text-success">
                       Your Withdrawal Fee Prove Has been Sent Successfully. We
-                      will get back to you in less then 24 hours
+                      will get back to you in less then 24 hours.
                     </span>
                   ),
                   icon: 'success',

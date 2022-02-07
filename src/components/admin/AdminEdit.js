@@ -9,7 +9,17 @@ import {
   SelectInput,
   SimpleForm,
   TextInput,
+  ImageField,
 } from 'react-admin'
+
+const PreviewImage = ({ record, source }) => {
+  if (typeof record == 'string') {
+    record = {
+      [source]: record,
+    }
+  }
+  return <ImageField record={record} source={source} />
+}
 
 export const UserEdit = (props) => (
   <Edit {...props} title="Edit UserInfo">
@@ -32,7 +42,9 @@ export const UserEdit = (props) => (
       <TextInput source="income" />
       <TextInput source="initial" />
       <TextInput source="phone" />
-      <ImageInput source="photo" />
+      <ImageInput source="photo">
+        <PreviewImage source="src" />
+      </ImageInput>
       <TextInput source="accessCode" />
       <TextInput source="accessCodeProve" />
       <TextInput source="verificationCode" />
@@ -60,14 +72,18 @@ export const SavingsEdit = (props) => (
       <TextInput source="accountNumber" />
       <DateInput source="dateOfBirth" />
       <TextInput source="idNumber" />
-      <ImageInput source="idCardPhoto" />
+      <ImageInput source="idCardPhoto">
+        <PreviewImage source="idCardPhoto" />
+      </ImageInput>
       <TextInput source="withdrawalAuthorization" />
       <TextInput source="nextOfKingsFirstname" />
       <TextInput source="nextOfKingsLastname" />
       <TextInput source="nextOfKingsEmail" />
       <TextInput source="nextOfKingsPhone" />
       <TextInput source="initialAmount" />
-      <ImageInput source="prove" />
+      <ImageInput source="prove">
+        <PreviewImage source="prove" />
+      </ImageInput>
       <TextInput source="total" />
       <TextInput source="profit" />
       <TextInput source="income" />

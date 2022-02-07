@@ -7,12 +7,11 @@ import Button from '@material-ui/core/Button'
 import CardContent from '@material-ui/core/CardContent'
 
 import { useFirebase } from 'react-redux-firebase'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 
-const MySwal = withReactContent(Swal)
+import { useNotify } from 'react-admin'
 
 export default function Dashboard() {
+  const notify = useNotify()
   const firebase = useFirebase()
   const closedForTheWeek = () => {
     const data = firebase.firestore().collection('users')
@@ -25,13 +24,9 @@ export default function Dashboard() {
             .doc(user.id)
             .update({ closedForTheWeek: true })
             .then(() => {
-              return MySwal.fire({
-                title: <p>Success</p>,
-                text: 'Successful Closed for the week',
-                icon: 'success',
-
-                showCloseButton: true,
-                closeButtonText: 'OK',
+              return notify('Successful Closed for the week', {
+                type: 'success',
+                undoable: false,
               })
             })
         })
@@ -49,13 +44,9 @@ export default function Dashboard() {
             .doc(user.id)
             .update({ closedForTheWeek: false })
             .the(() => {
-              return MySwal.fire({
-                title: <p>Success</p>,
-                text: 'Successful opened for the week',
-                icon: 'success',
-
-                showCloseButton: true,
-                closeButtonText: 'OK',
+              return notify('Successful Opened for the week', {
+                type: 'success',
+                undoable: false,
               })
             })
         })

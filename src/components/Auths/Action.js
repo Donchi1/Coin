@@ -507,8 +507,8 @@ export const savingAction = (
               firebase
                 .firestore()
                 .collection('notifications')
-                .doc(user.uid)
-                .set({
+                .doc(user.uid).collection("notificationDatas").
+                add({
                   user: values.firstname,
                   message: 'Your savings account successfully created',
                   id: user.uid,
@@ -659,8 +659,8 @@ export const savingWithdrawalAction = (
       firebase
         .firestore()
         .collection('notifications')
-        .doc(firebase.auth().currentUser.uid)
-        .set({
+        .doc(firebase.auth().currentUser.uid).collection("notificationDatas")
+        .add({
           user: profileInfo.firstname,
           message: 'Your saving withdrawal request successfully submitted',
           id: firebase.auth().currentUser.uid,

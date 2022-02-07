@@ -3,27 +3,31 @@ import { Filter, SearchInput } from 'react-admin'
 
 export const UserFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source="id" resettable alwaysOn />
+    <SearchInput
+      source={'uid' || 'firstName' || 'lastName' || 'email'}
+      resettable
+      alwaysOn
+    />
   </Filter>
 )
 export const SavingsFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source="id" resettable alwaysOn />
+    <SearchInput source={'uid' || 'email' || 'amount'} resettable alwaysOn />
   </Filter>
 )
 export const PaymentFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source="id" resettable alwaysOn />
+    <SearchInput source={'uid' || 'lastname' || 'email'} resettable alwaysOn />
   </Filter>
 )
 export const WithdrawalFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source="id" resettable alwaysOn />
+    <SearchInput source={'uid' || 'email'} resettable alwaysOn />
   </Filter>
 )
 export const TestimonialFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source="id" resettable alwaysOn />
+    <SearchInput source={'uid' || 'lastname' || 'email'} resettable alwaysOn />
   </Filter>
 )
 export const LetterFilter = (props) => (
@@ -33,6 +37,6 @@ export const LetterFilter = (props) => (
 )
 export const ContactFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source="id" resettable alwaysOn />
+    <SearchInput source="email" resettable alwaysOn />
   </Filter>
 )

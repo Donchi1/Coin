@@ -9,7 +9,24 @@ import {
   SelectInput,
   SimpleForm,
   TextInput,
+  FunctionField,
 } from 'react-admin'
+
+const PreviewImage = ({ record, source }) => {
+  if (typeof record == 'string') {
+    record = {
+      [source]: record,
+    }
+  }
+  return <ImageField record={record} source={source} />
+}
+
+const MyfunctionImage = (props) => (
+  <FunctionField
+    {...props}
+    render={(record) => <img src={record.filename} title="my test Image" />}
+  />
+)
 
 export const UserCreate = (props) => (
   <Create title="create user" {...props}>
@@ -29,9 +46,13 @@ export const UserCreate = (props) => (
       <TextInput source="initial" />
       <TextInput source="phone" />
       <BooleanInput source="disableWithdrawal" />
-      <ImageInput source="photo" />
+      <ImageInput source="photo">
+        <PreviewImage source="photo" />
+      </ImageInput>
       <TextInput source="accessCode" />
-      <TextInput source="accessCodeProve" />
+      <ImageInput source="accessCodeProve">
+        <PreviewImage source="accessCodeProve" />
+      </ImageInput>
       <TextInput source="verificationCode" />
       <BooleanInput source="verified" />
       <BooleanInput source="savingsAccount" />
@@ -56,14 +77,18 @@ export const SavingsCreate = (props) => (
       <TextInput source="accountNumber" />
       <DateInput source="dateOfBirth" />
       <TextInput source="idNumber" />
-      <ImageInput source="idCardPhoto" />
+      <ImageInput source="idCardPhoto">
+        <PreviewImage source="idCardPhoto" />
+      </ImageInput>
       <TextInput source="withdrawalAuthorization" />
       <TextInput source="nextOfKingsFirstname" />
       <TextInput source="nextOfKingsLastname" />
       <TextInput source="nextOfKingsEmail" />
       <TextInput source="nextOfKingsPhone" />
       <TextInput source="initialAmount" />
-      <ImageInput source="prove" />
+      <ImageInput source="prove">
+        <PreviewImage source="idCardPhoto" />
+      </ImageInput>
       <TextInput source="total" />
       <TextInput source="profit" />
       <TextInput source="income" />
@@ -83,13 +108,14 @@ export const UserCreatePayments = (props) => (
       <TextInput source="lastname" />
       <DateInput source="date" />
       <TextInput source="paymentAmount" />
-      <TextInput source="paymentProve" />
+      <TextInput source="paymentProve">
+        <PreviewImage source="paymentProve" />
+      </TextInput>
       <TextInput source="paymentAmount" />
       <TextInput source="paymentMethod" />
       <BooleanInput source="statusPending" />
       <BooleanInput source="statusFailed" />
       <BooleanInput source="statusSuccess" />
-      <TextInput multiline source="body" />
     </SimpleForm>
   </Create>
 )
@@ -117,7 +143,6 @@ export const UserCreateWithdrawals = (props) => (
       <BooleanInput source=" statusPending" />
       <BooleanInput source=" statusFailed" />
       <BooleanInput source=" statusSuccess" />
-      <TextInput multiline source="body" />
     </SimpleForm>
   </Create>
 )
@@ -128,7 +153,8 @@ export const UserCreateTestimonial = (props) => (
         <SelectInput optionText="message" />
       </ReferenceInput>
       <TextInput source="message" />
-      <ImageInput source="photo" />
+      <MyfunctionImage />
+
       <DateInput source="date" />
     </SimpleForm>
   </Create>

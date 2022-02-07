@@ -1196,7 +1196,7 @@ function User() {
                             <h2 className="num-text text-black mb-5 font-w600">
                               $
                               {userProfile.initialDeposite
-                                ? Number(userProfile.initialDeposite)
+                                ? userProfile.initialDeposite
                                 : '0000'}
                             </h2>
                           </div>
@@ -1362,7 +1362,7 @@ function User() {
                               />
                             </svg>
 
-                            <div style={{ wordWrap: 'break-word' }}>
+                            <div>
                               Btc{' '}
                               {btcValue.bonus
                                 .toString()
