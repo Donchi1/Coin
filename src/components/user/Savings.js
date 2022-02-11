@@ -121,7 +121,7 @@ function Savings() {
   }
 
   return (
-    <div className="main-wrapper">
+    <div id="main-wrapper" className="show">
       <UserNav />
       <div className="content-body">
         <div className="container-fluid">

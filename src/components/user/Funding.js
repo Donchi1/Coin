@@ -309,7 +309,7 @@ function Funding() {
   }
 
   return (
-    <div className="main-wrapper">
+    <div id="main-wrapper" className="show">
       <UserNav1 />
       <div className="content-body" style={{ minHeight: '780px' }}>
         <div className="container-fluid">

@@ -75,7 +75,7 @@ function HistoryData() {
     return subscribe
   }, [])
   return (
-    <div className="main-wrapper">
+    <div id="main-wrapper" className="show">
       <UserNav1 />
       <div className="content-body">
         <div className="container-fluid">

@@ -98,8 +98,6 @@ function Profile() {
     closeButtonText: 'OK',
   }
 
-  console.log(userData)
-
   const handleSubmit = (e) => {
     e.preventDefault()
     setUserData({ ...userData, isSubmitting: true })
@@ -137,7 +135,7 @@ function Profile() {
     })
   }
   return (
-    <>
+    <div id="main-wrapper" className="show">
       <UserNav1 />
       <div className="content-body " style={{ minHeight: '780px' }}>
         <div className="container-fluid">
@@ -519,7 +517,7 @@ function Profile() {
         </div>
       </div>
       <Ufooter />
-    </>
+    </div>
   )
 }
 

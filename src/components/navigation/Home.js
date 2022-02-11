@@ -24,6 +24,7 @@ function Home() {
     (state) => state.projectReducer.contactMessageSuccess,
   )
   const userDataState = useSelector((state) => state.firebase.profile)
+  const [headerStyle, setHeaderStyle] = useState('')
 
   const contactError = useSelector(
     (state) => state.projectReducer.contactMessageError,
@@ -46,8 +47,10 @@ function Home() {
     const isSmall = window.matchMedia('screen and (max-width: 960px)')
     if (isSmall.matches) {
       setShow(1)
+      setHeaderStyle('')
     } else {
       setShow(4)
+      setHeaderStyle('banner-heading')
     }
   }, [])
 
@@ -68,15 +71,15 @@ function Home() {
       <section
         className="home-banner  site-bg header-bg-new paralax "
         id="banner"
-        style={{ height: '80%', backgroundPosition: '50%' }}
+        style={{ height: '80%' }}
       >
         <div className="container">
           <div className="row">
-            <div className="col-lg-6 col-md-6 position-u flex-align wow fadeInLeft animated">
+            <div className="col-lg-6 col-md-6 position-u  wow fadeInLeft animated">
               <div className="banner-contain">
-                <h3 className="banner-heading text-primary ">
+                <h1 className={`${headerStyle} text-primary`}>
                   Invest In Ultimatecoins Way To Trade
-                </h3>
+                </h1>
                 <p className="banner-des text-light">
                   Stable and reliable way to crypto trading
                 </p>
@@ -596,8 +599,8 @@ function Home() {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 wow fadeInLeft pb-45">
-              <div className="team-box flex-align ">
+            <div className="col-md-4 col-lg-3 wow fadeInLeft pb-45">
+              <div className="team-box advisors text-center ">
                 <div className="team-img">
                   <a href="/teams">
                     <img
@@ -637,7 +640,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 pb-45 wow fadeInRight">
+            <div className="col-md-4 col-lg-3 pb-45 wow fadeInRight">
               <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="/teams">
@@ -676,7 +679,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 wow fadeInLeft pb-45">
+            <div className="col-md-4 col-lg-3 wow fadeInLeft pb-45">
               <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="/teams">
@@ -715,9 +718,9 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 pb-45 wow fadeInRight">
-              <div className="team-box advisors text-center row">
-                <div className="team-img col-md-12 ">
+            <div className="col-md-4 col-lg-3 pb-45 wow fadeInRight">
+              <div className="team-box advisors text-center ">
+                <div className="team-img  ">
                   <a href="/teams">
                     <img
                       src="https://themes.templatescoder.com/crypton/html/demo/1-1/01-Dark-Theme/images/team-4.jpg"
@@ -725,7 +728,7 @@ function Home() {
                     />
                   </a>
                 </div>
-                <div className="team-des col-md-12">
+                <div className="team-des ">
                   <a href="/teams" className="member-name nav-color">
                     Olivia Fred
                   </a>
@@ -1506,7 +1509,7 @@ function Home() {
                 </li>
                 <li>
                   <i className="fa fa-whatsapp" aria-hidden="true"></i>{' '}
-                  <a href="https://wa.me/+1(423)900-8606">+1(423)900-8606</a>
+                  <a href="https://wa.me/+1(876)285-4050">+1(876)285-4050</a>
                 </li>
                 <li>
                   <i className="fa fa-envelope" aria-hidden="true"></i>{' '}

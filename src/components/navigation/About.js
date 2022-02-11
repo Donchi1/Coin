@@ -49,7 +49,10 @@ function About() {
                 </h3>
                 <p className="work-des pb-20">
                   We are establish to reach out to people who really wants to
-                  make wealth with rhe little they have
+                  make wealth with the little they have. Ultimatecoins has been
+                  one of the leading and well known brokers online since 2015.
+                  We make sure you have a stable and reliable platform for your
+                  investment year by year.
                 </p>
 
                 <ul className="check-list">
@@ -208,7 +211,7 @@ function About() {
           </div>
           <div className="row">
             <div className="col-md-6 wow fadeInLeft pb-45">
-              <div className="team-box flex-align">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="/teams">
                     <img
@@ -249,7 +252,7 @@ function About() {
               </div>
             </div>
             <div className="col-md-6 pb-45 wow fadeInRight">
-              <div className="team-box flex-align">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="/teams">
                     <img
@@ -288,7 +291,7 @@ function About() {
               </div>
             </div>
             <div className="col-md-6 wow fadeInLeft pb-45">
-              <div className="team-box flex-align">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="/teams">
                     <img
@@ -327,7 +330,7 @@ function About() {
               </div>
             </div>
             <div className="col-md-6 pb-45 wow fadeInRight">
-              <div className="team-box flex-align">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="/teams">
                     <img

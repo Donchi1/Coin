@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 function Testimonials() {
-  const [show, setShow] = useState(4)
+  const [show, setShow] = useState(null)
 
   const slickOption = {
     slidesToShow: show,
@@ -59,27 +59,27 @@ function Testimonials() {
     },
   ])
 
-  // useEffect(() => {
-  //   const unsubscribe = firebase
-  //     .firestore()
-  //     .collection('testimonials')
-  //     .onSnapshot((qs) => {
-  //       const data = qs.docs.map((doc) => doc.data())
-  //       data.map((each) => {
-  //         if (each) {
-  //           setVideoData([
-  //             ...videoData,
-  //             {
-  //               url: each.photo,
-  //               message: each.message,
-  //               id: each.createdate.toDate(),
-  //             },
-  //           ])
-  //         }
-  //       })
-  //     })
-  //   return unsubscribe
-  // }, [])
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection('testimonials')
+      .onSnapshot((qs) => {
+        const data = qs.docs.map((doc) => doc.data())
+        data.map((each) => {
+          if (each) {
+            setVideoData([
+              ...videoData,
+              {
+                url: each.photo,
+                message: each.message,
+                id: each.createdate.toDate(),
+              },
+            ])
+          }
+        })
+      })
+    return unsubscribe
+  }, [])
 
   return (
     <>
@@ -99,7 +99,7 @@ function Testimonials() {
               </div>
             </div>
           </div>
-          <Slider {...slickOption} swipe arrows={false} swipeToSlide dots>
+          <Slider {...slickOption} swipe swipeToSlide>
             {videoData.map((each) => (
               <div className="blog-box " key={each.id}>
                 <div className="blog-img mb-15 work-box">

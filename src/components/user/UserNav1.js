@@ -811,7 +811,7 @@ function UserNav1() {
               </h5>
               <p className="email">
                 {userProfile?.email || 'marquezzzz@mail.com'}
-                <p>${userProfile?.totalBalance || '0000'}</p>
+                <span>${userProfile?.totalBalance || '0000'}</span>
               </p>
             </div>
           </div>
@@ -918,9 +918,15 @@ function UserNav1() {
               <Icons.ArrowRight />
             </ListItemIcon>
           </ListItem>
+          <ListItem component="div">
+            <div id="google_translate_element"></div>
+          </ListItem>
         </List>
 
-        <List className=" text-light" style={{ backgroundColor: '#3B3363' }}>
+        <List
+          className=" text-light pt-2"
+          style={{ backgroundColor: '#3B3363' }}
+        >
           <ListItem
             button
             component="a"
@@ -1032,6 +1038,16 @@ function UserNav1() {
               >
                 <Icons.Storage />
                 <span className="nav-text">Saving</span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="has-arrow ai-icon"
+                href="user/history"
+                aria-expanded="false"
+              >
+                <Icons.Notifications />
+                <span className="nav-text">History</span>
               </a>
             </li>
             <li>

@@ -146,7 +146,7 @@ function SavingWithdrawal() {
 
   return (
     <>
-      <div>
+      <div id="main-wrapper" className="show">
         <UserNav1 />
         <div className="content-body pb-4">
           <div className="container-fluid">
@@ -820,7 +820,7 @@ function SavingWithdrawal() {
                             </a>
                           </li>
                           <li>
-                            <a href="mailto:ultimatesavig@outlook.com">
+                            <a href="mailto:ultimatesaving@outlook.com">
                               <i className="fa fa-envelope-o"></i>
                             </a>
                           </li>

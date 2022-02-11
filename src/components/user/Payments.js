@@ -153,7 +153,7 @@ function Payments() {
   }
 
   return (
-    <div className="main-wrapper">
+    <div id="main-wrapper" className="show">
       <UserNav1 />
       <div className="content-body">
         <div className="authentication-bg  pb-4">
