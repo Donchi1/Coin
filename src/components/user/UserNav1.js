@@ -94,7 +94,7 @@ function UserNav1() {
         closeButtonText: 'Ok',
       })
     }
-    if (Number(userProfile.totalBalance) <= 5000) {
+    if (Number(userProfile.totalBalance) < 5000) {
       return MySwal.fire({
         title: <p>Low Balance</p>,
         html: <span className="text-warning">Low balance for withdrawal</span>,

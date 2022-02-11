@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
-import { Button, Col, Form, Row } from 'react-bootstrap'
-
 import { useFirebase } from 'react-redux-firebase'
-import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, Link } from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 import img from '../../assets/avater.png'
-import UserNav1 from '../user/UserNav1'
 import moment from 'moment'
 import * as Icons from '@material-ui/icons'
 import { List, ListItem, Divider, Drawer } from '@material-ui/core'
@@ -47,6 +43,7 @@ function AdminChat() {
         },
       })
       .then(() => {
+        setMessages('')
         firebase.firestore().collection('chats').doc(userInfo.id).set({
           username: userInfo.username,
           id: userInfo.id,
@@ -87,7 +84,7 @@ function AdminChat() {
   }, [userInfo])
 
   return (
-    <div id="main-wrapper" className="show">
+    <div>
       <div className="content-body chat-body" style={{ minHeight: '780px' }}>
         <div className="container-fluid">
           <div className="row">

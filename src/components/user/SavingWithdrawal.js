@@ -49,15 +49,16 @@ function SavingWithdrawal() {
 
   const errorOptions = {
     title: <p> Withdrawal Authorization Error</p>,
-    text: 'Withdrawal Authorization Code Required',
+    text: 'Wrong Or No withdrawal Authorization Code ',
     icon: 'error',
+    color: 'orange',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
 
   const successOptions = {
     title: <p>Success</p>,
-    text: savingWithdrawalMessage,
+    html: <span className="text-success">savingWithdrawalMessage</span>,
     icon: 'success',
     timer: 3000,
     showCloseButton: true,
@@ -109,6 +110,14 @@ function SavingWithdrawal() {
     e.preventDefault()
 
     if (saveInfo.authorize !== withdrawalAmount.withdrawalAuthorization) {
+      setOpenPay({
+        ...openPay,
+        btc: false,
+        etheruim: false,
+        paypal: false,
+        bank: false,
+      })
+
       return MySwal.fire(errorOptions)
     }
 

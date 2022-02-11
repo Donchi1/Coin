@@ -2017,7 +2017,9 @@ function Funding() {
         >
           <Form onSubmit={pwcAction} noValidate>
             <Modal.Header closeButton>
-              <Modal.Title>Personal Withdrawal Code</Modal.Title>
+              <Modal.Title className="text-warning">
+                Personal Withdrawal Code
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Control

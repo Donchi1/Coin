@@ -72,8 +72,6 @@ function Withdrawals() {
     return unsubscribe
   }, [])
 
-  console.log(profileInfo.totalBalance)
-
   useEffect(() => {
     axios
       .get(
@@ -843,7 +841,7 @@ function Withdrawals() {
             </Modal.Header>
             <Modal.Body>
               <p>Withdrawal Fee</p>
-              <h6>$1250</h6>
+              <h6>$2000</h6>
 
               <h4 className="userTextColor">
                 Make payment with the below btc wallet and upload Prove
