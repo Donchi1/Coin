@@ -3,11 +3,11 @@ import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin'
 export default (type, params) => {
   if (type === AUTH_LOGIN) {
     const cred = { username: params.username, password: params.password }
-    localStorage.setItem('cred', cred)
     if (
       cred.username === process.env.REACT_APP_ADMIN_USERNAME &&
       cred.password === process.env.REACT_APP_ADMIN_PASSWORD
     ) {
+      localStorage.setItem('cred', cred)
       return Promise.resolve()
     } else {
       return Promise.reject()
