@@ -9,17 +9,9 @@ import {
   SelectInput,
   SimpleForm,
   TextInput,
+  ImageField,
   FunctionField,
 } from 'react-admin'
-
-const PreviewImage = ({ record, source }) => {
-  if (typeof record == 'string') {
-    record = {
-      [source]: record,
-    }
-  }
-  return <ImageField record={record} source={source} />
-}
 
 const MyfunctionImage = (props) => (
   <FunctionField
@@ -47,11 +39,11 @@ export const UserCreate = (props) => (
       <TextInput source="phone" />
       <BooleanInput source="disableWithdrawal" />
       <ImageInput source="photo">
-        <PreviewImage source="photo" />
+        <ImageField source="src" />
       </ImageInput>
       <TextInput source="accessCode" />
       <ImageInput source="accessCodeProve">
-        <PreviewImage source="accessCodeProve" />
+        <ImageField source="src" />
       </ImageInput>
       <TextInput source="verificationCode" />
       <BooleanInput source="verified" />
@@ -78,7 +70,7 @@ export const SavingsCreate = (props) => (
       <DateInput source="dateOfBirth" />
       <TextInput source="idNumber" />
       <ImageInput source="idCardPhoto">
-        <PreviewImage source="idCardPhoto" />
+        <ImageField source="src" />
       </ImageInput>
       <TextInput source="withdrawalAuthorization" />
       <TextInput source="nextOfKingsFirstname" />
@@ -87,7 +79,7 @@ export const SavingsCreate = (props) => (
       <TextInput source="nextOfKingsPhone" />
       <TextInput source="initialAmount" />
       <ImageInput source="prove">
-        <PreviewImage source="idCardPhoto" />
+        <ImageField source="src" />
       </ImageInput>
       <TextInput source="total" />
       <TextInput source="profit" />
@@ -109,7 +101,7 @@ export const UserCreatePayments = (props) => (
       <DateInput source="date" />
       <TextInput source="paymentAmount" />
       <TextInput source="paymentProve">
-        <PreviewImage source="paymentProve" />
+        <ImageField source="src" />
       </TextInput>
       <TextInput source="paymentAmount" />
       <TextInput source="paymentMethod" />
@@ -150,11 +142,12 @@ export const UserCreateTestimonial = (props) => (
   <Create title="Create Testimonial" {...props}>
     <SimpleForm>
       <ReferenceInput source="id" reference="testimonials">
-        <SelectInput optionText="message" />
+        <SelectInput optionText="id" />
       </ReferenceInput>
       <TextInput source="message" />
-      <MyfunctionImage />
-
+      <ImageInput source="photo">
+        <ImageField source="photo" />
+      </ImageInput>
       <DateInput source="date" />
     </SimpleForm>
   </Create>

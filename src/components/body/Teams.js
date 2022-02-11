@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 
 import NavBar from '../navigation/NavBar'
 import Footer from './Footer'
+import adv1 from '../../assets/teamguy.jpg'
+import adv2 from '../../assets/teamlady.jpg'
+import adv3 from '../../assets/teamguy1.jpg'
 
 function Teams() {
   return (
@@ -44,8 +47,8 @@ function Teams() {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 pb-45 wow fadeInLeft">
-              <div className="team-box flex-align">
+            <div className="col-md-4 pb-45 wow fadeInLeft">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <a href="clone.html">
                     <img
@@ -85,8 +88,8 @@ function Teams() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 pb-45 wow fadeInRight">
-              <div className="team-box flex-align">
+            <div className="col-md-4 pb-45 wow fadeInRight">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <Link to="/teams">
                     <img
@@ -124,8 +127,8 @@ function Teams() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 pb-45 wow fadeInLeft">
-              <div className="team-box flex-align">
+            <div className="col-md-4 pb-45 wow fadeInLeft">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <Link to="/teams">
                     <img
@@ -163,8 +166,8 @@ function Teams() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 pb-45 wow fadeInRight">
-              <div className="team-box flex-align">
+            <div className="col-md-4 pb-45 wow fadeInRight">
+              <div className="team-box advisors text-center">
                 <div className="team-img">
                   <Link to="/teams">
                     <img
@@ -222,10 +225,7 @@ function Teams() {
               <div className="team-box advisors text-center">
                 <div className="team-img">
                   <Link to="/teams">
-                    <img
-                      src={require('../../assets/teamguy.jpg')}
-                      alt="team member"
-                    />
+                    <img src={adv1} alt="team member" />
                   </Link>
                 </div>
                 <div className="team-des">
@@ -260,10 +260,7 @@ function Teams() {
               <div className="team-box advisors text-center">
                 <div className="team-img">
                   <Link to="/teams">
-                    <img
-                      src={require('../../assets/teamlady.jpg')}
-                      alt="team member"
-                    />
+                    <img src={adv2} alt="team member" />
                   </Link>
                 </div>
                 <div className="team-des">
@@ -298,10 +295,7 @@ function Teams() {
               <div className="team-box advisors text-center">
                 <div className="team-img">
                   <Link to="/teams">
-                    <img
-                      src={require('../../assets/teamguy1.jpg')}
-                      alt="team member"
-                    />
+                    <img src={adv3} alt="team member" />
                   </Link>
                 </div>
                 <div className="team-des">

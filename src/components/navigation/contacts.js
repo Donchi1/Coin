@@ -96,7 +96,7 @@ function Contacts() {
                 </li>
                 <li>
                   <i className="fa fa-whatsapp" aria-hidden="true"></i>{' '}
-                  <span>+1(423)900-8606</span>
+                  <span>+1(876)285-4050</span>
                 </li>
                 <li>
                   <i className="fa fa-envelope" aria-hidden="true"></i>{' '}

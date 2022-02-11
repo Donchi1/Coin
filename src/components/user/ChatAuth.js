@@ -13,7 +13,7 @@ import Ufooter from './Ufooter'
 
 function ChatAuth() {
   const firebase = useFirebase()
-  const dispatch = useDispatch()
+
   const scroll = useRef()
 
   const userProfile = useSelector((state) => state.firebase.profile)
@@ -366,15 +366,14 @@ function ChatAuth() {
                           </div>
                         </div>
                       </div>
-                      <Scrollbars>
-                        <div
-                          className="chat-box-area "
-                          id="chartBox"
-                          style={{
-                            backgroundImage:
-                              "url('https://d22roh5inpczgk.cloudfront.net/xhtml/images/chat-bg.png')",
-                          }}
-                        >
+                      <Scrollbars
+                        style={{
+                          height: 300,
+                          backgroundImage:
+                            "url('https://d22roh5inpczgk.cloudfront.net/xhtml/images/chat-bg.png')",
+                        }}
+                      >
+                        <div className="chat-box-area " id="chartBox">
                           <div
                             data-chat="person1"
                             className="chat active-chat "

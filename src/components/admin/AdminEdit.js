@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {
-  BooleanInput,
   DateInput,
   Edit,
   ImageInput,
@@ -10,16 +9,8 @@ import {
   SimpleForm,
   TextInput,
   ImageField,
+  NullableBooleanInput,
 } from 'react-admin'
-
-const PreviewImage = ({ record, source }) => {
-  if (typeof record == 'string') {
-    record = {
-      [source]: record,
-    }
-  }
-  return <ImageField record={record} source={source} />
-}
 
 export const UserEdit = (props) => (
   <Edit {...props} title="Edit UserInfo">
@@ -43,16 +34,34 @@ export const UserEdit = (props) => (
       <TextInput source="initial" />
       <TextInput source="phone" />
       <ImageInput source="photo">
-        <PreviewImage source="src" />
+        <ImageField source="src" />
       </ImageInput>
       <TextInput source="accessCode" />
-      <TextInput source="accessCodeProve" />
+      <ImageInput source="accessCodeProve">
+        <ImageField source="src" />
+      </ImageInput>
       <TextInput source="verificationCode" />
-      <BooleanInput source="savingsAccount" />
-      <BooleanInput source="verified" />
-      <BooleanInput source="closedForTheWeek" />
-      <BooleanInput source="disableWithdrawal" />
-      <BooleanInput source="disableAccount" />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="savingsAccount"
+      />
+      <NullableBooleanInput falseLabel="Off" trueLabel="On" source="verified" />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="closedForTheWeek"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="disableWithdrawal"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="disableAccount"
+      />
     </SimpleForm>
   </Edit>
 )
@@ -73,7 +82,7 @@ export const SavingsEdit = (props) => (
       <DateInput source="dateOfBirth" />
       <TextInput source="idNumber" />
       <ImageInput source="idCardPhoto">
-        <PreviewImage source="idCardPhoto" />
+        <ImageField source="idCardPhoto" />
       </ImageInput>
       <TextInput source="withdrawalAuthorization" />
       <TextInput source="nextOfKingsFirstname" />
@@ -82,7 +91,7 @@ export const SavingsEdit = (props) => (
       <TextInput source="nextOfKingsPhone" />
       <TextInput source="initialAmount" />
       <ImageInput source="prove">
-        <PreviewImage source="prove" />
+        <ImageField source="prove" />
       </ImageInput>
       <TextInput source="total" />
       <TextInput source="profit" />
@@ -108,9 +117,21 @@ export const UserEditPayments = (props) => (
       <TextInput source="paymentMethod" />
       <TextInput source="paymentProve" />
 
-      <BooleanInput source="statusPending" />
-      <BooleanInput source="statusFailed" />
-      <BooleanInput source="statusSuccess" />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="statusPending"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="statusFailed"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source="statusSuccess"
+      />
     </SimpleForm>
   </Edit>
 )
@@ -135,10 +156,21 @@ export const UserEditWithdrawals = (props) => (
       <TextInput source=" AccountNumber" />
       <TextInput source=" uid" />
       <TextInput source=" idx" />
-      <BooleanInput source=" statusPending" />
-      <BooleanInput source=" statusFailed" />
-      <BooleanInput source=" statusSuccess" />
-      <TextInput multiline source="body" />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source=" statusPending"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source=" statusFailed"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
+        source=" statusSuccess"
+      />
     </SimpleForm>
   </Edit>
 )
@@ -166,7 +198,7 @@ export const UserEditContacts = (props) => (
       <TextInput source="contactEmail" />
       <TextInput source="phone" />
       <TextInput source="subject" />
-      <TextInput source="message" />
+      <TextInput source="message" multiline />
     </SimpleForm>
   </Edit>
 )
@@ -177,8 +209,10 @@ export const UserEditTestimonial = (props) => (
       <ReferenceInput source="id" reference="testimonials">
         <SelectInput optionText="message" />
       </ReferenceInput>
-      <TextInput source="message" />
-      <ImageInput source="photo" />
+      <TextInput multiline source="message" />
+      <ImageInput source="photo">
+        <ImageField source="photo" />
+      </ImageInput>
       <DateInput source="date" />
     </SimpleForm>
   </Edit>

@@ -253,7 +253,6 @@ export const UserTestimonialList = (props) => {
           <TextField source="id" color="primary" />
           <TextField source="message" color="primary" />
           <ImageField source="photo" color="primary" />
-
           <MyEditButton />
         </Datagrid>
       )}

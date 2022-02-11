@@ -72,6 +72,8 @@ function Withdrawals() {
     return unsubscribe
   }, [])
 
+  console.log(profileInfo.totalBalance)
+
   useEffect(() => {
     axios
       .get(
@@ -106,8 +108,9 @@ function Withdrawals() {
 
       return MySwal.fire(withdrawalErrorOptions)
     }
-    if (Number(profileInfo.totalBalance) < 5000) {
-      if (!profileInfo.disableWithdrawal) {
+
+    if (Number(profileInfo?.totalBalance) < 5000) {
+      if (profileInfo?.disableWithdrawal === false) {
         setOpenPay({
           ...openPay,
           btc: false,
@@ -127,33 +130,33 @@ function Withdrawals() {
       } else {
         return setWithdrawalFeeData({ ...withdrawalFeeData, open: true })
       }
+    } else {
+      setOpenPay({
+        ...openPay,
+        btc: false,
+        etheruim: false,
+        litecoin: false,
+        bank: false,
+      })
+      setWithdrawalAmount({
+        ...withdrawalAmount,
+        amount: 1,
+        wallet: '',
+        withdrawalMethod: '',
+        name: '',
+        accountNumber: 'none',
+        phone: '',
+      })
+
+      return MySwal.fire({
+        title: 'Low Withdrawal Balance',
+        text:
+          'You Must Have $5000 and above Before You Can Withdraw. You can go ahead and fund your account',
+        color: 'orange',
+        showCloseButton: true,
+        closeButtonText: 'Cancel',
+      })
     }
-
-    setOpenPay({
-      ...openPay,
-      btc: false,
-      etheruim: false,
-      litecoin: false,
-      bank: false,
-    })
-    setWithdrawalAmount({
-      ...withdrawalAmount,
-      amount: 1,
-      wallet: '',
-      withdrawalMethod: '',
-      name: '',
-      accountNumber: 'none',
-      phone: '',
-    })
-
-    return MySwal.fire({
-      title: 'Low Withdrawal Balance',
-      text:
-        'You Must Have $5000 and above Before You Can Withdraw. You can go ahead and fund your account',
-      color: 'orange',
-      showCloseButton: true,
-      closeButtonText: 'Cancel',
-    })
   }
 
   const errorOptions = {
@@ -243,7 +246,7 @@ function Withdrawals() {
             <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="/user">Dashboard</a>
+                  <a href="/user/dashboard">Dashboard</a>
                 </li>
                 <li className="breadcrumb-item active">
                   <Link to="#">Withdrawal</Link>

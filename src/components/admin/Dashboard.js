@@ -20,11 +20,13 @@ export default function Dashboard() {
       .get()
       .then((users) => {
         users.forEach((user) => {
+          console.log('closed users', users)
+          console.log('closed user', user)
           data
             .doc(user.id)
             .update({ closedForTheWeek: true })
             .then(() => {
-              return notify('Successful Closed for the week', {
+              return notify('Successfully Closed for the week', {
                 type: 'success',
                 undoable: false,
               })
@@ -40,11 +42,12 @@ export default function Dashboard() {
       .get()
       .then((users) => {
         users.forEach((user) => {
+          console.log('opened users', user)
           data
             .doc(user.id)
             .update({ closedForTheWeek: false })
             .the(() => {
-              return notify('Successful Opened for the week', {
+              return notify('Successfully Opened for the week', {
                 type: 'success',
                 undoable: false,
               })

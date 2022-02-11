@@ -11,11 +11,6 @@ import { Button } from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-const useStyles = makeStyles((theme) => ({
-  content: {
-    backgroundColor: 'red',
-  },
-}))
 const MySwal = withReactContent(Swal)
 
 function SavingWithdrawal() {
@@ -43,9 +38,6 @@ function SavingWithdrawal() {
       })
   }, [savings])
 
-  const transError = useSelector(
-    (state) => state.projectReducer.withdrawalError,
-  )
   const profileInfo = useSelector((state) => state.firebase.profile)
 
   const [openPay, setOpenPay] = useState({
@@ -158,7 +150,7 @@ function SavingWithdrawal() {
               <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="/user">Dashboard</a>
+                    <a href="/user/dashboard">Dashboard</a>
                   </li>
                   <li className="breadcrumb-item active">
                     <Link to="#">Saving Withdrawal</Link>

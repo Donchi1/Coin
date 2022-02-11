@@ -10,28 +10,24 @@ import UserNav1 from '../user/UserNav1'
 import moment from 'moment'
 import * as Icons from '@material-ui/icons'
 import { List, ListItem, Divider, Drawer } from '@material-ui/core'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
 function AdminChat() {
   const firebase = useFirebase()
-  const dispatch = useDispatch()
   const user = firebase.auth().currentUser
-  const userProfile = useSelector((state) => state.authReducer.userData)
 
   const [messages, setMessages] = useState('')
   const [openSlider, setOpenSlider] = useState(false)
   const [chatList, setChatList] = useState([])
-  console.log(chatList)
 
   const [userInfo, setUserInfo] = useState({
-    id: chatList[0] ? chatList[0]?.user.id : '',
-    photo: chatList[0] ? chatList[0]?.user.photo : '',
-    email: chatList[0] ? chatList[0]?.user.email : '',
-    username: chatList[0] ? chatList[0]?.user.username : '',
+    id: '',
+    photo: '',
+    email: '',
+    username: '',
   })
 
   const [mainMessage, setMainMessage] = useState([])
-
-  console.log(userInfo)
 
   const handleSubmit = () => {
     firebase
@@ -44,7 +40,7 @@ function AdminChat() {
         text: messages,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         user: {
-          username: userInfo.firstname,
+          username: userInfo.username,
           id: userInfo.id,
           photo: userInfo.photo,
           email: userInfo.email,
@@ -52,7 +48,7 @@ function AdminChat() {
       })
       .then(() => {
         firebase.firestore().collection('chats').doc(userInfo.id).set({
-          username: userInfo.firstname,
+          username: userInfo.username,
           id: userInfo.id,
           photo: userInfo.photo,
           email: userInfo.email,
@@ -71,7 +67,7 @@ function AdminChat() {
         return setChatList(chatsList)
       })
     return unsubscribe
-  }, [])
+  }, [userInfo])
   useEffect(() => {
     const unsubscribe = firebase
       .firestore()
@@ -92,8 +88,6 @@ function AdminChat() {
 
   return (
     <div id="main-wrapper" className="show">
-      <UserNav1 />
-
       <div className="content-body chat-body" style={{ minHeight: '780px' }}>
         <div className="container-fluid">
           <div className="row">
@@ -218,10 +212,12 @@ function AdminChat() {
                                             className="text-black user-name mb-0 font-w600 fs-16"
                                             data-name="Harry Marten"
                                           >
-                                            {each.email}
+                                            {each.email.slice(0, 8)}...
                                           </h6>
                                           <span className="ml-auto fs-14">
-                                            {moment(each.createdAt).calendar()}
+                                            {moment(
+                                              each.createdAt.toDate(),
+                                            ).calendar()}
                                           </span>
                                         </div>
                                         <p className="">{each.username}</p>
@@ -306,7 +302,7 @@ function AdminChat() {
                                       className="text-black user-name mb-0 font-w600 fs-16"
                                       data-name="Harry Marten"
                                     >
-                                      {each.email}
+                                      {each.email.slice(0, 8)}...
                                     </h6>
                                     <span className="ml-auto fs-14">
                                       {moment(
@@ -386,74 +382,83 @@ function AdminChat() {
                           </div>
                         </div>
                       </div>
-
-                      <div
-                        className="chat-box-area dz-scroll ps ps--active-y"
-                        id="chartBox"
+                      <Scrollbars
                         style={{
+                          height: 300,
                           backgroundImage:
                             "url('https://d22roh5inpczgk.cloudfront.net/xhtml/images/chat-bg.png')",
                         }}
                       >
-                        <div data-chat="person1" className="chat active-chat ">
-                          {mainMessage &&
-                            mainMessage.map((each) => (
-                              <div
-                                key={each.id}
-                                className={`media mb-4  ${
-                                  each.user.id === user.uid
-                                    ? 'justify-content-end align-items-end'
-                                    : 'received-msg  justify-content-start align-items-start'
-                                }`}
-                              >
+                        <div
+                          className="chat-box-area "
+                          id="chartBox"
+                          style={{
+                            backgroundImage:
+                              "url('https://d22roh5inpczgk.cloudfront.net/xhtml/images/chat-bg.png')",
+                          }}
+                        >
+                          <div
+                            data-chat="person1"
+                            className="chat active-chat "
+                          >
+                            {mainMessage &&
+                              mainMessage.map((each) => (
                                 <div
-                                  className={
+                                  key={each.id}
+                                  className={`media mb-4  ${
                                     each.user.id === user.uid
-                                      ? 'message-sent'
-                                      : 'message-received'
-                                  }
+                                      ? 'justify-content-end align-items-end'
+                                      : 'received-msg  justify-content-start align-items-start'
+                                  }`}
                                 >
-                                  <p
-                                    className="mb-1 d-inline-flex align-items-center"
-                                    style={{ wordBreak: 'break-all' }}
+                                  <div
+                                    className={
+                                      each.user.id === user.uid
+                                        ? 'message-sent'
+                                        : 'message-received'
+                                    }
                                   >
-                                    <img
-                                      src={each.user.photo}
-                                      alt=""
-                                      className="rounded-circle img-1 mr-4 "
-                                      width="38rem"
-                                    />
-                                    <span>{each.text}</span>
-                                  </p>
-                                  <span className="fs-12 text-black">
-                                    {moment(each.createdAt.toDate()).calendar()}
-                                  </span>
+                                    <p className="mb-1 d-inline-flex align-items-center">
+                                      <img
+                                        src={each.user.photo}
+                                        alt=""
+                                        className="rounded-circle img-1 mr-4 "
+                                        width="38rem"
+                                      />
+                                      <span>{each.text}</span>
+                                    </p>
+                                    <span className="fs-12 text-black"></span>
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                        </div>
+                              ))}
+                          </div>
 
-                        <div
-                          className="ps__rail-x"
-                          style={{ left: '0px', bottom: '0px' }}
-                        >
                           <div
-                            className="ps__thumb-x"
-                            tabindex="0"
-                            style={{ left: '0px', width: '0px' }}
-                          ></div>
-                        </div>
-                        <div
-                          className="ps__rail-y"
-                          style={{ top: '0px', height: '340px', right: '0px' }}
-                        >
+                            className="ps__rail-x"
+                            style={{ left: '0px', bottom: '0px' }}
+                          >
+                            <div
+                              className="ps__thumb-x"
+                              tabindex="0"
+                              style={{ left: '0px', width: '0px' }}
+                            ></div>
+                          </div>
                           <div
-                            className="ps__thumb-y"
-                            tabindex="0"
-                            style={{ top: '0px', height: '337px' }}
-                          ></div>
+                            className="ps__rail-y"
+                            style={{
+                              top: '0px',
+                              height: '340px',
+                              right: '0px',
+                            }}
+                          >
+                            <div
+                              className="ps__thumb-y"
+                              tabindex="0"
+                              style={{ top: '0px', height: '337px' }}
+                            ></div>
+                          </div>
                         </div>
-                      </div>
+                      </Scrollbars>
                       <div className="card-footer border-0 type-massage">
                         <div className="input-group">
                           <input

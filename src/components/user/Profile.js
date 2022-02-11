@@ -151,7 +151,7 @@ function Profile() {
             <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="/user">Dashboard</a>
+                  <a href="/user/dashboard">Dashboard</a>
                 </li>
                 <li className="breadcrumb-item active">
                   <Link to="#">Profile</Link>

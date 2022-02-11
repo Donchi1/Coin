@@ -82,7 +82,10 @@ function UserNav1() {
   const withdrawalCheck = () => {
     setOpenSlider(false)
 
-    if (userProfile.totalBalance === '0000') {
+    if (
+      userProfile.totalBalance === '0000' ||
+      userProfile.totalBalance === ''
+    ) {
       return MySwal.fire({
         title: <p>No Balance</p>,
         html: <span className="text-warning">No balance for withdrawal</span>,
