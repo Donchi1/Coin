@@ -58,7 +58,7 @@ function SavingWithdrawal() {
 
   const successOptions = {
     title: <p>Success</p>,
-    html: <span className="text-success">savingWithdrawalMessage</span>,
+    html: <span className="text-success">{savingWithdrawalMessage}</span>,
     icon: 'success',
     timer: 3000,
     showCloseButton: true,

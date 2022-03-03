@@ -298,7 +298,7 @@ function UserNav1() {
           title: <p>Access Success</p>,
           html: <span className="text-success">{message}</span>,
           icon: 'success',
-          timer: 4000,
+          timer: 6000,
           showCloseButton: true,
           closeButtonText: 'Ok',
         }).then(() => {
@@ -397,7 +397,13 @@ function UserNav1() {
               <Button
                 block
                 className="history-info"
-                onClick={() => setAccessCodeProve({ open: true, price: '570' })}
+                onClick={() =>
+                  setAccessCodeProve({
+                    ...accessCodeProve,
+                    open: true,
+                    price: '570',
+                  })
+                }
               >
                 Weekly: $570
               </Button>
@@ -414,7 +420,11 @@ function UserNav1() {
                 block
                 className="history-info"
                 onClick={() =>
-                  setAccessCodeProve({ open: true, price: '1950' })
+                  setAccessCodeProve({
+                    ...accessCodeProve,
+                    open: true,
+                    price: '1950',
+                  })
                 }
               >
                 Yearly: $1950
@@ -442,7 +452,7 @@ function UserNav1() {
       </>
       <Modal
         show={accessCodeProve.open}
-        onHide={() => setAccessCodeProve({ open: false })}
+        onHide={() => setAccessCodeProve({ ...accessCodeProve, open: false })}
         backdrop="static"
       >
         <Modal.Header closeButton>
@@ -811,8 +821,8 @@ function UserNav1() {
               </h5>
               <p className="email">
                 {userProfile?.email || 'marquezzzz@mail.com'}
-                <span>${userProfile?.totalBalance || '0000'}</span>
               </p>
+              <p className="email">${userProfile?.totalBalance || '0000'}</p>
             </div>
           </div>
           <Divider />

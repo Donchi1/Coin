@@ -85,7 +85,7 @@ function AdminChat() {
 
   return (
     <div>
-      <div className="content-body chat-body" style={{ minHeight: '780px' }}>
+      <div className=" chat-body" style={{ minHeight: '780px' }}>
         <div className="container-fluid">
           <div className="row">
             <div className="col-xl-12">

@@ -70,7 +70,7 @@ function Testimonials() {
             setVideoData([
               ...videoData,
               {
-                url: each.photo,
+                url: each.photo.src,
                 message: each.message,
                 id: each.createdate.toDate(),
               },

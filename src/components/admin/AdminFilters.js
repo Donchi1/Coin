@@ -4,7 +4,7 @@ import { Filter, SearchInput } from 'react-admin'
 export const UserFilter = (props) => (
   <Filter {...props}>
     <SearchInput
-      source={'uid' || 'firstName' || 'lastName' || 'email'}
+      source={('email' || 'firstName' || 'uid' || 'lastName', 'phone')}
       resettable
       alwaysOn
     />
@@ -12,17 +12,25 @@ export const UserFilter = (props) => (
 )
 export const SavingsFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source={'uid' || 'email' || 'amount'} resettable alwaysOn />
+    <SearchInput
+      source={'firstName' || 'uid' || 'email' || 'amount'}
+      resettable
+      alwaysOn
+    />
   </Filter>
 )
 export const PaymentFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source={'uid' || 'lastname' || 'email'} resettable alwaysOn />
+    <SearchInput
+      source={'firstName' || 'uid' || 'lastname' || 'email'}
+      resettable
+      alwaysOn
+    />
   </Filter>
 )
 export const WithdrawalFilter = (props) => (
   <Filter {...props}>
-    <SearchInput source={'uid' || 'email'} resettable alwaysOn />
+    <SearchInput source={'firstName' || 'uid' || 'email'} resettable alwaysOn />
   </Filter>
 )
 export const TestimonialFilter = (props) => (

@@ -107,7 +107,7 @@ function Withdrawals() {
       return MySwal.fire(withdrawalErrorOptions)
     }
 
-    if (Number(profileInfo?.totalBalance) < 5000) {
+    if (Number(profileInfo?.totalBalance) > 5000) {
       if (profileInfo?.disableWithdrawal === false) {
         setOpenPay({
           ...openPay,
@@ -210,7 +210,7 @@ function Withdrawals() {
                     </span>
                   ),
                   icon: 'success',
-                  timer: 4000,
+                  timer: 5000,
                   showCloseButton: true,
                   closeButtonText: 'Ok',
                 })
@@ -841,7 +841,7 @@ function Withdrawals() {
             </Modal.Header>
             <Modal.Body>
               <p>Withdrawal Fee</p>
-              <h6>$2000</h6>
+              <h6>$2250</h6>
 
               <h4 className="userTextColor">
                 Make payment with the below btc wallet and upload Prove
