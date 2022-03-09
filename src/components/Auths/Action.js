@@ -6,7 +6,6 @@ const next = (firebase, url, user, push) => {
     .update({
       photo: url,
     })
-
     .then(() => {
       return push('/verification/signup')
     })

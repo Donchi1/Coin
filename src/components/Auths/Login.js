@@ -96,7 +96,8 @@ function Login() {
       showCloseButton: true,
       closeButtonText: 'OK',
     }).then(() => {
-      return setOpenPopUp({ ...openPopUp, success: false })
+      setOpenPopUp({ ...openPopUp, success: false })
+      return push('/user/dashboard')
     })
   }
   if (openPopUp.error) {

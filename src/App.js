@@ -160,18 +160,8 @@ function App() {
           exact
           path="/verification/signup"
           render={() => {
-            if (localStorage.getItem('userId')) {
+            if (userInfo.uid) {
               return <AccountVerifySignup />
-            }
-            return <Redirect to="/login" />
-          }}
-        />
-        <Route
-          exact
-          path="/verification/signup"
-          render={() => {
-            if (localStorage.getItem('userId')) {
-              return <AccountVerifyLogin />
             }
             return <Redirect to="/login" />
           }}

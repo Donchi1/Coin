@@ -72,6 +72,7 @@ function AccountVerifySignup() {
               dispatch({ type: 'SIGNUP_SUCCESS' })
               MySwal.fire(successOptionsSignup).then(() => {
                 setUserData({ ...userData, code: '', isSubmitting: false })
+                return push('/login')
                 // return axios
                 //   .post(
                 //     `${process.env.REACT_APP_APIURL}/api/welcome`,
