@@ -39,7 +39,7 @@ function ForgetPassword() {
 
     if (resetEmail === '') {
       setIsSubmitting(false)
-      return MySwal.fire(emptyOptions)
+      return MySwal.fire(emptyOptions).then()
     }
 
     forgetAction(
@@ -54,9 +54,17 @@ function ForgetPassword() {
   }
 
   const successOptions = {
-    title: <p>Login Success</p>,
-    text: resetSuccess,
+    title: <p>Reset Success</p>,
+    html: <span className="text-success"> {resetSuccess} </span>,
     icon: 'success',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const errorOptions = {
+    title: <p>Reset Error</p>,
+    text: resetError,
+    color: 'red',
+    icon: 'error',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -68,8 +76,18 @@ function ForgetPassword() {
     closeButtonText: 'OK',
   }
 
-  if (openPopUp.success) {
-    return MySwal.fire(successOptions)
+  if (resetSuccess) {
+    MySwal.fire(successOptions).then(() => {
+      return dispatch({
+        type: 'PASSRESET_SUCCESS',
+        message: '',
+      })
+    })
+  }
+  if (resetError) {
+    MySwal.fire(errorOptions).then(() => {
+      return dispatch({ type: 'PASSRESET_ERROR', error: '' })
+    })
   }
 
   return (

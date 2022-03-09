@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import UserNav1 from './UserNav1'
 import moment from 'moment'
-import { useFirestoreConnect, useFirebase } from 'react-redux-firebase'
+import { useFirebase } from 'react-redux-firebase'
 import * as Icons from '@material-ui/icons'
 import Ufooter from './Ufooter'
 
@@ -14,66 +14,14 @@ function HistoryData() {
   const authState = useSelector((state) => state.firebase.auth)
   const firebase = useFirebase()
   const dispatch = useDispatch()
+  const { push } = useHistory()
 
-  const notificationInDatabase = useSelector(
-    (state) => state.projectReducer.notifications,
-  )
+  const {
+    notificationsInDatabase,
+    withdrawalInDatabase,
+    paymentInDatabase,
+  } = useSelector((state) => state.firestore.ordered)
 
-  useFirestoreConnect([{ collection: 'users' }])
-
-  useEffect(() => {
-    const subscribe = firebase
-      .firestore()
-      .collection('payments')
-      .doc(localStorage.getItem('userId'))
-      .collection('paymentDatas')
-      .orderBy('date', 'desc')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'PAYMENT_DATA',
-            data: each.data(),
-          })
-        })
-      })
-    return subscribe
-  }, [])
-  useEffect(() => {
-    const subscribe = firebase
-      .firestore()
-      .collection('withdrawals')
-      .doc(localStorage.getItem('userId'))
-      .collection('withdrawalDatas')
-      .orderBy('date', 'desc')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'WITHDRAWAL_DATA',
-            data: each.data(),
-          })
-        })
-      })
-    return subscribe
-  }, [])
-
-  useEffect(() => {
-    const subscribe = firebase
-      .firestore()
-      .collection('notifications')
-      .doc(userProfile.uid ? userProfile.uid : localStorage.getItem('userId'))
-      .collection('notificationDatas')
-      .limit(20)
-      .orderBy('date')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'NOTIFICATION_SUCCESS',
-            data: each.data(),
-          })
-        })
-      })
-    return subscribe
-  }, [])
   return (
     <div id="main-wrapper" className="show">
       <UserNav1 />
@@ -88,7 +36,7 @@ function HistoryData() {
             <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="/user">Dashboard</a>
+                  <Link to="/user/dashboard">Dashboard</Link>
                 </li>
                 <li className="breadcrumb-item active">
                   <Link to="#">History</Link>
@@ -135,8 +83,8 @@ function HistoryData() {
                 <div className="table-responsive">
                   <table className="table shadow-hover card-table border-no tbl-btn short-one">
                     <tbody>
-                      {dataHistory.paymentData &&
-                        dataHistory.paymentData.map((each) => (
+                      {paymentInDatabase &&
+                        paymentInDatabase.map((each) => (
                           <tr key={each.date}>
                             <td>
                               <span>
@@ -312,7 +260,7 @@ function HistoryData() {
                             </td>
                           </tr>
                         ))}
-                      {dataHistory.paymentData.length === 0 && (
+                      {paymentInDatabase.length === 0 && (
                         <tr className="text-center text-warning row-span-4">
                           <td colSpan={6}>No Transaction Yet</td>
                         </tr>
@@ -325,8 +273,8 @@ function HistoryData() {
                 <div className="table-responsive">
                   <table className="table shadow-hover card-table border-no tbl-btn short-one">
                     <tbody>
-                      {dataHistory.withdrawalData &&
-                        dataHistory.withdrawalData.map((each) => (
+                      {withdrawalInDatabase &&
+                        withdrawalInDatabase.map((each) => (
                           <tr key={each.date}>
                             <td>
                               <span>
@@ -503,7 +451,7 @@ function HistoryData() {
                             </td>
                           </tr>
                         ))}
-                      {dataHistory.withdrawalData?.length === 0 && (
+                      {withdrawalInDatabase?.length === 0 && (
                         <tr className="text-center text-warning row-span-4">
                           <td colSpan={6}>No Transaction Yet</td>
                         </tr>
@@ -518,8 +466,8 @@ function HistoryData() {
                   className="widget-media dz-scroll p-3 "
                 >
                   <ul className="timeline">
-                    {dataHistory.notifications &&
-                      dataHistory.notifications.map((each) => (
+                    {notificationsInDatabase &&
+                      notificationsInDatabase.map((each) => (
                         <li key={each.date}>
                           <div className="timeline-panel">
                             <div className="media mr-2">
@@ -552,8 +500,8 @@ function HistoryData() {
                           </div>
                         </li>
                       ))}
-                    {notificationInDatabase &&
-                      notificationInDatabase.length === 0 && (
+                    {notificationsInDatabase &&
+                      notificationsInDatabase.length === 0 && (
                         <li>
                           <div className="timeline-panel">
                             <div className="media mr-2"></div>
@@ -594,9 +542,7 @@ function HistoryData() {
                     <div className="col-lg-3 text-lg-right">
                       <ul className="portofolio-social">
                         <li>
-                          <Button
-                            onClick={() => window.location.assign('/contacts')}
-                          >
+                          <Button onClick={() => push('/contacts')}>
                             Contact Us <i className="fa fa-arrow-right"></i>
                           </Button>
                         </li>

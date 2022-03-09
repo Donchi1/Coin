@@ -58,6 +58,14 @@ function Savings() {
     showCloseButton: true,
     closeButtonText: 'OK',
   }
+  const existOptions = {
+    title: <p>Savings Exist</p>,
+    text: 'Savings account already exist',
+    icon: 'info',
+    color: 'orange',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
 
   const handleChange = (e) => {
     const { value, files } = e.target
@@ -108,10 +116,12 @@ function Savings() {
       return MySwal.fire(emptyOptions)
     }
 
+    if (userInfo.savingsAccount) {
+      return MySwal.fire(existOptions)
+    }
     return savingAction(
       firebase,
       dispatch,
-
       savingInfo,
       push,
       setSavingInfo,
@@ -134,7 +144,7 @@ function Savings() {
             <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="/user/dashboard">Dashboard</a>
+                  <Link to="/user/dashboard">Dashboard</Link>
                 </li>
                 <li className="breadcrumb-item active">
                   <Link to="#">Register</Link>
@@ -350,10 +360,8 @@ function Savings() {
                   </p>
                   <Row className="my-4 ">
                     <Button
-                      onClick={() =>
-                        window.location.assign('/savings/dashboard')
-                      }
-                      type="submit"
+                      onClick={() => push('/savings/dashboard')}
+                      type="button"
                       className="w-75 mx-auto bg-secondary"
                     >
                       Sdashboard

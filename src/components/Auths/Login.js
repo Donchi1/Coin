@@ -45,7 +45,7 @@ function Login() {
   const dispatch = useDispatch()
   const { push } = useHistory()
 
-  const { loginError } = useSelector((state) => state.authReducer)
+  const { loginError, loginSuccess } = useSelector((state) => state.authReducer)
 
   const emptyOptions = {
     title: <p>Required</p>,
@@ -90,13 +90,25 @@ function Login() {
   if (openPopUp.success) {
     MySwal.fire({
       title: <p>Success</p>,
-      text: 'Login Successful',
+      text: loginSuccess,
       icon: 'success',
-      timer: '3000',
+      timer: 7000,
       showCloseButton: true,
       closeButtonText: 'OK',
     }).then(() => {
-      setOpenPopUp({ ...openPopUp, success: false })
+      return setOpenPopUp({ ...openPopUp, success: false })
+    })
+  }
+  if (openPopUp.error) {
+    MySwal.fire({
+      title: <p>Error</p>,
+      text: loginError,
+      icon: 'error',
+      timer: 7000,
+      showCloseButton: true,
+      closeButtonText: 'OK',
+    }).then(() => {
+      return setOpenPopUp({ ...openPopUp, error: false })
     })
   }
 
@@ -130,19 +142,6 @@ function Login() {
                     <div className="card ">
                       <div className="card-body p-4">
                         <div className="text-center mb-4">
-                          <Snackbar
-                            onClose={() =>
-                              setOpenPopUp({ ...openPopUp, error: false })
-                            }
-                            open={openPopUp.error}
-                            message={loginError}
-                            autoHideDuration={9000}
-                            ContentProps={{ className: classes.content }}
-                            anchorOrigin={{
-                              horizontal: 'center',
-                              vertical: 'top',
-                            }}
-                          />
                           <h4 className="text-uppercase mt-0 userTextColor">
                             Login to get started
                           </h4>
@@ -245,7 +244,6 @@ function Login() {
           </div>
         </div>
       </div>
-     
     </>
   )
 }

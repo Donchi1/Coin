@@ -7,7 +7,7 @@ import { withdrawalAction } from '../Auths/Action'
 import UserNav1 from './UserNav1'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Redirect, Link } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Ufooter from './Ufooter'
 
@@ -18,6 +18,7 @@ const MySwal = withReactContent(Swal)
 function Withdrawals() {
   const firebase = useFirebase()
   const dispatch = useDispatch()
+  const { push } = useHistory()
 
   const transInfo = useSelector((state) => state.projectReducer)
   const profileInfo = useSelector((state) => state.firebase.profile)
@@ -52,25 +53,6 @@ function Withdrawals() {
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
-
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('withdrawals')
-      .doc(profileInfo.uid ? profileInfo.uid : localStorage.getItem('userId'))
-      .collection('withdrawalDatas')
-      .limit(8)
-      .orderBy('date')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'WITHDRAWAL_DATA',
-            data: each.data(),
-          })
-        })
-      })
-    return unsubscribe
-  }, [])
 
   useEffect(() => {
     axios
@@ -175,10 +157,10 @@ function Withdrawals() {
     closeButtonText: 'Ok',
   }
 
-  if (profileInfo.totalBalance === '0000' || profileInfo.accessCode === '') {
-    dispatch({ type: 'NO_WITHDRAWAL_ACCESS', accessPopUp: true })
-    return <Redirect to="/user/dashboard" />
-  }
+  //if (profileInfo.totalBalance === '0000' || profileInfo.accessCode === '') {
+  //  dispatch({ type: 'NO_WITHDRAWAL_ACCESS', accessPopUp: true })
+  //  return <Redirect to="/user/dashboard" />
+  //}
 
   const handleAccess = () => {
     const uid = firebase.auth().currentUser.uid
@@ -810,9 +792,7 @@ function Withdrawals() {
                     <div className="col-lg-3 text-lg-right">
                       <ul className="portofolio-social">
                         <li>
-                          <Button
-                            onClick={() => window.location.assign('/contacts')}
-                          >
+                          <Button onClick={() => push('/contacts')}>
                             Contact Us <i className="fa fa-arrow-right"></i>
                           </Button>
                         </li>

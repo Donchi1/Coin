@@ -28,55 +28,21 @@ function Funding() {
 
   useFirestoreConnect({
     collection: 'savings',
-    doc: userData.uid || localStorage.getItem('userId'),
+    doc: userData.uid,
   })
 
-  const { fundingData, savingWithdrawalData } = useSelector(
-    (state) => state.projectReducer,
-  )
+  const {
+    savingFundingInDatabase,
+    savingWithdrawalInDatabase,
+    savings,
+  } = useSelector((state) => state.firestore.ordered)
   const dataHistory = useSelector((state) => state.projectReducer)
   const reducerData = useSelector((state) => state.projectReducer)
-  const savings = useSelector((state) => state.firestore.ordered.savings)
 
   const KEY = '18704fddee12def29f6ce4cc2ae8b8247c6612b36e716e47e54f315152bfa806'
 
   const [emptyBal, setEmptyBal] = useState(false)
   const savingsData = savings && savings.map((each) => each)
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('savings')
-      .doc(userData.uid ? userData.uid : localStorage.getItem('userId'))
-      .collection('savingWithdrawals')
-      .limit(8)
-      .orderBy('date')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'SAVING_WITHDRAWAL_DATA',
-            data: each.data(),
-          })
-        })
-      })
-  }, [])
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('savings')
-      .doc(userData.uid ? userData.uid : localStorage.getItem('userId'))
-      .collection('savingsFundings')
-      .orderBy('date')
-      .limit(8)
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) =>
-          dispatch({
-            type: 'FUNDING_DATA',
-            data: each.data(),
-          }),
-        )
-      })
-  }, [])
 
   const sumTotal =
     Number(savingsData && savingsData[0].initialAmount) +
@@ -1215,8 +1181,8 @@ function Funding() {
                         <div className="table-responsive">
                           <table className="table shadow-hover card-table border-no tbl-btn short-one">
                             <tbody>
-                              {fundingData &&
-                                fundingData.map((each) => (
+                              {savingFundingInDatabase &&
+                                savingFundingInDatabase.map((each) => (
                                   <tr key={each.date}>
                                     <td>
                                       <span>
@@ -1395,7 +1361,7 @@ function Funding() {
                                     </td>
                                   </tr>
                                 ))}
-                              {fundingData.length === 0 && (
+                              {savingFundingInDatabase.length === 0 && (
                                 <tr className="text-center text-warning row-span-4">
                                   <td colSpan={6}>No Transaction Yet</td>
                                 </tr>
@@ -1408,8 +1374,8 @@ function Funding() {
                         <div className="table-responsive">
                           <table className="table shadow-hover card-table border-no tbl-btn short-one">
                             <tbody>
-                              {savingWithdrawalData &&
-                                savingWithdrawalData.map((each) => (
+                              {savingWithdrawalInDatabase &&
+                                savingWithdrawalInDatabase.map((each) => (
                                   <tr key={each.date}>
                                     <td>
                                       <span>
@@ -1586,7 +1552,7 @@ function Funding() {
                                     </td>
                                   </tr>
                                 ))}
-                              {fundingData.length === 0 && (
+                              {savingFundingInDatabase.length === 0 && (
                                 <tr className="text-center text-warning row-span-4">
                                   <td colSpan={6}>No Transaction Yet</td>
                                 </tr>

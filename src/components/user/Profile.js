@@ -30,26 +30,16 @@ function Profile() {
   const dispatch = useDispatch()
 
   const [userData, setUserData] = useState({
-    firstname: '',
-    lastname: '',
-    password: '',
-    email: '',
-    phone: '',
-    country: '',
+    firstname: userProfile.firstname,
+    lastname: userProfile.lastname,
+    phone: userProfile.phone,
+    country: userProfile.country,
     img: '',
+    email: '',
+    password: '',
     oldPassword: '',
     isSubmitting: false,
   })
-
-  useEffect(() => {
-    setUserData({
-      ...userData,
-      firstname: userProfile.firstname,
-      lastname: userProfile.lastname,
-      phone: userProfile.phone,
-      country: userProfile.country,
-    })
-  }, [userProfile])
 
   const [userPassword, setUserPassword] = useState({
     password: '',
@@ -149,7 +139,7 @@ function Profile() {
             <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="/user/dashboard">Dashboard</a>
+                  <Link to="/user/dashboard">Dashboard</Link>
                 </li>
                 <li className="breadcrumb-item active">
                   <Link to="#">Profile</Link>
@@ -346,12 +336,12 @@ function Profile() {
                       </div>
                       <div className="mt-lg-4 mt-sm-0"></div>
                       <div className="mt-4">
-                        <a
-                          href="/user/history"
+                        <Link
+                          to="/user/history"
                           className="btn btn-primary mb-1 mr-1"
                         >
                           All Transactions
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

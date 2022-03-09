@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dialog, makeStyles } from '@material-ui/core'
+import { Dialog } from '@material-ui/core'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFirebase } from 'react-redux-firebase'
@@ -87,24 +87,6 @@ function SavingWithdrawal() {
       })
       .catch((err) => {})
   }, [withdrawalAmount.amount])
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('savings')
-      .doc(profileInfo.uid ? profileInfo.uid : localStorage.getItem('userId'))
-      .collection('savingWithdrawals')
-      .limit(8)
-      .orderBy('date')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'SAVING_WITHDRAWAL_DATA',
-            data: each.data(),
-          })
-        })
-      })
-  }, [])
 
   const handleWithdrawal = (e) => {
     e.preventDefault()

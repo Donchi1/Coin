@@ -21,19 +21,11 @@ function User() {
   const userProfile = useSelector((state) => state.firebase.profile)
   const withdrawalPop = useSelector((state) => state.projectReducer)
   const dataHistory = useSelector((state) => state.projectReducer)
-  const savings = useSelector((state) => state.firestore.ordered.savings)
   const userInfo = useSelector((state) => state.firebase.profile)
 
-  useFirestoreConnect([
-    {
-      collection: 'savings',
-      doc: userProfile.uid || localStorage.getItem('userId'),
-    },
-    {
-      collection: 'users',
-      doc: userProfile.uid || localStorage.getItem('userId'),
-    },
-  ])
+  const { withdrawalInDatabase, paymentInDatabase, savings } = useSelector(
+    (state) => state.firestore.ordered,
+  )
 
   const savingsData = savings && savings.map((each) => each)
 
@@ -248,37 +240,6 @@ function User() {
     userProfile.bonus,
     savingsData?.amount,
   ])
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('withdrawals')
-      .doc(userProfile.uid ? userProfile.uid : localStorage.getItem('userId'))
-      .collection('withdrawalDatas')
-      .orderBy('date')
-      .limit(10)
-      .onSnapshot((snaps) => {
-        dispatch({
-          type: 'WITHDRAWAL_DATA',
-          withdrawal: snaps.docs.map((each) => each.data()),
-        })
-      })
-  }, [])
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('payments')
-      .doc(localStorage.getItem('userId'))
-      .collection('paymentDatas')
-      .orderBy('date')
-      .limit(10)
-      .onSnapshot((snaps) => {
-        dispatch({
-          type: 'PAYMENT_DATA',
-          payment: snaps.docs.map((each) => each.data()),
-        })
-      })
-  }, [])
 
   if (withdrawalPop.withdrawalAccessPopUp) {
     MySwal.fire({
@@ -1483,8 +1444,8 @@ function User() {
                           <div className="table-responsive">
                             <table className="table shadow-hover card-table border-no tbl-btn short-one">
                               <tbody>
-                                {dataHistory.paymentData &&
-                                  dataHistory.paymentData.map((each) => (
+                                {paymentInDatabase &&
+                                  paymentInDatabase.map((each) => (
                                     <tr key={each.date}>
                                       <td>
                                         <span>
@@ -1665,7 +1626,7 @@ function User() {
                                       </td>
                                     </tr>
                                   ))}
-                                {dataHistory.paymentData?.length === 0 && (
+                                {paymentInDatabase?.length === 0 && (
                                   <tr className="text-center text-warning row-span-4">
                                     <td colSpan={6}>No Transaction Yet</td>
                                   </tr>
@@ -1674,20 +1635,20 @@ function User() {
                             </table>
                           </div>
                           <div className="card-footer border-0 p-0 caret mt-1">
-                            <a href="/user/history" className="btn-link">
+                            <Link to="/user/history" className="btn-link">
                               <i
                                 className="fa fa-caret-down"
                                 aria-hidden="true"
                               ></i>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                         <div className="tab-pane fade" id="Weekly">
                           <div className="table-responsive">
                             <table className="table shadow-hover card-table border-no tbl-btn short-one">
                               <tbody>
-                                {dataHistory.withdrawalData &&
-                                  dataHistory.withdrawalData.map((each) => (
+                                {withdrawalInDatabase &&
+                                  withdrawalInDatabase.map((each) => (
                                     <tr key={each.date}>
                                       <td>
                                         <span>
@@ -1868,7 +1829,7 @@ function User() {
                                       </td>
                                     </tr>
                                   ))}
-                                {dataHistory.withdrawalData?.length === 0 && (
+                                {withdrawalInDatabase?.length === 0 && (
                                   <tr className="text-center text-warning row-span-4">
                                     <td colSpan={6}>No Transaction Yet</td>
                                   </tr>
@@ -1877,12 +1838,12 @@ function User() {
                             </table>
                           </div>
                           <div className="card-footer border-0 p-0 caret mt-1">
-                            <a href="/user/history" className="btn-link">
+                            <Link to="/user/history" className="btn-link">
                               <i
                                 className="fa fa-caret-down"
                                 aria-hidden="true"
                               ></i>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </div>

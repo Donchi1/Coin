@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
+import { useLocation } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -15,6 +16,7 @@ function AccountVerifyLogin() {
 
   const firebase = useFirebase()
   const dispatch = useDispatch()
+  const { push } = useLocation()
   const userDataState = useSelector((state) => state.firebase.profile)
 
   const errorOptions = {
@@ -58,7 +60,7 @@ function AccountVerifyLogin() {
           dispatch({ type: 'LOGIN_SUCCESS' })
           setUserData({ ...userData, code: '', isSubmitting: false })
           return MySwal.fire(successOptionsLogin).then(() => {
-            return window.location.assign('/user/dashboard')
+            return push('/user/dashboard')
           })
         })
     }

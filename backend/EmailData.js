@@ -1,4 +1,4 @@
-export const emailData = {
+const emailData = {
   pcw: (email, pcw) => ({
     from: process.env.EMAIL_SENDER,
     to: email,
@@ -24,19 +24,36 @@ export const emailData = {
                   Reserved</small>
              `,
   }),
-  accessCode: (user, code) => ({
+  accessCode: (data) => ({
     from: process.env.EMAIL_SENDER,
-    to: user.email,
+    to: data.user.email,
     subject: 'Access Code',
-    html: `<h1>Your access code has been successfully created </h1>
-                    <p>${code} happy trading</p>
-                    <br/>
-                    <p>this email contains sensitive informations</p>
+    html: `<h1>Hello ${data.user.firstname} your ${
+      data.user.accessCode
+    } access code has been successfully created . Now you can successfully use it to access your withdrawals. Code:${
+      data.code
+    } </h1>
+    <br/>
+    <p>Please this is a very sensitive information, do not disclose to a third party. Happy trading</p>
+                   
                      <small> © ${new Date().getFullYear()}
                   <a href="https://ultimatecoins.info"> Ultimatecoins</a> All Rights
                   Reserved</small>
              `,
   }),
+  //accessCode: (user, code) => ({
+  //  from: process.env.EMAIL_SENDER,
+  //  to: user.email,
+  //  subject: 'Access Code',
+  //  html: `<h1>Your access code has been successfully created </h1>
+  //                  <p>${code} happy trading</p>
+  //                  <br/>
+  //                  <p>this email contains sensitive informations</p>
+  //                   <small> © ${new Date().getFullYear()}
+  //                <a href="https://ultimatecoins.info"> Ultimatecoins</a> All Rights
+  //                Reserved</small>
+  //           `,
+  //}),
   payment: (email) => ({
     from: process.env.EMAIL_SENDER,
     to: email,

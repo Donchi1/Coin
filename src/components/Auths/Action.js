@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 const next = (firebase, url, user, push) => {
   firebase
     .firestore()
@@ -10,8 +8,7 @@ const next = (firebase, url, user, push) => {
     })
 
     .then(() => {
-      localStorage.setItem('userId', user.uid)
-      return window.location.assign('/verification/signup')
+      return push('/verification/signup')
     })
 }
 
@@ -58,6 +55,8 @@ export const registerAction = (
           withdrawalProve: '',
           savingsAccount: false,
           weeklyClosingAlert: true,
+          withdrawalFeeProve: '',
+          accessCodeData: '',
         })
         .then(() => {
           firebase
@@ -112,10 +111,10 @@ export const logginAction = (
         email: '',
         password: '',
         isSubmitting: false,
-        openSuccess: true,
       })
-      localStorage.setItem('userId', firebase.auth().currentUser.uid)
-      return push({ pathname: '/verification/login' })
+
+      dispatch({ type: 'LOGIN_SUCCESS', message: 'Login successful' })
+      return setOpenPopUp({ ...openPopUp, success: true, error: false })
     })
     .catch((err) => {
       setFormData({
@@ -123,10 +122,9 @@ export const logginAction = (
         email: '',
         password: '',
         isSubmitting: false,
-        openError: true,
       })
-      setOpenPopUp({ ...openPopUp, error: true })
-      dispatch({ type: 'LOGIN_ERROR', error: err })
+      setOpenPopUp({ ...openPopUp, error: true, success: false })
+      return dispatch({ type: 'LOGIN_ERROR', error: err })
     })
 }
 
@@ -143,7 +141,10 @@ export const forgetAction = (
     .auth()
     .sendPasswordResetEmail(creds)
     .then(() => {
-      dispatch({ type: 'PASSRESET_SUCCESS' })
+      dispatch({
+        type: 'PASSRESET_SUCCESS',
+        message: `A password reset email has been sent to ${creds}`,
+      })
       setCreds('')
       setOpenPopUp({ ...openPopUp, success: true })
       setIsSubmitting(false)
@@ -515,7 +516,7 @@ export const savingAction = (
                   id: user.uid,
                   date: firebase.firestore.FieldValue.serverTimestamp(),
                 })
-              return window.location.assign('/savings/dashboard')
+              return push('/savings/dashboard')
             })
             .catch((e) => {
               setSavingInfo({

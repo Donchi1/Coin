@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
 import * as Icons from '@material-ui/icons'
+import Translate from "../body/Translate"
 import {
   List,
   ListItem,
@@ -44,12 +45,12 @@ function NavBar() {
           <div className="row flex-align">
             <div className="col-lg-4 col-md-3 col-8">
               <div className="logo">
-                <a href="/">
+                <Link to="/">
                   <h3 className="sub-heading  little-add ml-3">
                     <span className="u-design">U</span>
                     ltimateCoins
                   </h3>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="col-lg-8 col-md-9 col-4 text-right">
@@ -67,9 +68,9 @@ function NavBar() {
               <div className={`menu ${smallScreen && 'collapse'}`}>
                 <ul className="d-flex justify-content-around align-items-center flex-sm-col">
                   <li>
-                    <a href="/" className="nav-color">
+                    <Link to="/" className="nav-color">
                       Home
-                    </a>
+                    </Link>
                   </li>
                   <li className="mega-menu">
                     <span className="opener plus"></span>
@@ -78,53 +79,55 @@ function NavBar() {
                     </Link>
                     <ul className="transition">
                       <li>
-                        <a href="/about" className="userTextColor">
+                        <Link to="/about" className="userTextColor">
                           About
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="/pricing" className="userTextColor">
+                        <Link to="/pricing" className="userTextColor">
                           Plans
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="/contacts" className="userTextColor">
+                        <Link to="/contacts" className="userTextColor">
                           Contact
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="/faq" className="userTextColor">
+                        <Link to="/faq" className="userTextColor">
                           FAQ
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </li>
                   <li>
-                    <a href="/features" className="nav-color">
+                    <Link to="/features" className="nav-color">
                       Feature
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a href="/teams" className="nav-color">
+                    <Link to="/teams" className="nav-color">
                       Team
-                    </a>
+                    </Link>
                   </li>
 
-                  <div id="google_translate_element"></div>
+                  <li>
+                    <Translate />
+                  </li>
 
                   {!userDataState.verified ||
                   localStorage.getItem('userId') === '' ? (
                     <li className="signin d-inline-block">
-                      <a href="/login" className="btn history-info">
+                      <Link to="/login" className="btn history-info">
                         Sign in
-                      </a>
+                      </Link>
                     </li>
                   ) : (
                     <li className="signin d-inline-block">
-                      <a href="/" className="btn history-info">
+                      <Link to="/" className="btn history-info">
                         Sign in
-                      </a>
+                      </Link>
                     </li>
                   )}
                 </ul>
@@ -147,7 +150,7 @@ function NavBar() {
             </div>
           </div>
 
-          <ListItem button component="a" href="/" className="side-bar-item">
+          <ListItem button component={Link} to="/" className="side-bar-item">
             <ListItemIcon>
               <Icons.Home className="text-new" />
             </ListItemIcon>
@@ -158,8 +161,8 @@ function NavBar() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/about"
+            component={Link}
+          to="/about"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -172,8 +175,8 @@ function NavBar() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/pricing"
+            component={Link}
+            to="/pricing"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -186,8 +189,8 @@ function NavBar() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/contacts"
+            component={Link}
+            to="/contacts"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -198,7 +201,7 @@ function NavBar() {
               <Icons.ArrowRight />
             </ListItemIcon>
           </ListItem>
-          <ListItem button component="a" href="/faq" className="side-bar-item">
+          <ListItem button component={Link} to="/faq" className="side-bar-item">
             <ListItemIcon>
               <Icons.QuestionAnswerSharp className="text-new" />
             </ListItemIcon>
@@ -209,8 +212,8 @@ function NavBar() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/features"
+            component={Link}
+            to="/features"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -223,8 +226,8 @@ function NavBar() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/teams"
+            component={Link}
+            to="/teams"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -235,13 +238,23 @@ function NavBar() {
               <Icons.ArrowRight />
             </ListItemIcon>
           </ListItem>
+           <ListItem
+            button
+            component={Link}
+            to="/teams"
+            className="side-bar-item "
+          >
+            
+            <Translate />
+           
+          </ListItem>
           <Divider />
           {isLoaded(authState) &&
           !isEmpty(authState) &&
           userDataState?.verified ? (
             <div className="text-center">
               <button className=" bg-primary btn  ">
-                <ListItem button component="a" href="/user/dashboard">
+                <ListItem button component={Link} to="/user/dashboard">
                   <ListItemText className="text-light text-center uppercase">
                     DASHBOARD
                   </ListItemText>
@@ -251,7 +264,7 @@ function NavBar() {
           ) : (
             <div className="text-center">
               <button className=" bg-primary btn  ">
-                <ListItem button component="a" href="/login">
+                <ListItem button component={Link} to="/login">
                   <ListItemText className="text-light text-center uppercase">
                     LOGIN
                   </ListItemText>
@@ -260,7 +273,7 @@ function NavBar() {
             </div>
           )}
 
-          <div id="google_translate_element"></div>
+          
         </List>
       </Drawer>
     </>

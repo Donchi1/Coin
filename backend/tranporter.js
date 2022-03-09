@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-export const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   host: 'stmp.zoho.com',
   port: 465,
   secure: true,

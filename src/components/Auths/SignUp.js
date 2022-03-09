@@ -84,6 +84,13 @@ function SignUp() {
     showCloseButton: true,
     closeButtonText: 'OK',
   }
+  const invalidOptions = {
+    title: <p>Invalid</p>,
+    text: 'Invalid email',
+    icon: 'info',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -103,6 +110,10 @@ function SignUp() {
     if (password.length < 5) {
       setIsSubmitting(false)
       return MySwal.fire(lengthOptions)
+    }
+    if (!email.includes('@')) {
+      setIsSubmitting(false)
+      return MySwal.fire(invalidOptions)
     }
 
     registerAction(
@@ -135,17 +146,7 @@ function SignUp() {
           </div>
         </div>
       </section>
-      <Snackbar
-        onClose={() => setOpenPopUp({ ...openPopUp, error: false })}
-        open={openPopUp.error}
-        message={signupError}
-        autoHideDuration={9000}
-        ContentProps={{ className: classes.content }}
-        anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'bottom',
-        }}
-      />
+
       <div className="account-pages site-bg height-100vh">
         <div className="home-center">
           <div className="home-desc-center">

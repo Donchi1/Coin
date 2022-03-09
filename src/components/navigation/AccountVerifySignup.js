@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
-import NavBar from './NavBar'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-
-import { Form, Button } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
 function AccountVerifySignup() {
-  useFirestoreConnect([
-    { collection: 'users', doc: localStorage.getItem('userId') },
-  ])
+  const userDataState = useSelector((state) => state.firebase.profile)
+  useFirestoreConnect([{ collection: 'users', doc: userDataState.uid }])
   const [userData, setUserData] = useState({
     isSubmitting: false,
     code: '',
@@ -21,8 +19,8 @@ function AccountVerifySignup() {
 
   const firebase = useFirebase()
   const dispatch = useDispatch()
-  const userDataState = useSelector((state) => state.firebase.profile)
   const authState = useSelector((state) => state.firebase.auth)
+  const { push } = useHistory()
 
   const errorOptions = {
     title: <p>Code Error</p>,
@@ -66,18 +64,28 @@ function AccountVerifySignup() {
           firebase
             .firestore()
             .collection('users')
-            .doc(userDataState.uid || localStorage.getItem('userId'))
+            .doc(userDataState.uid)
             .update({
               verified: true,
             })
             .then(() => {
               dispatch({ type: 'SIGNUP_SUCCESS' })
-              MySwal.fire(successOptionsSignup)
-              setUserData({ ...userData, code: '', isSubmitting: false })
-              return window.location.assign('/user/dashboard')
+              MySwal.fire(successOptionsSignup).then(() => {
+                setUserData({ ...userData, code: '', isSubmitting: false })
+                // return axios
+                //   .post(
+                //     `${process.env.REACT_APP_APIURL}/api/welcome`,
+                //     userDataState,
+                //   )
+                //   .then(() => {
+                //     return push('/user/dashboard')
+                //   })
+                //   .catch((err) => {
+                //     return push('/user/dashboard')
+                //   })
+              })
             })
         })
-      //return axios.post("http://localhost:5000/api", userDataState)
     }
     setUserData({ ...userData, code: '', isSubmitting: false })
     return MySwal.fire(errorOptions)
@@ -101,8 +109,7 @@ function AccountVerifySignup() {
       .auth()
       .signOut()
       .then(() => {
-        localStorage.removeItem('userId')
-        return window.location.assign('/')
+        return push('/')
       })
   }
 

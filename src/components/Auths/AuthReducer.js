@@ -26,7 +26,7 @@ export const authReducer = (state = initialAuth, action) => {
     case 'LOGIN_SUCCESS':
       return {
         ...state,
-        loginSuccess: 'login Success',
+        loginSuccess: action.message,
       }
     case 'VERIFY_USER':
       return {

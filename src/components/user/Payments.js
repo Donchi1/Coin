@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFirebase } from 'react-redux-firebase'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { useHistory } from 'react-router-dom'
 
 import { paymentAction } from '../Auths/Action'
 import UserNav1 from './UserNav1'
@@ -18,6 +19,7 @@ const MySwal = withReactContent(Swal)
 function Payments() {
   const firebase = useFirebase()
   const dispatch = useDispatch()
+  const { push } = useHistory()
 
   const transSuccess = useSelector(
     (state) => state.projectReducer.paymentSuccess,
@@ -38,24 +40,6 @@ function Payments() {
 
   const [newAmount, setNewAmount] = useState(1)
   const [paymentAmount, setPaymentAmount] = useState('')
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('payments')
-      .doc(profileInfo.uid ? profileInfo.uid : localStorage.getItem('userId'))
-      .collection('paymentDatas')
-      .limit(8)
-      .orderBy('date')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'PAYMENT_DATA',
-            data: each.data(),
-          })
-        })
-      })
-    return unsubscribe
-  }, [])
 
   useEffect(() => {
     axios
@@ -491,9 +475,7 @@ function Payments() {
                     <div className="col-lg-3 text-lg-right">
                       <ul className="portofolio-social">
                         <li>
-                          <Button
-                            onClick={() => window.location.assign('/contact')}
-                          >
+                          <Button onClick={() => push('/contacts')}>
                             Contact Us <i className="fa fa-phone"></i>
                           </Button>
                         </li>

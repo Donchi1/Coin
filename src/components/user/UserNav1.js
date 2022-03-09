@@ -12,6 +12,7 @@ import * as Icons from '@material-ui/icons'
 import JWT from 'jsonwebtoken'
 import img1 from '../../assets/qrcode.jpg'
 import moment from 'moment'
+import axios from 'axios'
 import {
   List,
   ListItem,
@@ -31,8 +32,8 @@ function UserNav1() {
 
   const [openSlider, setOpenSlider] = useState(false)
 
-  const notification = useSelector(
-    (state) => state.projectReducer.notifications,
+  const { notificationsInDatabase } = useSelector(
+    (state) => state.firestore.ordered,
   )
 
   const userProfile = useSelector((state) => state.firebase.profile)
@@ -40,23 +41,122 @@ function UserNav1() {
   useFirestoreConnect([
     {
       collection: 'users',
-      doc: userProfile.uid || localStorage.getItem('userId'),
+      doc: userProfile.uid,
     },
 
     {
       collection: 'savings',
-      doc: userProfile.uid || localStorage.getItem('userId'),
+      doc: userProfile.uid,
+    },
+    {
+      collection: 'payments',
+      doc:
+        userProfile?.uid ||
+        firebase.auth().currentUser.uid ||
+        'sghfryujkydiluhugsfaghasjhajk',
+      subcollections: [
+        {
+          collection: 'paymentDatas',
+
+          orderBy: ['date', 'desc'],
+          limit: 10,
+        },
+      ],
+
+      storeAs: 'paymentInDatabase',
+    },
+    {
+      collection: 'withdrawals',
+      doc:
+        userProfile?.uid ||
+        firebase.auth().currentUser.uid ||
+        'sghfryujkydiluhugsfaghasjhajk',
+      subcollections: [
+        {
+          collection: 'withdrawalDatas',
+
+          orderBy: ['date', 'desc'],
+          limit: 10,
+        },
+      ],
+      storeAs: 'withdrawalInDatabase',
+    },
+    {
+      collection: 'payments',
+      doc:
+        userProfile?.uid ||
+        firebase.auth().currentUser.uid ||
+        'sghfryujkydiluhugsfaghasjhajk',
+      subcollections: [
+        {
+          collection: 'paymentDatas',
+
+          orderBy: ['date', 'desc'],
+          limit: 5,
+        },
+      ],
+
+      storeAs: 'paymentInDatabase',
+    },
+    {
+      collection: 'notifications',
+      doc:
+        userProfile?.uid ||
+        firebase.auth().currentUser.uid ||
+        'sghfryujkydiluhugsfaghasjhajk',
+      subcollections: [
+        {
+          collection: 'notificationDatas',
+
+          orderBy: ['date', 'desc'],
+          limit: 10,
+        },
+      ],
+      storeAs: 'notificationsInDatabase',
+    },
+    {
+      collection: 'savings',
+      doc:
+        userProfile?.uid ||
+        firebase.auth().currentUser.uid ||
+        'sghfryujkydiluhugsfaghasjhajk',
+      subcollections: [
+        {
+          collection: 'savingWithdrawals',
+
+          orderBy: ['date', 'desc'],
+          limit: 10,
+        },
+      ],
+      storeAs: 'savingWithdrawalsInDatabase',
+    },
+    {
+      collection: 'savings',
+      doc:
+        userProfile?.uid ||
+        firebase.auth().currentUser.uid ||
+        'sghfryujkydiluhugsfaghasjhajk',
+      subcollections: [
+        {
+          collection: 'savingFundings',
+
+          orderBy: ['date', 'desc'],
+          limit: 10,
+        },
+      ],
+      storeAs: 'savingFundingInDatabase',
     },
   ])
 
-  const handleLogoutRoute = () => window.location.assign('/')
+  const handleLogoutRoute = () => push('/')
   const handleLogout = () => {
     LogoutAction(firebase, dispatch, handleLogoutRoute)
   }
 
   const [accessCodeInfo, setAccessCodeInfo] = useState({
     open: false,
-    accessCode: '',
+    accessCode: userProfile.accessCodeData,
+    accessCodeInput: '',
     isSubmitting: false,
   })
   const [accessCodeProve, setAccessCodeProve] = useState({
@@ -108,7 +208,7 @@ function UserNav1() {
         ),
       })
     }
-    if (userProfile.accessCode === '') {
+    if (userProfile.accessCodeData === '') {
       return MySwal.fire({
         title: <p>Access Code Required</p>,
         html: (
@@ -179,70 +279,104 @@ function UserNav1() {
   }, [])
 
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection('notifications')
-      .doc(userProfile.uid ? userProfile.uid : localStorage.getItem('userId'))
-      .collection('notificationDatas')
-      .limit(10)
-      .orderBy('date')
-      .onSnapshot((qsnapshot) => {
-        qsnapshot.docs.map((each) => {
-          return dispatch({
-            type: 'NOTIFICATION_SUCCESS',
-            data: each.data(),
-          })
-        })
-      })
-  }, [])
-  useEffect(() => {
     if (userProfile.accessCode === 'weekly') {
-      const weeklyToken = JWT.sign(
-        { value: 'weeklyJwt' },
-        process.env.REACT_APP_JWT_TOKEN,
-        {
-          expiresIn: '7days',
-        },
-      )
-      setAccessCodeInfo({
-        ...accessCodeInfo,
-        accessCode: weeklyToken,
-        open: false,
-      })
+      if (JWT.decode(accessCodeInfo.accessCode)) {
+        return
+      } else {
+        const weeklyToken = JWT.sign(
+          { value: 'weeklyJwt' },
+          process.env.REACT_APP_JWT_TOKEN,
+          {
+            expiresIn: '7days',
+          },
+        )
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(userProfile.uid)
+          .update({
+            accessCodeData: weeklyToken,
+          })
+          .then(() => {
+            const data = { user: userProfile, code: weeklyToken }
+            axios
+              .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
+              .then(() =>
+                setAccessCodeInfo({
+                  ...accessCodeInfo,
+                  open: false,
+                }),
+              )
+          })
+      }
     }
     if (userProfile.accessCode === 'monthly') {
-      const monthlyToken = JWT.sign(
-        { value: 'monthlyJwt' },
-        process.env.REACT_APP_JWT_TOKEN,
-        {
-          expiresIn: '30days',
-        },
-      )
-      setAccessCodeInfo({
-        ...accessCodeInfo,
-        accessCode: monthlyToken,
-        open: false,
-      })
+      if (JWT.decode(accessCodeInfo.accessCode)) {
+        return
+      } else {
+        const monthlyToken = JWT.sign(
+          { value: 'monthlyJwt' },
+          process.env.REACT_APP_JWT_TOKEN,
+          {
+            expiresIn: '30days',
+          },
+        )
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(userProfile.uid)
+          .update({
+            accessCodeData: monthlyToken,
+          })
+          .then(() => {
+            const data = { user: userProfile, code: monthlyToken }
+            axios
+              .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
+              .then(() =>
+                setAccessCodeInfo({
+                  ...accessCodeInfo,
+                  open: false,
+                }),
+              )
+          })
+      }
     }
     if (userProfile.accessCode === 'yearly') {
-      const yearlyToken = JWT.sign(
-        { value: 'yearlyJwt' },
-        process.env.REACT_APP_JWT_TOKEN,
-        {
-          expiresIn: '365days',
-        },
-      )
-      setAccessCodeInfo({
-        ...accessCodeInfo,
-        accessCode: yearlyToken,
-        open: false,
-      })
+      if (JWT.decode(accessCodeInfo.accessCode)) {
+        return
+      } else {
+        const yearlyToken = JWT.sign(
+          { value: 'yearlyJwt' },
+          process.env.REACT_APP_JWT_TOKEN,
+          {
+            expiresIn: '365days',
+          },
+        )
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(userProfile.uid)
+          .update({
+            accessCodeData: yearlyToken,
+          })
+          .then(() => {
+            const data = { user: userProfile, code: yearlyToken }
+            axios
+              .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
+              .then(() =>
+                setAccessCodeInfo({
+                  ...accessCodeInfo,
+                  open: false,
+                }),
+              )
+          })
+      }
     }
   }, [userProfile.accessCode])
   const handleSubmit1 = (e) => {
     e.preventDefault()
     setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
-    if (accessCodeInfo.accessCode === '') {
+    if (accessCodeInfo.accessCodeInput === '') {
       MySwal.fire({
         title: <p>No Access</p>,
         html: <span className="text-warning">Access Code Required</span>,
@@ -255,7 +389,7 @@ function UserNav1() {
 
   const accessCodeCheck = () => {
     JWT.verify(
-      accessCodeInfo.accessCode,
+      accessCodeInfo.accessCodeInput,
       process.env.REACT_APP_JWT_TOKEN,
       (error, data) => {
         if (error) {
@@ -302,7 +436,7 @@ function UserNav1() {
           showCloseButton: true,
           closeButtonText: 'Ok',
         }).then(() => {
-          return window.location.assign('/user/withdrawals')
+          return push('/user/withdrawals')
         })
       })
     }
@@ -386,10 +520,10 @@ function UserNav1() {
                 onChange={(e) =>
                   setAccessCodeInfo({
                     ...accessCodeInfo,
-                    accessCode: e.target.value,
+                    accessCodeInput: e.target.value,
                   })
                 }
-                value={accessCodeInfo.accessCode}
+                value={accessCodeInfo.accessCodeInput}
               />
 
               <h6 className="text-dark text-center py-4">Access Code Prices</h6>
@@ -496,7 +630,7 @@ function UserNav1() {
         </Modal.Body>
       </Modal>
       <div className="nav-header">
-        <a href="/" className="brand-logo">
+        <Link to="/" className="brand-logo">
           <svg
             className="logo-abbr"
             width="50"
@@ -519,7 +653,7 @@ function UserNav1() {
             />
           </svg>
           <span className="brand-title text-primary">Ultimatecoins</span>
-        </a>
+        </Link>
 
         <div
           style={{
@@ -545,17 +679,17 @@ function UserNav1() {
               <div className="header-left"></div>
               <ul className="navbar-nav header-right main-notification">
                 <li className="nav-item dropdown notification_dropdown">
-                  <a
+                  <Link
                     className="nav-link bell dz-theme-mode "
-                    href="#"
+                    to="#"
                     style={{ display: 'block' }}
                   >
                     <i id="icon-light" className="fa fa-sun-o"></i>
                     <i id="icon-dark" className="fa fa-moon-o"></i>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown notification_dropdown">
-                  <a className="nav-link bell dz-fullscreen" href="#">
+                  <Link className="nav-link bell dz-fullscreen" to="#">
                     <svg
                       id="icon-full"
                       viewBox="0 0 24 24"
@@ -596,7 +730,7 @@ function UserNav1() {
                         }}
                       ></path>
                     </svg>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown notification_dropdown">
                   <a
@@ -627,8 +761,8 @@ function UserNav1() {
                       className="widget-media dz-scroll p-3 "
                     >
                       <ul className="timeline">
-                        {notification &&
-                          notification.map((each) => (
+                        {notificationsInDatabase &&
+                          notificationsInDatabase.map((each) => (
                             <li key={each.date}>
                               <div className="timeline-panel">
                                 <div className="media mr-2">
@@ -661,25 +795,26 @@ function UserNav1() {
                               </div>
                             </li>
                           ))}
-                        {notification && notification.length === 0 && (
-                          <li>
-                            <div className="timeline-panel">
-                              <div className="media mr-2"></div>
-                              <div className="media-body">
-                                <h6 className="mb-1">No notification Yet</h6>
+                        {notificationsInDatabase &&
+                          notificationsInDatabase.length === 0 && (
+                            <li>
+                              <div className="timeline-panel">
+                                <div className="media mr-2"></div>
+                                <div className="media-body">
+                                  <h6 className="mb-1">No notification Yet</h6>
+                                </div>
                               </div>
-                            </div>
-                          </li>
-                        )}
+                            </li>
+                          )}
                       </ul>
                     </div>
-                    <a className="all-notification" href="/user/history">
+                    <Link className="all-notification" to="/user/history">
                       See all notifications <i className="ti-arrow-right"></i>
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="nav-item dropdown notification_dropdown d-none">
-                  <a className="nav-link bell bell-link" href="#">
+                  <Link className="nav-link bell bell-link" to="#">
                     <svg
                       width="24"
                       height="24"
@@ -700,7 +835,7 @@ function UserNav1() {
                         fill="#EB8153"
                       />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-item dropdown header-profile">
@@ -720,7 +855,7 @@ function UserNav1() {
                     className="dropdown-menu dropdown-menu-right"
                     id="profile"
                   >
-                    <a href="/user/profile" className="dropdown-item ai-icon">
+                    <Link to="/user/profile" className="dropdown-item ai-icon">
                       <svg
                         id="icon-user1"
                         xmlns="http://www.w3.org/2000/svg"
@@ -738,10 +873,10 @@ function UserNav1() {
                         <circle cx="12" cy="7" r="4"></circle>
                       </svg>
                       <span className="ml-2">Profile </span>
-                    </a>
+                    </Link>
 
-                    <a
-                      href="#"
+                    <Link
+                      to="#"
                       onClick={handleLogout}
                       className="dropdown-item ai-icon"
                     >
@@ -763,7 +898,7 @@ function UserNav1() {
                         <line x1="21" y1="12" x2="9" y2="12"></line>
                       </svg>
                       <span className="ml-2">Logout </span>
-                    </a>
+                    </Link>
                   </div>
                 </li>
               </ul>
@@ -772,9 +907,9 @@ function UserNav1() {
           <div className="sub-header">
             <div className="d-flex align-items-center flex-wrap mr-auto">
               <h5 className="dashboard_bar">
-                <a href="/user/dashboard" className="btn btn-xs btn-primary">
+                <Link to="/user/dashboard" className="btn btn-xs btn-primary">
                   Dashboard
-                </a>
+                </Link>
               </h5>
             </div>
             <div className="d-flex align-items-center">
@@ -799,9 +934,9 @@ function UserNav1() {
                   width="100px"
                   className="rounded"
                 />
-                <a href="user/profile">
+                <Link to="user/profile">
                   <i className="fa fa-cog" aria-hidden="true"></i>
-                </a>
+                </Link>
               </div>
 
               <div
@@ -831,8 +966,8 @@ function UserNav1() {
           </ul>
           <ListItem
             button
-            component="a"
-            href="/user/dashboard"
+            component={Link}
+            to="/user/dashboard"
             className="side-bar-item"
           >
             <ListItemIcon>
@@ -859,8 +994,8 @@ function UserNav1() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/user/payments"
+            component={Link}
+            to="/user/payments"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -873,8 +1008,8 @@ function UserNav1() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="#"
+            component={Link}
+            to="#"
             onClick={withdrawalCheck}
             className="side-bar-item"
           >
@@ -888,8 +1023,8 @@ function UserNav1() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/user/history"
+            component={Link}
+            to="/user/history"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -902,8 +1037,8 @@ function UserNav1() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/user/savings"
+            component={Link}
+            to="/user/savings"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -916,8 +1051,8 @@ function UserNav1() {
           </ListItem>
           <ListItem
             button
-            component="a"
-            href="/user/chats"
+            component={Link}
+            to="/user/chats"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -939,8 +1074,8 @@ function UserNav1() {
         >
           <ListItem
             button
-            component="a"
-            href="#"
+            component={Link}
+            to="#"
             onClick={handleLogout}
             className="side-bar-item "
           >
@@ -972,9 +1107,9 @@ function UserNav1() {
           <div className="main-profile">
             <div className="image-bx">
               <img src={userProfile?.photo || img} alt="profile" />
-              <a href="user/profile">
+              <Link to="user/profile">
                 <i className="fa fa-cog" aria-hidden="true"></i>
-              </a>
+              </Link>
             </div>
 
             <h5 className="name">
@@ -989,44 +1124,44 @@ function UserNav1() {
           <ul className="metismenu" id="menu">
             <li className="nav-label first">Main Menu</li>
             <li>
-              <a
+              <Link
                 className="has-arrow ai-icon"
-                href="/user/dashboard"
+                to="/user/dashboard"
                 aria-expanded="false"
               >
                 <Icons.Home />
                 <span className="nav-text">Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="has-arrow ai-icon"
-                href="/user/profile"
+                to="/user/profile"
                 aria-expanded="false"
               >
                 <Icons.AccountBox />
                 <span className="nav-text">Profile</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="has-arrow ai-icon"
-                href="/user/payments"
+                to="/user/payments"
                 aria-expanded="false"
               >
                 <Icons.Payment />
                 <span className="nav-text">Payment</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="has-arrow ai-icon"
-                href="/user/investments"
+                to="/user/investments"
                 aria-expanded="false"
               >
                 <Icons.Money />
                 <span className="nav-text">Investment</span>
-              </a>
+              </Link>
             </li>
 
             <li>
@@ -1041,24 +1176,24 @@ function UserNav1() {
               </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="has-arrow ai-icon"
-                href="user/savings"
+                to="user/savings"
                 aria-expanded="false"
               >
                 <Icons.Storage />
                 <span className="nav-text">Saving</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="has-arrow ai-icon"
-                href="user/history"
+                to="/user/history"
                 aria-expanded="false"
               >
                 <Icons.Notifications />
                 <span className="nav-text">History</span>
-              </a>
+              </Link>
             </li>
             <li>
               <a
