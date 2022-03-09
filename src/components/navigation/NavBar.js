@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
 import * as Icons from '@material-ui/icons'
-import Translate from "../body/Translate"
+//import Translate from "../body/Translate"
 import {
   List,
   ListItem,
@@ -112,12 +112,7 @@ function NavBar() {
                     </Link>
                   </li>
 
-                  <li>
-                    <Translate />
-                  </li>
-
-                  {!userDataState.verified ||
-                  localStorage.getItem('userId') === '' ? (
+                  {!userDataState.verified || !userDataState.uid ? (
                     <li className="signin d-inline-block">
                       <Link to="/login" className="btn history-info">
                         Sign in
@@ -162,7 +157,7 @@ function NavBar() {
           <ListItem
             button
             component={Link}
-          to="/about"
+            to="/about"
             className="side-bar-item "
           >
             <ListItemIcon>
@@ -238,16 +233,7 @@ function NavBar() {
               <Icons.ArrowRight />
             </ListItemIcon>
           </ListItem>
-           <ListItem
-            button
-            component={Link}
-            to="/teams"
-            className="side-bar-item "
-          >
-            
-            <Translate />
-           
-          </ListItem>
+
           <Divider />
           {isLoaded(authState) &&
           !isEmpty(authState) &&
@@ -272,8 +258,6 @@ function NavBar() {
               </button>
             </div>
           )}
-
-          
         </List>
       </Drawer>
     </>
