@@ -12,7 +12,7 @@ function ProtectedRoute1({ component: Component, ...rest }) {
       {...rest}
       render={(props) => {
         {
-          localStorage.getItem('userId') && !userInfo.verified && (
+          userInfo.uid && !userInfo.verified && (
             <Redirect to="/verification/login" />
           )
         }

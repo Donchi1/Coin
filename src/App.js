@@ -159,12 +159,7 @@ function App() {
         <Route
           exact
           path="/verification/signup"
-          render={() => {
-            if (userInfo.uid) {
-              return <AccountVerifySignup />
-            }
-            return <Redirect to="/login" />
-          }}
+          component={AccountVerifySignup}
         />
 
         <ProtectedRoute exact path="/user/payments">
@@ -191,7 +186,7 @@ function App() {
           )}
           <Withdrawals />
         </ProtectedRoute>
-        <Route component={Empty} />
+        <Route exact component={Empty} />
       </Switch>
     </Router>
   )
