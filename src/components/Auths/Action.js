@@ -7,7 +7,7 @@ const next = (firebase, url, user, push) => {
       photo: url,
     })
     .then(() => {
-      localStorage.setItem("userId", user.uid)
+      // localStorage.setItem("userId", user.uid)
       return push('/verification/signup')
     })
 }
@@ -560,6 +560,7 @@ export const fundingAction = (firebase, dispatch, values, setValues, name) => {
             .collection('savingFundings')
             .add({
               prove: url,
+              paymentMethod: values.method,
               amount: values.amount,
               date: firebase.firestore.FieldValue.serverTimestamp(),
               statusSuccess: false,

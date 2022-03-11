@@ -147,7 +147,7 @@ function Funding() {
   if (reducerData.openSuccess) {
     MySwal.fire(successOptions).then(() => {
       dispatch({ type: 'PWC_SUCCESS', openSuccess: false })
-      window.location.assign('/savings/withdrawals')
+      push('/savings/withdrawals')
     })
   }
   if (reducerData.openFundingSuccess) {
@@ -1252,7 +1252,7 @@ function Funding() {
                                       </span>
                                     </td>
                                     <td className="wspace-no">
-                                      {each.paymentMethod == 'Bitcoin' && (
+                                      {each.paymentMethod === 'Bitcoin' && (
                                         <svg
                                           className="mr-2"
                                           width="24"
@@ -1275,23 +1275,21 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'Litecoin' ||
-                                        'litcoins' ||
-                                        ('litcoin' && (
-                                          <svg
-                                            className="mr-1"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              d="M12 0C5.3726 0 0 5.3726 0 12C0 18.6274 5.3726 24 12 24C18.6274 24 24 18.6274 24 12C23.9924 5.37574 18.6243 0.00758581 12 0ZM16.2857 18.0001H9.42866C8.9552 18.0001 8.57147 17.6164 8.57147 17.1429C8.57147 17.1024 8.57434 17.0618 8.5801 17.0216L9.22515 12.5054L7.92222 12.8313C7.85421 12.8486 7.78437 12.8572 7.71427 12.8572C7.24081 12.8567 6.85759 12.4727 6.85785 11.9992C6.85838 11.6063 7.12571 11.2642 7.50683 11.1684L9.48674 10.6735L10.2942 5.0213C10.3612 4.55254 10.7954 4.22714 11.2642 4.2941C11.7329 4.36107 12.0583 4.79529 11.9914 5.26404L11.2825 10.2247L14.3636 9.4543C14.8222 9.33737 15.2886 9.61439 15.4053 10.0729C15.5222 10.5315 15.2452 10.9979 14.7866 11.1148C14.784 11.1153 14.7814 11.1161 14.7788 11.1166L11.0204 12.0562L10.4164 16.2857H16.2857C16.7592 16.2857 17.1429 16.6695 17.1429 17.1429C17.1429 17.6161 16.7592 18.0001 16.2857 18.0001Z"
-                                              fill="#5F5F5F"
-                                            />
-                                          </svg>
-                                        ))}
+                                      {each.paymentMethod === 'Litecoin' && (
+                                        <svg
+                                          className="mr-1"
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M12 0C5.3726 0 0 5.3726 0 12C0 18.6274 5.3726 24 12 24C18.6274 24 24 18.6274 24 12C23.9924 5.37574 18.6243 0.00758581 12 0ZM16.2857 18.0001H9.42866C8.9552 18.0001 8.57147 17.6164 8.57147 17.1429C8.57147 17.1024 8.57434 17.0618 8.5801 17.0216L9.22515 12.5054L7.92222 12.8313C7.85421 12.8486 7.78437 12.8572 7.71427 12.8572C7.24081 12.8567 6.85759 12.4727 6.85785 11.9992C6.85838 11.6063 7.12571 11.2642 7.50683 11.1684L9.48674 10.6735L10.2942 5.0213C10.3612 4.55254 10.7954 4.22714 11.2642 4.2941C11.7329 4.36107 12.0583 4.79529 11.9914 5.26404L11.2825 10.2247L14.3636 9.4543C14.8222 9.33737 15.2886 9.61439 15.4053 10.0729C15.5222 10.5315 15.2452 10.9979 14.7866 11.1148C14.784 11.1153 14.7814 11.1161 14.7788 11.1166L11.0204 12.0562L10.4164 16.2857H16.2857C16.7592 16.2857 17.1429 16.6695 17.1429 17.1429C17.1429 17.6161 16.7592 18.0001 16.2857 18.0001Z"
+                                            fill="#5F5F5F"
+                                          />
+                                        </svg>
+                                      )}
                                       {each.paymentMethod == 'Ethereum' && (
                                         <svg
                                           className="mr-1"
@@ -1324,7 +1322,7 @@ function Funding() {
                                     </td>
                                     <td>
                                       <span className="text-black">
-                                        {moment(each.date.toDate()).calendar()}
+                                        {moment(each.date?.toDate()).calendar()}
                                       </span>
                                     </td>
                                     <td>
@@ -1334,29 +1332,29 @@ function Funding() {
                                     </td>
                                     <td>
                                       {each.statusSuccess && (
-                                        <a
+                                        <Link
                                           className="btn btn-outline-success float-right"
-                                          href="javascript:void(0);"
+                                          to="#"
                                         >
                                           Completed
-                                        </a>
+                                        </Link>
                                       )}
 
                                       {each.statusFailed && (
-                                        <a
+                                        <Link
                                           className="btn btn-outline-success float-right"
-                                          href="javascript:void(0);"
+                                          to="#"
                                         >
                                           Failed
-                                        </a>
+                                        </Link>
                                       )}
                                       {each.statusPending && (
-                                        <a
+                                        <Link
                                           className="btn btn-outline-success float-right"
-                                          href="javascript:void(0);"
+                                          to="#"
                                         >
                                           Failed
-                                        </a>
+                                        </Link>
                                       )}
                                     </td>
                                   </tr>
@@ -1445,7 +1443,7 @@ function Funding() {
                                       </span>
                                     </td>
                                     <td className="wspace-no">
-                                      {each.paymentMethod == 'Bitcoin' && (
+                                      {each.withdrawalMethod === 'Bitcoin' && (
                                         <svg
                                           className="mr-2"
                                           width="24"
@@ -1468,7 +1466,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'Paypal' && (
+                                      {each.withdrawalMethod == 'Paypal' && (
                                         <svg
                                           className="mr-1"
                                           width="24"
@@ -1483,7 +1481,7 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'Ethereum' && (
+                                      {each.withdrawalMethod === 'Ethereum' && (
                                         <svg
                                           className="mr-1"
                                           width="24"
@@ -1506,53 +1504,53 @@ function Funding() {
                                           />
                                         </svg>
                                       )}
-                                      {each.paymentMethod == 'Bank' && (
+                                      {each.withdrawalMethod === 'Bank' && (
                                         <Icons.Money />
                                       )}
                                       <span className="font-w600 text-black">
-                                        {each.paymentMethod}
+                                        {each.withdrawalMethod}
                                       </span>
                                     </td>
                                     <td>
                                       <span className="text-black">
-                                        {moment(each.date.toDate()).calendar()}
+                                        {moment(each.date?.toDate()).calendar()}
                                       </span>
                                     </td>
                                     <td>
                                       <span className="font-w600 text-black">
-                                        ${each.paymentAmount}
+                                        ${each.withdrawalAmount}
                                       </span>
                                     </td>
                                     <td>
                                       {each.statusSuccess && (
-                                        <a
+                                        <Link
                                           className="btn btn-outline-success float-right"
-                                          href="javascript:void(0);"
+                                          to="#"
                                         >
                                           Completed
-                                        </a>
+                                        </Link>
                                       )}
 
                                       {each.statusFailed && (
-                                        <a
+                                        <Link
                                           className="btn btn-outline-success float-right"
-                                          href="javascript:void(0);"
+                                          to="#"
                                         >
                                           Failed
-                                        </a>
+                                        </Link>
                                       )}
                                       {each.statusPending && (
-                                        <a
+                                        <Link
                                           className="btn btn-outline-success float-right"
-                                          href="javascript:void(0);"
+                                          to="#"
                                         >
                                           Failed
-                                        </a>
+                                        </Link>
                                       )}
                                     </td>
                                   </tr>
                                 ))}
-                              {savingFundingInDatabase.length === 0 && (
+                              {savingWithdrawalInDatabase.length === 0 && (
                                 <tr className="text-center text-warning row-span-4">
                                   <td colSpan={6}>No Transaction Yet</td>
                                 </tr>

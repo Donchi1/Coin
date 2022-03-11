@@ -122,7 +122,7 @@ function SavingWithdrawal() {
 
   if (savingWithdrawalMessage) {
     MySwal.fire(successOptions).then(() => {
-      dispatch({ type: 'SAVING_WITHDRAWAL_SUCCESS', message: '' })
+      return dispatch({ type: 'SAVING_WITHDRAWAL_SUCCESS', message: '' })
     })
   }
 

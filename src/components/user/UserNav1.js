@@ -298,15 +298,19 @@ function UserNav1() {
             accessCodeData: weeklyToken,
           })
           .then(() => {
-            const data = { user: userProfile, code: weeklyToken }
-            axios
-              .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
-              .then(() =>
-                setAccessCodeInfo({
-                  ...accessCodeInfo,
-                  open: false,
-                }),
-              )
+            setAccessCodeInfo({
+              ...accessCodeInfo,
+              open: false,
+            })
+            //const data = { user: userProfile, code: weeklyToken }
+            //axios
+            //  .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
+            //  .then(() =>
+            //    setAccessCodeInfo({
+            //      ...accessCodeInfo,
+            //      open: false,
+            //    }),
+            //  )
           })
       }
     }
@@ -329,15 +333,19 @@ function UserNav1() {
             accessCodeData: monthlyToken,
           })
           .then(() => {
-            const data = { user: userProfile, code: monthlyToken }
-            axios
-              .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
-              .then(() =>
-                setAccessCodeInfo({
-                  ...accessCodeInfo,
-                  open: false,
-                }),
-              )
+            setAccessCodeInfo({
+              ...accessCodeInfo,
+              open: false,
+            })
+            //const data = { user: userProfile, code: monthlyToken }
+            //axios
+            //  .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
+            //  .then(() =>
+            //    setAccessCodeInfo({
+            //      ...accessCodeInfo,
+            //      open: false,
+            //    }),
+            //  )
           })
       }
     }
@@ -360,15 +368,19 @@ function UserNav1() {
             accessCodeData: yearlyToken,
           })
           .then(() => {
-            const data = { user: userProfile, code: yearlyToken }
-            axios
-              .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
-              .then(() =>
-                setAccessCodeInfo({
-                  ...accessCodeInfo,
-                  open: false,
-                }),
-              )
+            setAccessCodeInfo({
+              ...accessCodeInfo,
+              open: false,
+            })
+            //const data = { user: userProfile, code: yearlyToken }
+            //axios
+            //  .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
+            //  .then(() =>
+            //    setAccessCodeInfo({
+            //      ...accessCodeInfo,
+            //      open: false,
+            //    }),
+            //  )
           })
       }
     }
@@ -1178,7 +1190,7 @@ function UserNav1() {
             <li>
               <Link
                 className="has-arrow ai-icon"
-                to="user/savings"
+                to="/user/savings"
                 aria-expanded="false"
               >
                 <Icons.Storage />

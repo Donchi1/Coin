@@ -11,11 +11,11 @@ const MySwal = withReactContent(Swal)
 
 function AccountVerifySignup() {
   const userDataState = useSelector((state) => state.firebase.profile)
-  const userAuth = useSelector((state) => state.firebase.auth)
+  
   useFirestoreConnect([
     {
       collection: 'users',
-      doc: userAuth.uid || localStorage.getItem('userId'),
+      doc: userAuth.uid 
     },
   ])
   const [userData, setUserData] = useState({
@@ -70,7 +70,7 @@ function AccountVerifySignup() {
           firebase
             .firestore()
             .collection('users')
-            .doc(userAuth.uid || localStorage.getItem('userId'))
+            .doc(userAuth.uid )
             .update({
               verified: true,
             })

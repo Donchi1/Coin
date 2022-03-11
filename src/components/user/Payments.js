@@ -128,7 +128,7 @@ function Payments() {
     title: <p>Error</p>,
     text: transSuccess,
     icon: 'error',
-    timer: 4000,
+    timer: 7000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
@@ -373,10 +373,10 @@ function Payments() {
                                 </button>
                                 {openPay.bank && (
                                   <div className="pt-2">
-                                    <h4 className="text-warning">
+                                    <h6 className="text-warning">
                                       Kindly contact customer support team for a
                                       bank payment information.
-                                    </h4>
+                                    </h6>
                                   </div>
                                 )}
                               </div>
