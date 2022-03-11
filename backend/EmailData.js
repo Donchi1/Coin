@@ -72,7 +72,7 @@ const emailData = {
     from: process.env.EMAIL_SENDER,
     to: user.email,
     subject: 'Welcome',
-    html: `<h1>Hi ${user.fullname} you are welcome to ultimatecoins</h1>
+    html: `<h1>Hi ${user.firstname} you are welcome to ultimatecoins</h1>
                     <p>We are happy to see you</p>
                     <p>Make your life changing investment and enjoy while sit at home</p>
                     <br/>
@@ -87,7 +87,9 @@ const emailData = {
     from: process.env.EMAIL_SENDER,
     to: user.email,
     subject: 'password Update',
-    html: `<h1>${user.fullname} your password has been successfully changed</h1>
+    html: `<h1>${
+      user.firstname
+    } your password has been successfully changed</h1>
                     <p>if you did not do this, kindly contact our support team</p>
                      <p>Time ${new Date()}</p>
                     <br/>
@@ -100,7 +102,7 @@ const emailData = {
     from: process.env.EMAIL_SENDER,
     to: user.email,
     subject: 'profile Update',
-    html: `<h1>${user.fullname} you have updated your profile</h1>
+    html: `<h1>${user.firstname} you have updated your profile</h1>
                     <p>if you did not do this, kindly contact our support team</p>
                      <p>Time ${new Date()}</p>
                     <br/>
@@ -114,7 +116,7 @@ const emailData = {
     to: user.email,
     subject: 'Withdrawal Information',
     html: `<h1>${
-      user.fullname
+      user.firstname
     } your withdrawal has been placed successfully</h1>
                     <p>We will get back to you in less than 24 hours</p>
                      <p>Time ${new Date()}</p>
@@ -128,7 +130,7 @@ const emailData = {
     from: process.env.EMAIL_SENDER,
     to: user.email,
     subject: 'Contact Notification',
-    html: `<h1>${user.name} thank you for contacting us</h1>
+    html: `<h1>${user.firstname} thank you for contacting us</h1>
                     <p>We will get back to you soon</p>                   
                     <br/>
                     <small> © ${new Date().getFullYear()}
@@ -140,7 +142,7 @@ const emailData = {
     from: process.env.EMAIL_SENDER,
     to: 'support@ultimatecoins.info',
     subject: 'Contact Notification',
-    html: `<h1>${user.name} just contacted you</h1>
+    html: `<h1>${user.firstname} just contacted you</h1>
                     <p>Login now and check it out</p>                   
                     <br/>
                     <small> © ${new Date().getFullYear()}

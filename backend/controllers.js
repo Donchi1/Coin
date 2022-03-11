@@ -89,16 +89,18 @@ router.post('/passwordUpdate', (req, res) => {
     })
 })
 router.post('/translate', (req, res) => {
-  const { langTo, text } = req.body.data
+  const data = req.body
 
-  return translate(text, { to: langTo })
-    .then((res) => {
-      console.log(res)
-      res.status(200).json({ message: res })
+  console.log(data)
+
+  return translate(data.text, { to: data.langTo })
+    .then((response) => {
+      console.log(response)
+      res.status(200).json({ message: response })
     })
     .catch((err) => {
       console.log(err)
-      res.status(400).json({ message: err })
+      res.status(403).json({ message: err })
     })
 })
 router.post('/profileUpdate', (req, res) => {
@@ -107,10 +109,10 @@ router.post('/profileUpdate', (req, res) => {
   return transporter
     .sendMail(emailData.profileUpdate(user))
     .then(() => {
-      return res.json({ message: 'Success' })
+      return res.status(200).json({ message: 'Success' })
     })
     .catch((err) => {
-      return res.status(403).json({ message: err })
+      return res.status(401).json({ message: err.message })
     })
 })
 router.post('/contact', (req, res) => {

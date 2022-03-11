@@ -47,6 +47,9 @@ import Disable from './components/user/Disable'
 
 function App() {
   const userInfo = useSelector((state) => state.firebase.profile)
+  const authState = useSelector((state) => state.firebase.auth)
+  console.log('user profile', userInfo)
+  console.log('user auth', authState)
 
   return (
     <Router>

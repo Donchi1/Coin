@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
 import * as Icons from '@material-ui/icons'
-//import Translate from "../body/Translate"
+//import Translate from '../body/Translate'
 import {
   List,
   ListItem,
@@ -20,7 +20,10 @@ function NavBar() {
   const [openSlider, setOpenSlider] = useState(false)
 
   useFirestoreConnect([
-    { collection: 'users', doc: userDataState.uid },
+    {
+      collection: 'users',
+      doc: userDataState.uid || localStorage.getItem('userId'),
+    },
     { collection: 'testimonials' },
   ])
 
@@ -238,24 +241,20 @@ function NavBar() {
           {isLoaded(authState) &&
           !isEmpty(authState) &&
           userDataState?.verified ? (
-            <div className="text-center">
-              <button className=" bg-primary btn  ">
-                <ListItem button component={Link} to="/user/dashboard">
-                  <ListItemText className="text-light text-center uppercase">
-                    DASHBOARD
-                  </ListItemText>
-                </ListItem>
-              </button>
+            <div className="text-center mt-2">
+              <ListItem button component={Link} to="/user/dashboard">
+                <ListItemText className="text-light text-center uppercase">
+                  DASHBOARD
+                </ListItemText>
+              </ListItem>
             </div>
           ) : (
-            <div className="text-center">
-              <button className=" bg-primary btn  ">
-                <ListItem button component={Link} to="/login">
-                  <ListItemText className="text-light text-center uppercase">
-                    LOGIN
-                  </ListItemText>
-                </ListItem>
-              </button>
+            <div className="text-center mt-2">
+              <ListItem button component={Link} to="/login" className="btn">
+                <ListItemText className="text-light text-center uppercase">
+                  LOGIN
+                </ListItemText>
+              </ListItem>
             </div>
           )}
         </List>

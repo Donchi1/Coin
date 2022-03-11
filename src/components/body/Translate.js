@@ -1,21 +1,22 @@
-//import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 //import Languages from './Languages'
 //import axios from 'axios'
 //
 //function Translate() {
-//  const pageText = document.body.innerText
+//  let pageText = document.body.innerText
 //
-//  const storedLang =
-//    localStorage.getItem('Lang') || navigator?.languages[0].slice(0, 2) || 'en'
+//  const storedLang = localStorage.getItem('Lang') || 'en'
 //
 //  const [lang, setLang] = useState(storedLang)
 //
+//  console.log(lang)
+//
 //  useEffect(() => {
-//    const data = { langTo: lang, text: pageText }
 //    axios
-//      .post(`${process.env.REACT_APP_URL}/api/translate`, data)
+//      .post(`${process.env.REACT_APP_URL}/api/translate`, { lang, pageText })
 //      .then((res) => {
-//        console.log('success', res.data())
+//        console.log('success', res.data.message)
+//        pageText = res.data.message
 //      })
 //      .catch((err) => {
 //        console.log('error', err.response.data.message)

@@ -7,6 +7,7 @@ const next = (firebase, url, user, push) => {
       photo: url,
     })
     .then(() => {
+      localStorage.setItem("userId", user.uid)
       return push('/verification/signup')
     })
 }
