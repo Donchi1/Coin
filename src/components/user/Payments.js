@@ -21,15 +21,16 @@ function Payments() {
   const dispatch = useDispatch()
   const { push } = useHistory()
 
-  const transSuccess = useSelector(
-    (state) => state.projectReducer.paymentSuccess,
-  )
-
   const profileInfo = useSelector((state) => state.firebase.profile)
   const paymentInfo = useSelector((state) => state.projectReducer.paymentData)
-  const { paymentAmountData, qrCodeLit, qrCodeEth, qrCodeBtc } = useSelector(
-    (state) => state.projectReducer,
-  )
+  const {
+    paymentAmountData,
+    qrCodeLit,
+    qrCodeEth,
+    qrCodeBtc,
+    paymentSuccess,
+    paymentError,
+  } = useSelector((state) => state.projectReducer)
   const [openPay, setOpenPay] = useState({
     btc: false,
     etheruim: false,
@@ -115,7 +116,7 @@ function Payments() {
     })
 
     paymentAction(
-      paymentInfo.paymentAmount,
+      paymentAmount,
       profileInfo,
       userProve,
       firebase,
@@ -124,16 +125,32 @@ function Payments() {
     )
   }
 
-  const options = {
+  const successOptions = {
+    title: <p>Success</p>,
+    html: <span className="text-success">{paymentSuccess}</span>,
+    icon: 'success',
+    timer: 7000,
+    showCloseButton: true,
+    closeButtonText: 'Ok',
+  }
+  const errorOptions = {
     title: <p>Error</p>,
-    text: transSuccess,
+    text: paymentError,
+    color: 'red',
     icon: 'error',
     timer: 7000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
-  if (transSuccess) {
-    MySwal.fire(options)
+  if (paymentSuccess) {
+    MySwal.fire(successOptions).then(() => {
+      return dispatch({ type: 'PAYMENT_SUCCESS', message: '' })
+    })
+  }
+  if (paymentError) {
+    MySwal.fire(errorOptions).then(() => {
+      return dispatch({ type: 'PAYMENT_ERROR', message: '' })
+    })
   }
 
   return (

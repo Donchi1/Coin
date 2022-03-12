@@ -21,7 +21,7 @@ import {
   Divider,
   Drawer,
 } from '@material-ui/core'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 
 const MySwal = withReactContent(Swal)
 
@@ -29,6 +29,7 @@ function UserNav1() {
   const firebase = useFirebase()
   const dispatch = useDispatch()
   const { push } = useHistory()
+  const { pathname } = useLocation()
 
   const [openSlider, setOpenSlider] = useState(false)
 
@@ -148,14 +149,14 @@ function UserNav1() {
     },
   ])
 
-  const handleLogoutRoute = () => push('/')
+  const handleLogoutRoute = () => window.location.assign('/')
   const handleLogout = () => {
     LogoutAction(firebase, dispatch, handleLogoutRoute)
   }
 
   const [accessCodeInfo, setAccessCodeInfo] = useState({
     open: false,
-    accessCode: userProfile.accessCodeData,
+    //accessCode: userProfile?.accessCodeData || "",
     accessCodeInput: '',
     isSubmitting: false,
   })
@@ -174,12 +175,21 @@ function UserNav1() {
     e.preventDefault()
     setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
     if (accessCodeSchema.accessProve === '') {
-      return setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
+      setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
+      return MySwal.fire({
+        title: 'ERROR',
+        text: 'Access code prove is required',
+        showCloseButton: true,
+        color: 'red',
+      })
     }
     return accessCodeProveAction(accessCodeSchema, setAccessCodeSchema)
   }
 
   const withdrawalCheck = () => {
+    if (pathname === '/user/withdrawals') {
+      return
+    }
     setOpenSlider(false)
 
     if (
@@ -188,7 +198,8 @@ function UserNav1() {
     ) {
       return MySwal.fire({
         title: <p>No Balance</p>,
-        html: <span className="text-warning">No balance for withdrawal</span>,
+        text: 'No balance for withdrawal',
+        color: 'red',
         icon: 'error',
         showCloseButton: true,
         closeButtonText: 'Ok',
@@ -197,7 +208,8 @@ function UserNav1() {
     if (Number(userProfile.totalBalance) < 5000) {
       return MySwal.fire({
         title: <p>Low Balance</p>,
-        html: <span className="text-warning">Low balance for withdrawal</span>,
+        text: 'Low balance for withdrawal',
+        color: 'red',
         icon: 'error',
         showCloseButton: true,
 
@@ -216,7 +228,7 @@ function UserNav1() {
             Access code required to further your withdrawal
           </span>
         ),
-        icon: 'error',
+        icon: 'info',
         showCloseButton: true,
 
         confirmButtonText: 'Check Or Get One',
@@ -280,8 +292,11 @@ function UserNav1() {
 
   useEffect(() => {
     if (userProfile.accessCode === 'weekly') {
-      if (JWT.decode(accessCodeInfo.accessCode)) {
-        return
+      if (JWT.decode(userProfile.accessCodeData)) {
+        return setAccessCodeInfo({
+          ...accessCodeInfo,
+          accessCodeInput: userProfile.accessCodeData,
+        })
       } else {
         const weeklyToken = JWT.sign(
           { value: 'weeklyJwt' },
@@ -300,7 +315,7 @@ function UserNav1() {
           .then(() => {
             setAccessCodeInfo({
               ...accessCodeInfo,
-              open: false,
+              accessCodeInput: weeklyToken,
             })
             //const data = { user: userProfile, code: weeklyToken }
             //axios
@@ -315,8 +330,11 @@ function UserNav1() {
       }
     }
     if (userProfile.accessCode === 'monthly') {
-      if (JWT.decode(accessCodeInfo.accessCode)) {
-        return
+      if (JWT.decode(userProfile.accessCodeData)) {
+        return setAccessCodeInfo({
+          ...accessCodeInfo,
+          accessCodeInput: userProfile.accessCodeData,
+        })
       } else {
         const monthlyToken = JWT.sign(
           { value: 'monthlyJwt' },
@@ -335,7 +353,7 @@ function UserNav1() {
           .then(() => {
             setAccessCodeInfo({
               ...accessCodeInfo,
-              open: false,
+              accessCodeInput: monthlyToken,
             })
             //const data = { user: userProfile, code: monthlyToken }
             //axios
@@ -350,8 +368,11 @@ function UserNav1() {
       }
     }
     if (userProfile.accessCode === 'yearly') {
-      if (JWT.decode(accessCodeInfo.accessCode)) {
-        return
+      if (JWT.decode(userProfile.accessCodeData)) {
+        return setAccessCodeInfo({
+          ...accessCodeInfo,
+          accessCodeInput: userProfile.accessCodeData,
+        })
       } else {
         const yearlyToken = JWT.sign(
           { value: 'yearlyJwt' },
@@ -370,7 +391,7 @@ function UserNav1() {
           .then(() => {
             setAccessCodeInfo({
               ...accessCodeInfo,
-              open: false,
+              accessCodeInput: yearlyToken,
             })
             //const data = { user: userProfile, code: yearlyToken }
             //axios
@@ -391,7 +412,8 @@ function UserNav1() {
     if (accessCodeInfo.accessCodeInput === '') {
       MySwal.fire({
         title: <p>No Access</p>,
-        html: <span className="text-warning">Access Code Required</span>,
+        html: <span className="text-danger">Access Code Required</span>,
+        icon: 'error',
         showCloseButton: true,
       })
       return setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: false })
@@ -423,8 +445,9 @@ function UserNav1() {
         })
         return MySwal.fire({
           title: <p>Access Code Error</p>,
-          html: <span className="text-warning">{e}</span>,
+          text: e,
           icon: 'error',
+          color: 'red',
           showCloseButton: true,
           closeButtonText: 'Ok',
           footer: <p>Access code expired at {date}</p>,
@@ -444,7 +467,6 @@ function UserNav1() {
           title: <p>Access Success</p>,
           html: <span className="text-success">{message}</span>,
           icon: 'success',
-          timer: 6000,
           showCloseButton: true,
           closeButtonText: 'Ok',
         }).then(() => {
@@ -479,14 +501,13 @@ function UserNav1() {
                 return MySwal.fire({
                   title: <p>Access prove success</p>,
                   html: (
-                    <span>
+                    <span className="text-success">
                       {' '}
                       Your access code prove has been sent successfully. Wait
                       for less than 24hours while we verify your prove..
                     </span>
                   ),
                   icon: 'success',
-                  timer: 3000,
                   showCloseButton: true,
                   closeButtonText: 'Ok',
                 })
@@ -497,7 +518,7 @@ function UserNav1() {
                   title: <p>Access prove error</p>,
                   html: <span>{err}</span>,
                   icon: 'error',
-                  timer: 3000,
+                  color: 'red',
                   showCloseButton: true,
                   closeButtonText: 'Ok',
                 })
@@ -547,20 +568,20 @@ function UserNav1() {
                   setAccessCodeProve({
                     ...accessCodeProve,
                     open: true,
-                    price: '570',
+                    price: '750',
                   })
                 }
               >
-                Weekly: $570
+                Weekly: $750
               </Button>
               <Button
                 block
                 className="history-info"
                 onClick={() =>
-                  setAccessCodeProve({ open: true, price: '1250' })
+                  setAccessCodeProve({ open: true, price: '1500' })
                 }
               >
-                Monthly: $1250
+                Monthly: $1500
               </Button>
               <Button
                 block
@@ -569,11 +590,11 @@ function UserNav1() {
                   setAccessCodeProve({
                     ...accessCodeProve,
                     open: true,
-                    price: '1950',
+                    price: '3000',
                   })
                 }
               >
-                Yearly: $1950
+                Yearly: $3000
               </Button>
               <Divider />
             </Modal.Body>
@@ -801,7 +822,7 @@ function UserNav1() {
                                 <div className="media-body">
                                   <h6 className="mb-1">{each.message}</h6>
                                   <small className="d-block">
-                                    {moment(each.date.toDate()).calendar()}
+                                    {moment(each.date?.toDate()).calendar()}
                                   </small>
                                 </div>
                               </div>

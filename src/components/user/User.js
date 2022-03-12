@@ -1515,7 +1515,7 @@ function User() {
                                         </span>
                                       </td>
                                       <td className="wspace-no">
-                                        {each.paymentMethod === 'bitcoin' && (
+                                        {each.paymentMethod === 'Bitcoin' && (
                                           <svg
                                             className="mr-2"
                                             width="24"
@@ -1538,7 +1538,7 @@ function User() {
                                             />
                                           </svg>
                                         )}
-                                        {each.paymentMethod === 'litecoins' && (
+                                        {each.paymentMethod === 'Litecoins' && (
                                           <svg
                                             className="mr-1"
                                             width="24"
@@ -1553,7 +1553,7 @@ function User() {
                                             />
                                           </svg>
                                         )}
-                                        {each.paymentMethod === 'ethereum' && (
+                                        {each.paymentMethod === 'Ethereum' && (
                                           <svg
                                             className="mr-1"
                                             width="24"
@@ -1576,7 +1576,7 @@ function User() {
                                             />
                                           </svg>
                                         )}
-                                        {each.paymentMethod === 'bank' && (
+                                        {each.paymentMethod === 'Bank' && (
                                           <Icons.Money />
                                         )}
                                         <span className="font-w600 text-black">
@@ -1586,7 +1586,7 @@ function User() {
                                       <td>
                                         <span className="text-black">
                                           {moment(
-                                            each.date.toDate(),
+                                            each.date?.toDate(),
                                           ).calendar()}
                                         </span>
                                       </td>
@@ -1607,7 +1607,7 @@ function User() {
 
                                         {each.statusFailed && (
                                           <Link
-                                            className="btn btn-outline-success float-right"
+                                            className="btn btn-outline-danger float-right"
                                             to="#"
                                           >
                                             Failed
@@ -1615,10 +1615,10 @@ function User() {
                                         )}
                                         {each.statusPending && (
                                           <Link
-                                            className="btn btn-outline-success float-right"
+                                            className="btn btn-outline-info float-right"
                                             to="#"
                                           >
-                                            Failed
+                                            Pending
                                           </Link>
                                         )}
                                       </td>
@@ -1716,7 +1716,7 @@ function User() {
                                         </span>
                                       </td>
                                       <td className="wspace-no">
-                                        {each.paymentMethod === 'bitcoin' && (
+                                        {each.paymentMethod === 'Bitcoin' && (
                                           <svg
                                             className="mr-2"
                                             width="24"
@@ -1739,7 +1739,7 @@ function User() {
                                             />
                                           </svg>
                                         )}
-                                        {each.paymentMethod === 'litecoins' ||
+                                        {each.paymentMethod === 'Litecoins' ||
                                           'litcoins' ||
                                           ('litcoin' && (
                                             <svg
@@ -1756,7 +1756,7 @@ function User() {
                                               />
                                             </svg>
                                           ))}
-                                        {each.paymentMethod === 'ethereum' && (
+                                        {each.paymentMethod === 'Ethereum' && (
                                           <svg
                                             className="mr-1"
                                             width="24"
@@ -1789,7 +1789,7 @@ function User() {
                                       <td>
                                         <span className="text-black">
                                           {moment(
-                                            each.date.toDate(),
+                                            each.date?.toDate(),
                                           ).calendar()}
                                         </span>
                                       </td>
@@ -1810,7 +1810,7 @@ function User() {
 
                                         {each.statusFailed && (
                                           <Link
-                                            className="btn btn-outline-success float-right"
+                                            className="btn btn-outline-danger float-right"
                                             to="#"
                                           >
                                             Failed
@@ -1818,10 +1818,10 @@ function User() {
                                         )}
                                         {each.statusPending && (
                                           <Link
-                                            className="btn btn-outline-success float-right"
+                                            className="btn btn-outline-info float-right"
                                             to="#"
                                           >
-                                            Failed
+                                            Pending
                                           </Link>
                                         )}
                                       </td>

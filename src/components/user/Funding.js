@@ -1342,7 +1342,7 @@ function Funding() {
 
                                       {each.statusFailed && (
                                         <Link
-                                          className="btn btn-outline-success float-right"
+                                          className="btn btn-outline-danger float-right"
                                           to="#"
                                         >
                                           Failed
@@ -1350,16 +1350,16 @@ function Funding() {
                                       )}
                                       {each.statusPending && (
                                         <Link
-                                          className="btn btn-outline-success float-right"
+                                          className="btn btn-outline-info float-right"
                                           to="#"
                                         >
-                                          Failed
+                                          Pending
                                         </Link>
                                       )}
                                     </td>
                                   </tr>
                                 ))}
-                              {savingFundingInDatabase.length === 0 && (
+                              {savingFundingInDatabase?.length === 0 && (
                                 <tr className="text-center text-warning row-span-4">
                                   <td colSpan={6}>No Transaction Yet</td>
                                 </tr>
@@ -1533,7 +1533,7 @@ function Funding() {
 
                                       {each.statusFailed && (
                                         <Link
-                                          className="btn btn-outline-success float-right"
+                                          className="btn btn-outline-danger float-right"
                                           to="#"
                                         >
                                           Failed
@@ -1541,16 +1541,16 @@ function Funding() {
                                       )}
                                       {each.statusPending && (
                                         <Link
-                                          className="btn btn-outline-success float-right"
+                                          className="btn btn-outline-info float-right"
                                           to="#"
                                         >
-                                          Failed
+                                          Pending
                                         </Link>
                                       )}
                                     </td>
                                   </tr>
                                 ))}
-                              {savingWithdrawalInDatabase.length === 0 && (
+                              {savingWithdrawalInDatabase?.length === 0 && (
                                 <tr className="text-center text-warning row-span-4">
                                   <td colSpan={6}>No Transaction Yet</td>
                                 </tr>

@@ -11,11 +11,11 @@ const MySwal = withReactContent(Swal)
 
 function AccountVerifySignup() {
   const userDataState = useSelector((state) => state.firebase.profile)
-  
+
   useFirestoreConnect([
     {
       collection: 'users',
-      doc: userAuth.uid 
+      doc: userDataState.uid,
     },
   ])
   const [userData, setUserData] = useState({
@@ -38,7 +38,7 @@ function AccountVerifySignup() {
   }
   const successOptionsSignup = {
     title: <p>Success</p>,
-    text: 'Signup Successful',
+    html: <span className="text-success">Signup Successful !!</span>,
     icon: 'success',
     timer: 7000,
     showCloseButton: true,
@@ -48,7 +48,8 @@ function AccountVerifySignup() {
   const emptyOptions = {
     title: <p>Required</p>,
     text: 'Please all inputs are required',
-    icon: 'info',
+    icon: 'error',
+    color: 'red',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -58,7 +59,7 @@ function AccountVerifySignup() {
       return firebase
         .firestore()
         .collection('notifications')
-        .doc(userAuth.uid || localStorage.getItem('userId'))
+        .doc(userDataState.uid)
         .collection('notificationDatas')
         .add({
           date: firebase.firestore.FieldValue.serverTimestamp(),
@@ -70,7 +71,7 @@ function AccountVerifySignup() {
           firebase
             .firestore()
             .collection('users')
-            .doc(userAuth.uid )
+            .doc(userDataState.uid)
             .update({
               verified: true,
             })
@@ -116,7 +117,7 @@ function AccountVerifySignup() {
       .auth()
       .signOut()
       .then(() => {
-        return push('/')
+        return window.location.assign('/')
       })
   }
 

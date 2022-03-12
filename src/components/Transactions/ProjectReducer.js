@@ -17,7 +17,6 @@ const initialAuth = {
   paymentData: [],
   savingMessageSuccess: '',
   savingMessageError: '',
-  savingsData: [],
   pwcError: null,
   pwcSuccess: '',
   accessCodeError: null,
@@ -28,9 +27,8 @@ const initialAuth = {
   fundingProveSuccess: '',
   fundingProveError: '',
   paymentAmountData: '',
-  fundingData: [],
-  savingWithdrawalData: [],
   savingWithdrawalMessage: '',
+  savingWithdrawalError: '',
   withdrawalAccessPopUp: false,
   isTyping: { user: null, admin: null },
   openSuccess: false,
@@ -51,11 +49,7 @@ export const projectReducer = (state = initialAuth, action) => {
         ...state,
         savingMessageSuccess: action.message,
       }
-    case 'SAVING_DATA':
-      return {
-        ...state,
-        savingsData: action.data,
-      }
+
     case 'SAVING_ERROR':
       return {
         ...state,
@@ -119,24 +113,22 @@ export const projectReducer = (state = initialAuth, action) => {
     case 'PAYMENT_SUCCESS':
       return {
         ...state,
-        paymentSuccess:
-          'Wait for less than 24hours while we review your payment prove',
+        paymentSuccess: action.message,
+      }
+    case 'PAYMENT_ERROR':
+      return {
+        ...state,
+        paymentError: action.message,
       }
     case 'SAVING_WITHDRAWAL_SUCCESS':
       return {
         ...state,
         savingWithdrawalMessage: action.message,
       }
-    case 'SAVING_WITHDRAWAL_DATA':
+    case 'SAVING_WITHDRAWAL_ERROR':
       return {
         ...state,
-
-        savingWithdrawalData: action.data,
-      }
-    case 'PAYMENT_DATA':
-      return {
-        ...state,
-        paymentData: action.payment,
+        savingWithdrawalError: action.message,
       }
 
     case 'WITHDRAWAL_ERROR':

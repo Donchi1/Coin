@@ -203,12 +203,12 @@ function Withdrawals() {
 
   if (transInfo.withdrawalError) {
     MySwal.fire(errorOptions).then(() => {
-      dispatch({ type: 'WITHDRAWAL_ERROR', messsage: '' })
+      return dispatch({ type: 'WITHDRAWAL_ERROR', messsage: '' })
     })
   }
   if (transInfo.withdrawalSuccess) {
     MySwal.fire(successOptions).then(() => {
-      dispatch({ type: 'WITHDRAWAL_SUCCESS', messsage: '' })
+      return dispatch({ type: 'WITHDRAWAL_SUCCESS', messsage: '' })
     })
   }
 

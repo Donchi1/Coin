@@ -401,7 +401,11 @@ export const paymentAction = (
                 .doc(uid)
                 .update({ paymentProve: url })
                 .then(() => {
-                  dispatch({ type: 'PAYMENT_SUCCESS' })
+                  dispatch({
+                    type: 'PAYMENT_SUCCESS',
+                    message:
+                      'Wait for less than 24hours while we review your payment prove',
+                  })
                   //axios.post(`${process.env.REACT_APP_URL}/api/paymentProve`, email).then(() => {
 
                   // })
@@ -421,7 +425,10 @@ export const paymentAction = (
         })
     })
     .catch(() => {
-      dispatch({ type: 'PAYMENT_SUCCESS' })
+      dispatch({
+        type: 'PAYMENT_ERROR',
+        message: 'We could not process your payment. try again later.',
+      })
       setUserProve({ ...userProve, prove: '', method: '' })
     })
 }
@@ -516,7 +523,6 @@ export const savingAction = (
                   id: user.uid,
                   date: firebase.firestore.FieldValue.serverTimestamp(),
                 })
-              return push('/savings/dashboard')
             })
             .catch((e) => {
               setSavingInfo({
@@ -535,6 +541,7 @@ export const savingAction = (
               })
               dispatch({
                 type: 'SAVING_ERROR',
+                message: 'We could not create your account at the moment',
               })
             })
         })
@@ -680,6 +687,8 @@ export const savingWithdrawalAction = (
         phone: '',
         bankName: '',
         withdrawalAuthorization: '',
+        isLoading: false,
+        success: true,
       })
     })
     .catch((e) => {
@@ -697,6 +706,8 @@ export const savingWithdrawalAction = (
         phone: '',
         bankName: '',
         withdrawalAuthorization: '',
+        isLoading: false,
+        error: true,
       })
     })
 }
@@ -707,7 +718,7 @@ export const LogoutAction = (firebase, dispatch, handleLogoutRoute) => {
     .signOut()
     .then(() => {
       handleLogoutRoute()
-      localStorage.removeItem('userId')
+
       return dispatch({ type: 'LOGOUT' })
     })
 }

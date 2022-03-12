@@ -18,6 +18,9 @@ function Savings() {
   const { push } = useHistory()
 
   const userInfo = useSelector((state) => state.firebase.profile)
+  const { savingMessageSuccess, savingMessageError } = useSelector(
+    (state) => state.projectReducer,
+  )
 
   const [savingInfo, setSavingInfo] = useState({
     firstname: '',
@@ -63,6 +66,22 @@ function Savings() {
     text: 'Savings account already exist',
     icon: 'info',
     color: 'orange',
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const successOptions = {
+    title: <p>Savings Success</p>,
+    html: <span className="text-primary">{savingMessageSuccess}</span>,
+    icon: 'success',
+
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const errorOptions = {
+    title: <p>Savings Error</p>,
+    text: savingMessageError,
+    icon: 'error',
+    color: 'red',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -128,6 +147,18 @@ function Savings() {
       idCardPhoto,
       setIdCardPhoto,
     )
+  }
+
+  if (savingMessageSuccess) {
+    MySwal.fire(successOptions).then(() => {
+      dispatch({ type: 'SAVING_SUCCESS', message: '' })
+      return push('/savings/dashboard')
+    })
+  }
+  if (savingMessageError) {
+    MySwal.fire(errorOptions).then(() => {
+      return dispatch({ type: 'SAVING_ERROR', message: '' })
+    })
   }
 
   return (

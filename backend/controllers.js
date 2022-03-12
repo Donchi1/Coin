@@ -93,7 +93,7 @@ router.post('/translate', (req, res) => {
 
   console.log(data)
 
-  return translate(data.text, { to: data.langTo })
+  return translate(data.pageText, { to: data.lang })
     .then((response) => {
       console.log(response)
       res.status(200).json({ message: response })

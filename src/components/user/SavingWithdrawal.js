@@ -19,7 +19,7 @@ function SavingWithdrawal() {
 
   const savings = useSelector((state) => state.firestore.ordered.savings)
 
-  const { savingWithdrawalMessage } = useSelector(
+  const { savingWithdrawalMessage, savingWithdrawalError } = useSelector(
     (state) => state.projectReducer,
   )
   const [saveInfo, setSafeInfo] = useState({
@@ -52,6 +52,7 @@ function SavingWithdrawal() {
     text: 'Wrong Or No withdrawal Authorization Code ',
     icon: 'error',
     color: 'orange',
+    timer: 7000,
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -60,7 +61,15 @@ function SavingWithdrawal() {
     title: <p>Success</p>,
     html: <span className="text-success">{savingWithdrawalMessage}</span>,
     icon: 'success',
-    timer: 3000,
+    timer: 8000,
+    showCloseButton: true,
+    closeButtonText: 'OK',
+  }
+  const errorOptionW = {
+    title: <p>Error</p>,
+    text: savingWithdrawalMessage,
+    icon: 'error',
+    timer: 8000,
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -71,10 +80,13 @@ function SavingWithdrawal() {
     wallet: '',
     withdrawalMethod: '',
     name: '',
-    accountNumber: 'none',
+    accountNumber: '',
     phone: '',
     bankName: '',
     withdrawalAuthorization: '',
+    isLoading: false,
+    success: false,
+    error: false,
   })
 
   useEffect(() => {
@@ -91,6 +103,8 @@ function SavingWithdrawal() {
   const handleWithdrawal = (e) => {
     e.preventDefault()
 
+    setWithdrawalAmount({ ...withdrawalAmount, isLoading: true })
+
     if (saveInfo.authorize !== withdrawalAmount.withdrawalAuthorization) {
       setOpenPay({
         ...openPay,
@@ -99,17 +113,8 @@ function SavingWithdrawal() {
         paypal: false,
         bank: false,
       })
-
       return MySwal.fire(errorOptions)
     }
-
-    setOpenPay({
-      ...openPay,
-      btc: false,
-      etheruim: false,
-      paypal: false,
-      bank: false,
-    })
 
     return savingWithdrawalAction(
       profileInfo,
@@ -120,9 +125,16 @@ function SavingWithdrawal() {
     )
   }
 
-  if (savingWithdrawalMessage) {
+  if (withdrawalAmount.success) {
     MySwal.fire(successOptions).then(() => {
+      setWithdrawalAmount({ ...withdrawalAmount, success: false })
       return dispatch({ type: 'SAVING_WITHDRAWAL_SUCCESS', message: '' })
+    })
+  }
+  if (withdrawalAmount.error) {
+    MySwal.fire(errorOptionW).then(() => {
+      setWithdrawalAmount({ ...withdrawalAmount, error: false })
+      return dispatch({ type: 'SAVING_WITHDRAWAL_ERROR', message: '' })
     })
   }
 
@@ -300,7 +312,14 @@ function SavingWithdrawal() {
                                       />
                                     </div>
                                     <div className="form-group col-md-12 text-center wow">
-                                      <Button type="submit">Submit</Button>
+                                      <Button
+                                        type="submit"
+                                        disabled={withdrawalAmount.isLoading}
+                                      >
+                                        {withdrawalAmount.isLoading
+                                          ? 'Loading..'
+                                          : 'Submit'}
+                                      </Button>
                                     </div>
                                     <div className="divider small_divider"></div>
                                   </form>
@@ -454,7 +473,14 @@ function SavingWithdrawal() {
                                       data-animation="fadeInUp"
                                       data-animation-delay="0.8s"
                                     >
-                                      <Button type="submit">Submit</Button>
+                                      <Button
+                                        type="submit"
+                                        disabled={withdrawalAmount.isLoading}
+                                      >
+                                        {withdrawalAmount.isLoading
+                                          ? 'Loading..'
+                                          : 'Submit'}
+                                      </Button>
                                     </div>
                                     <div className="divider small_divider"></div>
                                   </form>
@@ -593,7 +619,14 @@ function SavingWithdrawal() {
                                       />
                                     </div>
                                     <div className="form-group col-md-12 text-center wow">
-                                      <Button type="submit">Submit</Button>
+                                      <Button
+                                        type="submit"
+                                        disabled={withdrawalAmount.isLoading}
+                                      >
+                                        {withdrawalAmount.isLoading
+                                          ? 'Loading..'
+                                          : 'Submit'}
+                                      </Button>
                                     </div>
                                     <div className="divider small_divider"></div>
                                   </form>
@@ -755,7 +788,14 @@ function SavingWithdrawal() {
                                       data-animation="fadeInUp"
                                       data-animation-delay="0.8s"
                                     >
-                                      <Button type="submit">Submit</Button>
+                                      <Button
+                                        type="submit"
+                                        disabled={withdrawalAmount.isLoading}
+                                      >
+                                        {withdrawalAmount.isLoading
+                                          ? 'Loading..'
+                                          : 'Submit'}
+                                      </Button>
                                     </div>
                                     <div className="divider small_divider"></div>
                                   </form>
