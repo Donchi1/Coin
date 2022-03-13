@@ -33,7 +33,7 @@ function Funding() {
 
   const {
     savingFundingInDatabase,
-    savingWithdrawalInDatabase,
+    savingWithdrawalsInDatabase,
     savings,
   } = useSelector((state) => state.firestore.ordered)
   const dataHistory = useSelector((state) => state.projectReducer)
@@ -1372,8 +1372,8 @@ function Funding() {
                         <div className="table-responsive">
                           <table className="table shadow-hover card-table border-no tbl-btn short-one">
                             <tbody>
-                              {savingWithdrawalInDatabase &&
-                                savingWithdrawalInDatabase.map((each) => (
+                              {savingWithdrawalsInDatabase &&
+                                savingWithdrawalsInDatabase.map((each) => (
                                   <tr key={each.date}>
                                     <td>
                                       <span>
@@ -1550,7 +1550,7 @@ function Funding() {
                                     </td>
                                   </tr>
                                 ))}
-                              {savingWithdrawalInDatabase?.length === 0 && (
+                              {savingWithdrawalsInDatabase?.length === 0 && (
                                 <tr className="text-center text-warning row-span-4">
                                   <td colSpan={6}>No Transaction Yet</td>
                                 </tr>

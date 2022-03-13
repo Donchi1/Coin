@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 
 import { paymentAction } from '../Auths/Action'
 import UserNav1 from './UserNav1'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import Ufooter from './Ufooter'
 import imgLit from '../../assets/qrcodeLit.png'
 import imgEth from '../../assets/qrcodeEth.png'
@@ -56,6 +56,7 @@ function Payments() {
   const [userProve, setUserProve] = useState({
     prove: '',
     method: '',
+    isLoading: false,
   })
 
   const handleAmountPayBtc = (e) => {
@@ -105,17 +106,19 @@ function Payments() {
   const handleProve = (e) => {
     e.preventDefault()
     if (userProve.prove === '' || userProve.method === '') {
-      return
+      return MySwal.fire({
+        title: 'Required',
+        text: 'All input are required',
+        showCloseButton: true,
+        icon: 'info',
+        color: 'red',
+      })
     }
-    setOpenPay({
-      ...openPay,
-      etheruim: false,
-      btc: false,
-      bank: false,
-      litecoin: false,
-    })
+    setUserProve({ ...userProve, isLoading: true })
 
     paymentAction(
+      openPay,
+      setOpenPay,
       paymentAmount,
       profileInfo,
       userProve,
@@ -129,7 +132,7 @@ function Payments() {
     title: <p>Success</p>,
     html: <span className="text-success">{paymentSuccess}</span>,
     icon: 'success',
-    timer: 7000,
+    timer: 8000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
@@ -138,7 +141,7 @@ function Payments() {
     text: paymentError,
     color: 'red',
     icon: 'error',
-    timer: 7000,
+    timer: 8000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
@@ -218,7 +221,7 @@ function Payments() {
                                   {qrCodeBtc && (
                                     <>
                                       <h4 className="userTextColor">
-                                        Make payment with the above btc wallet
+                                        Make payment with the below btc wallet
                                         and upload Prove
                                       </h4>
                                       <div className="text-center">
@@ -283,8 +286,8 @@ function Payments() {
                                     {qrCodeEth && (
                                       <>
                                         <h4 className="userTextColor">
-                                          Make payment with the above btc wallet
-                                          and upload Prove
+                                          Make payment with the below Etheruim
+                                          wallet and upload Prove
                                         </h4>
                                         <div className="text-center">
                                           <img
@@ -351,7 +354,7 @@ function Payments() {
                                     {qrCodeLit && (
                                       <>
                                         <h4 className="userTextColor">
-                                          Make payment with the above litcoin
+                                          Make payment with the below litcoin
                                           wallet and upload Prove
                                         </h4>
                                         <div className="text-center">
@@ -426,18 +429,63 @@ function Payments() {
                                 data-animation="fadeInUp"
                                 data-animation-delay="0.7s"
                               >
-                                <input
+                                <Form.Control
+                                  as="select"
                                   type="text"
-                                  className="form-control"
-                                  required
-                                  placeholder="Payment Method"
+                                  name="method"
+                                  id="my-select"
+                                  placeholder="Enter funding Method"
                                   onChange={(e) => {
                                     setUserProve({
                                       ...userProve,
                                       method: e.target.value,
                                     })
                                   }}
-                                />
+                                  value={userProve.method}
+                                >
+                                  <option
+                                    className="text-dark"
+                                    style={{ color: 'black' }}
+                                  >
+                                    Account Funding Method
+                                  </option>
+                                  <option
+                                    className="text-dark"
+                                    style={{ color: 'black' }}
+                                    value="Bank"
+                                  >
+                                    Bank
+                                  </option>
+                                  <option
+                                    className="text-dark"
+                                    style={{ color: 'black' }}
+                                    value="Bitcoin"
+                                  >
+                                    Bitcoin
+                                  </option>
+                                  <option
+                                    className="text-dark"
+                                    style={{ color: 'black' }}
+                                    value="Etherium"
+                                  >
+                                    Etherium
+                                  </option>
+                                  <option
+                                    className="text-dark"
+                                    style={{ color: 'black' }}
+                                    value="Litcoin"
+                                  >
+                                    Litcoin
+                                  </option>
+                                  <option
+                                    className="text-dark"
+                                    style={{ color: 'black' }}
+                                    value="Bank"
+                                  >
+                                    Bank
+                                  </option>
+                                </Form.Control>
+
                                 <p>
                                   Note: Method must be the above provided
                                   methods
@@ -451,8 +499,11 @@ function Payments() {
                                 <button
                                   type="submit"
                                   className="btn history-info btn-radius w-100"
+                                  disabled={userProve.isLoading}
                                 >
-                                  Upload
+                                  {userProve.isLoading
+                                    ? 'Loading...'
+                                    : 'Upload'}
                                 </button>
                               </div>
                             </form>

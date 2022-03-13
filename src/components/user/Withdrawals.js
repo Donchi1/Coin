@@ -31,7 +31,7 @@ function Withdrawals() {
 
   const [newAmount, setNewAmount] = useState(1)
   const [withdrawalAmount, setWithdrawalAmount] = useState({
-    amount: 1,
+    amount: '',
     wallet: '',
     withdrawalMethod: '',
     name: '',
@@ -49,7 +49,7 @@ function Withdrawals() {
     text: 'No or low balance for withdrawal',
     icon: 'error',
     color: 'orange',
-    timer: 5000,
+    timer: 7000,
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
@@ -57,7 +57,9 @@ function Withdrawals() {
   useEffect(() => {
     axios
       .get(
-        `https://blockchain.info/tobtc?currency=USD&value=${withdrawalAmount.amount}`,
+        `https://blockchain.info/tobtc?currency=USD&value=${
+          withdrawalAmount.amount || 1
+        }`,
       )
       .then((res) => {
         setNewAmount(res.data)
@@ -78,7 +80,7 @@ function Withdrawals() {
       })
       setWithdrawalAmount({
         ...withdrawalAmount,
-        amount: 1,
+        amount: '',
         wallet: '',
         withdrawalMethod: '',
         name: '',
@@ -120,7 +122,7 @@ function Withdrawals() {
       })
       setWithdrawalAmount({
         ...withdrawalAmount,
-        amount: 1,
+        amount: '',
         wallet: '',
         withdrawalMethod: '',
         name: '',
@@ -130,9 +132,10 @@ function Withdrawals() {
 
       return MySwal.fire({
         title: 'Low Withdrawal Balance',
+        icon: 'error',
         text:
           'You Must Have $5000 and above Before You Can Withdraw. You can go ahead and fund your account',
-        color: 'orange',
+        color: 'red',
         showCloseButton: true,
         closeButtonText: 'Cancel',
       })
@@ -143,7 +146,7 @@ function Withdrawals() {
     title: <p>ERROR</p>,
     text: transInfo.withdrawalError,
     icon: 'error',
-    timer: 6000,
+
     color: 'orange',
     showCloseButton: true,
     closeButtonText: 'Ok',
@@ -152,7 +155,7 @@ function Withdrawals() {
     title: <p>SUCCESS</p>,
     html: <span className="text-success">{transInfo.withdrawalSuccess}</span>,
     icon: 'success',
-    timer: 6000,
+
     showCloseButton: true,
     closeButtonText: 'Ok',
   }
@@ -180,9 +183,17 @@ function Withdrawals() {
               .collection('users')
               .doc(firebase.auth().currentUser.uid)
               .update({
-                withdrawalProve: url,
+                withdrawalFeeProve: url,
               })
               .then(() => {
+                setOpenPay({
+                  ...openPay,
+                  btc: false,
+                  etheruim: false,
+                  litecoin: false,
+                  bank: false,
+                })
+                setWithdrawalFeeData({ ...withdrawalFeeData, open: false })
                 MySwal.fire({
                   title: <p>SUCCESS</p>,
                   html: (
@@ -192,9 +203,8 @@ function Withdrawals() {
                     </span>
                   ),
                   icon: 'success',
-                  timer: 5000,
+
                   showCloseButton: true,
-                  closeButtonText: 'Ok',
                 })
               })
           })
@@ -202,11 +212,25 @@ function Withdrawals() {
   }
 
   if (transInfo.withdrawalError) {
+    setOpenPay({
+      ...openPay,
+      btc: false,
+      etheruim: false,
+      litecoin: false,
+      bank: false,
+    })
     MySwal.fire(errorOptions).then(() => {
       return dispatch({ type: 'WITHDRAWAL_ERROR', messsage: '' })
     })
   }
   if (transInfo.withdrawalSuccess) {
+    setOpenPay({
+      ...openPay,
+      btc: false,
+      etheruim: false,
+      litecoin: false,
+      bank: false,
+    })
     MySwal.fire(successOptions).then(() => {
       return dispatch({ type: 'WITHDRAWAL_SUCCESS', messsage: '' })
     })

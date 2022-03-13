@@ -329,12 +329,17 @@ export const withdrawalAction = (
       //axios.post(`${process.env.REACT_APP_URL}/api/withdrawals`, email).then(() => {
 
       // })
-      firebase.firestore().collection('notifications').doc(uid).set({
-        user: profile.firstname,
-        message: 'Your withdrwal has been submitted ',
-        id: uid,
-        date: firebase.firestore.FieldValue.serverTimestamp(),
-      })
+      firebase
+        .firestore()
+        .collection('notifications')
+        .doc(uid)
+        .collection('notificationDatas')
+        .add({
+          user: profile.firstname,
+          message: 'Your withdrwal has been submitted ',
+          id: uid,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+        })
       setWithdrawalData({
         ...withdrawalData,
         name: '',
@@ -359,6 +364,8 @@ export const withdrawalAction = (
 }
 
 export const paymentAction = (
+  openPay,
+  setOpenPay,
   amount,
   profile,
   userProve,
@@ -368,6 +375,7 @@ export const paymentAction = (
 ) => {
   const uid = firebase.auth().currentUser.uid
   const firestore = firebase.firestore()
+
   firestore
     .collection('payments')
     .doc(uid)
@@ -399,12 +407,20 @@ export const paymentAction = (
               firestore
                 .collection('payments')
                 .doc(uid)
+                .collection('paymentDatas')
                 .update({ paymentProve: url })
                 .then(() => {
                   dispatch({
                     type: 'PAYMENT_SUCCESS',
                     message:
                       'Wait for less than 24hours while we review your payment prove',
+                  })
+                  setOpenPay({
+                    ...openPay,
+                    etheruim: false,
+                    btc: false,
+                    bank: false,
+                    litecoin: false,
                   })
                   //axios.post(`${process.env.REACT_APP_URL}/api/paymentProve`, email).then(() => {
 
@@ -413,13 +429,19 @@ export const paymentAction = (
                     .firestore()
                     .collection('notifications')
                     .doc(uid)
-                    .set({
+                    .collection('notificationDatas')
+                    .add({
                       user: profile.firstname,
                       message: 'Your payment prove successfully submitted',
                       id: uid,
                       date: firebase.firestore.FieldValue.serverTimestamp(),
                     })
-                  setUserProve({ ...userProve, prove: '', method: '' })
+                  setUserProve({
+                    ...userProve,
+                    prove: '',
+                    method: '',
+                    isLoading: false,
+                  })
                 })
             })
         })
@@ -429,7 +451,14 @@ export const paymentAction = (
         type: 'PAYMENT_ERROR',
         message: 'We could not process your payment. try again later.',
       })
-      setUserProve({ ...userProve, prove: '', method: '' })
+      setOpenPay({
+        ...openPay,
+        etheruim: false,
+        btc: false,
+        bank: false,
+        litecoin: false,
+      })
+      setUserProve({ ...userProve, prove: '', method: '', isLoading: false })
     })
 }
 
@@ -598,7 +627,8 @@ export const fundingAction = (firebase, dispatch, values, setValues, name) => {
                     .firestore()
                     .collection('notifications')
                     .doc(user.uid)
-                    .set({
+                    .collection('notificationDatas')
+                    .add({
                       user: name,
                       message:
                         'Your account funding prove successfully submitted',
@@ -632,6 +662,8 @@ export const fundingAction = (firebase, dispatch, values, setValues, name) => {
 }
 
 export const savingWithdrawalAction = (
+  openPay,
+  setOpenPay,
   profileInfo,
   values,
   firebase,
@@ -690,6 +722,13 @@ export const savingWithdrawalAction = (
         isLoading: false,
         success: true,
       })
+      setOpenPay({
+        ...openPay,
+        btc: false,
+        etheruim: false,
+        paypal: false,
+        bank: false,
+      })
     })
     .catch((e) => {
       dispatch({
@@ -708,6 +747,13 @@ export const savingWithdrawalAction = (
         withdrawalAuthorization: '',
         isLoading: false,
         error: true,
+      })
+      setOpenPay({
+        ...openPay,
+        btc: false,
+        etheruim: false,
+        paypal: false,
+        bank: false,
       })
     })
 }

@@ -61,7 +61,7 @@ function SavingWithdrawal() {
     title: <p>Success</p>,
     html: <span className="text-success">{savingWithdrawalMessage}</span>,
     icon: 'success',
-    timer: 8000,
+
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -69,7 +69,7 @@ function SavingWithdrawal() {
     title: <p>Error</p>,
     text: savingWithdrawalMessage,
     icon: 'error',
-    timer: 8000,
+
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -113,10 +113,13 @@ function SavingWithdrawal() {
         paypal: false,
         bank: false,
       })
+      setWithdrawalAmount({ ...withdrawalAmount, isLoading: false })
       return MySwal.fire(errorOptions)
     }
 
     return savingWithdrawalAction(
+      openPay,
+      setOpenPay,
       profileInfo,
       withdrawalAmount,
       firebase,

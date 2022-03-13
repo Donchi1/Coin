@@ -234,12 +234,7 @@ function User() {
         })
       })
       .catch((err) => {})
-  }, [
-    userProfile.totalBalance,
-    userProfile.initalDeposite,
-    userProfile.bonus,
-    savingsData?.amount,
-  ])
+  }, [userProfile])
 
   if (withdrawalPop.withdrawalAccessPopUp) {
     MySwal.fire({
@@ -268,7 +263,7 @@ function User() {
     return 0
   }
   const savingsDCheck = () => {
-    const initialNumber = Number(savingsData?.total)
+    const initialNumber = Number(savingsData && savingsData[0]?.total)
     if (initialNumber === 200) {
       return 10
     }

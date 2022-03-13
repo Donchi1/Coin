@@ -67,7 +67,7 @@ function Testimonials() {
         const data = qs.docs.map((doc) => doc.data())
         data.map((each) => {
           if (each) {
-            setVideoData([
+            return setVideoData([
               ...videoData,
               {
                 url: each.photo.src,

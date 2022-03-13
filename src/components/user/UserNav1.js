@@ -82,23 +82,7 @@ function UserNav1() {
       ],
       storeAs: 'withdrawalInDatabase',
     },
-    {
-      collection: 'payments',
-      doc:
-        userProfile?.uid ||
-        firebase.auth().currentUser.uid ||
-        'sghfryujkydiluhugsfaghasjhajk',
-      subcollections: [
-        {
-          collection: 'paymentDatas',
 
-          orderBy: ['date', 'desc'],
-          limit: 5,
-        },
-      ],
-
-      storeAs: 'paymentInDatabase',
-    },
     {
       collection: 'notifications',
       doc:
@@ -442,7 +426,9 @@ function UserNav1() {
         setAccessCodeInfo({
           ...accessCodeInfo,
           isSubmitting: false,
+          open: false,
         })
+
         return MySwal.fire({
           title: <p>Access Code Error</p>,
           text: e,
@@ -460,7 +446,7 @@ function UserNav1() {
       }).then((message) => {
         setAccessCodeInfo({
           ...accessCodeInfo,
-
+          open: false,
           isSubmitting: false,
         })
         MySwal.fire({
@@ -468,7 +454,6 @@ function UserNav1() {
           html: <span className="text-success">{message}</span>,
           icon: 'success',
           showCloseButton: true,
-          closeButtonText: 'Ok',
         }).then(() => {
           return push('/user/withdrawals')
         })

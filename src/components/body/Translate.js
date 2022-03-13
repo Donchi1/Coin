@@ -3,23 +3,26 @@
 // import axios from 'axios'
 
 // function Translate() {
-//   let text = document.body.innerText
+//   const parent = document.body
+//   const element = parent.childNodes[0]
+//   const sourceText = elements.map((element) => {
+//     if (element) return element.nodeValue
+//   })
+
+//   console.log(sourceText)
 
 //   const storedLang = localStorage.getItem('Lang') || 'en'
 
 //   const [lang, setLang] = useState(storedLang)
 
-//   const pageText = text.slice(0, 5000)
-  
-
-  
-
 //   useEffect(() => {
 //     axios
-//       .post(`${process.env.REACT_APP_URL}/api/translate`, { lang, pageText })
+//       .post(`${process.env.REACT_APP_URL}/api/translate`, {
+//         lang,
+//         sourceText,
+//       })
 //       .then((res) => {
-//         console.log('success', res.data.message)
-//         text = res.data.message
+//         console.log(res.data.message)
 //       })
 //       .catch((err) => {
 //         console.log('error', err.response.data.message)
