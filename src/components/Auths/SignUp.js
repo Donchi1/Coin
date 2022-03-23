@@ -73,6 +73,7 @@ function SignUp() {
   const emptyOptions = {
     title: <p>Required</p>,
     text: 'Please all inputs are required',
+    color: 'red',
     icon: 'info',
     showCloseButton: true,
     closeButtonText: 'OK',
@@ -81,6 +82,7 @@ function SignUp() {
     title: <p>Invalid</p>,
     text: 'Password Must be greater or equal to 5 characters long',
     icon: 'info',
+    color: 'red',
     showCloseButton: true,
     closeButtonText: 'OK',
   }
@@ -88,6 +90,7 @@ function SignUp() {
     title: <p>Invalid</p>,
     text: 'Invalid email',
     icon: 'info',
+    color: 'red',
     showCloseButton: true,
     closeButtonText: 'OK',
   }

@@ -22,7 +22,6 @@ function Payments() {
   const { push } = useHistory()
 
   const profileInfo = useSelector((state) => state.firebase.profile)
-  const paymentInfo = useSelector((state) => state.projectReducer.paymentData)
   const {
     paymentAmountData,
     qrCodeLit,
@@ -45,13 +44,13 @@ function Payments() {
   useEffect(() => {
     axios
       .get(
-        `https://blockchain.info/tobtc?currency=USD&value=${paymentInfo.paymentAmount}`,
+        `https://blockchain.info/tobtc?currency=USD&value=${paymentAmount}`,
       )
       .then((res) => {
         setNewAmount(res.data)
       })
       .catch((err) => {})
-  }, [paymentAmountData])
+  }, [paymentAmount])
 
   const [userProve, setUserProve] = useState({
     prove: '',
@@ -105,7 +104,7 @@ function Payments() {
 
   const handleProve = (e) => {
     e.preventDefault()
-    if (userProve.prove === '' || userProve.method === '') {
+    if (!userProve.prove || !userProve.method) {
       return MySwal.fire({
         title: 'Required',
         text: 'All input are required',
@@ -119,11 +118,11 @@ function Payments() {
     paymentAction(
       openPay,
       setOpenPay,
-      paymentAmount,
+      paymentAmountData,
       profileInfo,
-      userProve,
       firebase,
       dispatch,
+      userProve,
       setUserProve,
     )
   }

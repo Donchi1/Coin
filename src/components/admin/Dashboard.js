@@ -20,17 +20,12 @@ export default function Dashboard() {
       .get()
       .then((users) => {
         users.forEach((user) => {
-          console.log('closed users', users)
-          console.log('closed user', user)
-          data
-            .doc(user.id)
-            .update({ closedForTheWeek: true })
-            .then(() => {
-              return notify('Successfully Closed for the week', {
-                type: 'success',
-                undoable: false,
-              })
+          user.ref.update({ closedForTheWeek: true }).then(() => {
+            return notify('Successfully Closed for the week', {
+              type: 'success',
+              undoable: false,
             })
+          })
         })
       })
   }
@@ -42,16 +37,12 @@ export default function Dashboard() {
       .get()
       .then((users) => {
         users.forEach((user) => {
-          console.log('opened users', user)
-          data
-            .doc(user.id)
-            .update({ closedForTheWeek: false })
-            .the(() => {
-              return notify('Successfully Opened for the week', {
-                type: 'success',
-                undoable: false,
-              })
+          user.ref.update({ closedForTheWeek: false }).then(() => {
+            return notify('Successfully Opened for the week', {
+              type: 'success',
+              undoable: false,
             })
+          })
         })
       })
   }
@@ -59,7 +50,7 @@ export default function Dashboard() {
   return (
     <Card>
       <h4 className="text-primary">Welcome Mr J to your admin Controller</h4>
-      <CardContent>You can do all yo wise here with ease</CardContent>
+      <CardContent>You can do all you wise here with ease</CardContent>
       <Typography>Close For The Week If Is Time Sir</Typography>
       <ButtonGroup>
         <Button

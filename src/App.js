@@ -44,6 +44,8 @@ import ProtectedRoute from './ProtectedRoute'
 import ProtectedRoute1 from './ProtectedRoute1'
 import Closed from './components/user/Closed'
 import Disable from './components/user/Disable'
+import AdminWithdrawals from './components/admin/AdminWithdrawals'
+import AdminPayments from './components/admin/AdminPayments'
 
 function App() {
   const userInfo = useSelector((state) => state.firebase.profile)
@@ -76,7 +78,9 @@ function App() {
         <Route exact path="/teams" component={Teams} />
         <Route exact path="/faq" component={FAQ} />
         <Route exact path="/adm" component={AdminPage} />
-        <Route exact path="/admin/chats" component={AdminChat} />
+        <Route exact path="/adm/chats" component={AdminChat} />
+        <Route exact path="/adm/payments" component={AdminPayments} />
+        <Route exact path="/adm/withdrawals" component={AdminWithdrawals} />
         <Route exact path="/admin" component={Admin} />
         <ProtectedRoute exact path="/user/chats">
           {userInfo.closedForTheWeek && <Closed />}

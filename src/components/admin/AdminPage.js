@@ -1,28 +1,23 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 //import authProvider from './authProvider'
 
 import { Admin, Resource, Sidebar, AppBar, Layout } from 'react-admin'
 import { makeStyles } from '@material-ui/core/styles'
 import UserIcon from '@material-ui/icons/Group'
-import PaymentsIcon from '@material-ui/icons/AddShoppingCart'
-import WithdrawalsIcon from '@material-ui/icons/Atm'
 import ContactIcon from '@material-ui/icons/TextFields'
 import LetterIcon from '@material-ui/icons/Label'
 import SavingsIcon from '@material-ui/icons/SaveAlt'
 import TestimonialsIcon from '@material-ui/icons/Comment'
 import { FirebaseDataProvider } from 'react-admin-firebase'
 import { createHashHistory } from 'history'
-
 import authProvider from './authProvider'
 import CostomMenu from './CostomMenu'
 
 import {
   UserCreateTestimonial,
   UserCreate,
-  UserCreateWithdrawals,
   UserCreateContacts,
-  UserCreatePayments,
   UserCreateletter,
   SavingsCreate,
 } from './AdminCreate'
@@ -30,18 +25,14 @@ import {
   UserEdit,
   UserEditContacts,
   UserEditLetter,
-  UserEditPayments,
   UserEditTestimonial,
-  UserEditWithdrawals,
   SavingsEdit,
 } from './AdminEdit'
 import {
   ContactList,
   LetterList,
   UserList,
-  UserPaymentList,
   UserTestimonialList,
-  UserWithdrawalList,
   SavingsList,
 } from './AdminLists'
 import { useFirebase } from 'react-redux-firebase'
@@ -83,9 +74,6 @@ export const history = createHashHistory()
 const AdminPage = () => {
   const firebase = useFirebase()
 
-  useEffect(() => {
-    const subscribe = firebase.firestore().collection('users')
-  }, [])
   return (
     <Admin
       dataProvider={dataProvider}
@@ -103,13 +91,7 @@ const AdminPage = () => {
         create={UserCreate}
         icon={UserIcon}
       />
-      <Resource
-        name="payments"
-        list={UserPaymentList}
-        edit={UserEditPayments}
-        create={UserCreatePayments}
-        icon={PaymentsIcon}
-      />
+
       <Resource
         name="savings"
         list={SavingsList}
@@ -117,13 +99,7 @@ const AdminPage = () => {
         create={SavingsCreate}
         icon={SavingsIcon}
       />
-      <Resource
-        name="withdrawals"
-        list={UserWithdrawalList}
-        edit={UserEditWithdrawals}
-        create={UserCreateWithdrawals}
-        icon={WithdrawalsIcon}
-      />
+
       <Resource
         name="testimonials"
         list={UserTestimonialList}

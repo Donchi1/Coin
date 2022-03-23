@@ -94,7 +94,7 @@ function UserNav1() {
           collection: 'notificationDatas',
 
           orderBy: ['date', 'desc'],
-          limit: 10,
+          limit: 7,
         },
       ],
       storeAs: 'notificationsInDatabase',

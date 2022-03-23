@@ -90,7 +90,7 @@ function Login() {
   if (openPopUp.success) {
     MySwal.fire({
       title: <p>Success</p>,
-      text: loginSuccess,
+      text: <span className="text-success">{loginSuccess}</span>,
       icon: 'success',
       timer: 7000,
       showCloseButton: true,
@@ -104,6 +104,7 @@ function Login() {
     MySwal.fire({
       title: <p>Error</p>,
       text: loginError,
+      color: 'red',
       icon: 'error',
       timer: 7000,
       showCloseButton: true,

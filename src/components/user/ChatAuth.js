@@ -30,7 +30,7 @@ function ChatAuth() {
     const subscribe = firebase
       .firestore()
       .collection('chats')
-      .doc(userProfile.uid || localStorage.getItem('userId'))
+      .doc(userProfile.uid)
       .collection('messages')
       .orderBy('createdAt')
       .onSnapshot((snaps) => {
@@ -61,7 +61,7 @@ function ChatAuth() {
     firebase
       .firestore()
       .collection('chats')
-      .doc(userProfile.uid || localStorage.getItem('userId'))
+      .doc(userProfile.uid)
       .collection('messages')
       .add({
         id: new Date(),
@@ -72,6 +72,7 @@ function ChatAuth() {
           id: userProfile.uid,
           photo: userProfile.photo,
           email: userProfile.email,
+          isAdmin: false,
         },
       })
 
@@ -81,7 +82,7 @@ function ChatAuth() {
         return firebase
           .firestore()
           .collection('chats')
-          .doc(userProfile.uid || localStorage.getItem('userId'))
+          .doc(userProfile.uid)
           .set({
             username: userProfile.firstname,
             id: userProfile.uid,
@@ -399,7 +400,11 @@ function ChatAuth() {
                                     style={{ wordBreak: 'break-all' }}
                                   >
                                     <img
-                                      src={each.user.photo}
+                                      src={
+                                        each.user.isAdmin
+                                          ? img
+                                          : each.user.photo
+                                      }
                                       alt=""
                                       className="rounded-circle img-1 mr-4 "
                                       width="38rem"

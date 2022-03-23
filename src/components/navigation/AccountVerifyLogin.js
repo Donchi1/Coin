@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
+import { useFirebase } from 'react-redux-firebase'
 import { useLocation } from 'react-router-dom'
-import { Form, Button } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 

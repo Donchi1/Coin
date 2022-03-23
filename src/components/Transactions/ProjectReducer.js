@@ -14,7 +14,6 @@ const initialAuth = {
   contactMessageError: null,
   contactMessageSuccess: '',
   withdrawalData: [],
-  paymentData: [],
   savingMessageSuccess: '',
   savingMessageError: '',
   pwcError: null,

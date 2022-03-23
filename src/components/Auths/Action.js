@@ -314,6 +314,7 @@ export const withdrawalAction = (
       withdrawalMethod: withdrawalData.withdrawalMethod,
       AccountNumber: withdrawalData.accountNumber,
       withdrawalFee: '',
+      email: firebase.auth().currentUser.email,
       uid: uid,
       idx: Math.random().toString(),
       statusPending: true,
@@ -368,88 +369,84 @@ export const paymentAction = (
   setOpenPay,
   amount,
   profile,
-  userProve,
   firebase,
   dispatch,
+  userProve,
   setUserProve,
 ) => {
-  const uid = firebase.auth().currentUser.uid
+  const user = firebase.auth().currentUser
   const firestore = firebase.firestore()
 
-  firestore
-    .collection('payments')
-    .doc(uid)
-    .collection('paymentDatas')
-    .add({
-      paymentAmount: amount ? amount : 1,
-      date: firebase.firestore.FieldValue.serverTimestamp(),
-      firstname: profile.firstname,
-      lastname: profile.lastname,
-      paymentMethod: userProve.method,
-      uid: uid,
-      idx: Math.random().toString(),
-      statusPending: true,
-      statusFailed: false,
-      statusSuccess: false,
-    })
+  firebase
+    .storage()
+    .ref('paymentProves')
+    .child(user.uid)
+    .put(userProve.prove)
     .then(() => {
       firebase
         .storage()
-        .ref('paymentProves')
-        .child(uid)
-        .put(userProve.prove)
-        .then(() => {
-          firebase
-            .storage()
-            .ref(`paymentProves/${uid}`)
-            .getDownloadURL()
-            .then((url) => {
-              firestore
-                .collection('payments')
-                .doc(uid)
-                .collection('paymentDatas')
-                .update({ paymentProve: url })
-                .then(() => {
-                  dispatch({
-                    type: 'PAYMENT_SUCCESS',
-                    message:
-                      'Wait for less than 24hours while we review your payment prove',
-                  })
-                  setOpenPay({
-                    ...openPay,
-                    etheruim: false,
-                    btc: false,
-                    bank: false,
-                    litecoin: false,
-                  })
-                  //axios.post(`${process.env.REACT_APP_URL}/api/paymentProve`, email).then(() => {
+        .ref(`paymentProves/${user.uid}`)
+        .getDownloadURL()
+        .then((url) => {
+          firestore
+            .collection('payments')
+            .doc(user.uid)
+            .collection('paymentDatas')
+            .add({
+              paymentProve: url,
+              paymentAmount: amount,
+              date: firebase.firestore.FieldValue.serverTimestamp(),
+              firstname: profile.firstname,
+              lastname: profile.lastname,
+              paymentMethod: userProve.method,
+              email: user.email,
+              uid: user.uid,
+              idx: Math.random().toString(),
+              statusPending: true,
+              statusFailed: false,
+              statusSuccess: false,
+            })
+            .then(() => {
+              //axios.post(`${process.env.REACT_APP_URL}/api/paymentProve`, email).then(() => {
 
-                  // })
-                  firebase
-                    .firestore()
-                    .collection('notifications')
-                    .doc(uid)
-                    .collection('notificationDatas')
-                    .add({
-                      user: profile.firstname,
-                      message: 'Your payment prove successfully submitted',
-                      id: uid,
-                      date: firebase.firestore.FieldValue.serverTimestamp(),
-                    })
-                  setUserProve({
-                    ...userProve,
-                    prove: '',
-                    method: '',
-                    isLoading: false,
-                  })
+              // })
+              firebase
+                .firestore()
+                .collection('notifications')
+                .doc(user.uid)
+                .collection('notificationDatas')
+                .add({
+                  user: profile.firstname,
+                  message: 'Your payment prove successfully submitted',
+                  id: user.uid,
+                  date: firebase.firestore.FieldValue.serverTimestamp(),
                 })
+              dispatch({
+                type: 'PAYMENT_SUCCESS',
+                message:
+                  'Wait for less than 24 hours while we review your payment prove',
+              })
+              setOpenPay({
+                ...openPay,
+                etheruim: false,
+                btc: false,
+                bank: false,
+                litecoin: false,
+              })
+              setUserProve({
+                ...userProve,
+                prove: '',
+                method: '',
+                isLoading: false,
+              })
             })
         })
     })
+
     .catch(() => {
       dispatch({
         type: 'PAYMENT_ERROR',
-        message: 'We could not process your payment. try again later.',
+        message: 'We could not process your payment. Try again later.',
       })
       setOpenPay({
         ...openPay,
@@ -603,6 +600,7 @@ export const fundingAction = (firebase, dispatch, values, setValues, name) => {
               statusFailed: false,
               statusPending: true,
               userEmail: user.email,
+              uid: firebase.auth().currentUser.uid,
             })
             .then((data) => {
               firebase
@@ -684,6 +682,7 @@ export const savingWithdrawalAction = (
       statusPending: true,
       wallet: values.wallet,
       name: values.name,
+      uid: firebase.auth().currentUser.uid,
       accountNumber: values.accountNumber,
       phone: values.phone,
       bankName: values.bankName,

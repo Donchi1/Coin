@@ -7,23 +7,36 @@ import moment from 'moment'
 import * as Icons from '@material-ui/icons'
 import { List, ListItem, Divider, Drawer } from '@material-ui/core'
 import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useSelector } from 'react-redux'
+import { useFirestoreConnect } from 'react-redux-firebase'
 
 function AdminChat() {
   const firebase = useFirebase()
-  const user = firebase.auth().currentUser
-
-  const [messages, setMessages] = useState('')
-  const [openSlider, setOpenSlider] = useState(false)
-  const [chatList, setChatList] = useState([])
+  const { messagesInDatabase, chats } = useSelector(
+    (state) => state.firestore.ordered,
+  )
 
   const [userInfo, setUserInfo] = useState({
     id: '',
     photo: '',
     email: '',
     username: '',
+    isAdmin: false,
   })
+  useFirestoreConnect([
+    { collection: 'chats', orderBy: ['createdAt', 'desc'] },
+    {
+      collection: 'chats',
+      doc: userInfo.id || '34416twgfghwghjgytrertqrtg',
+      subcollections: [
+        { collection: 'messages', orderBy: ['createdAt', 'desc'] },
+      ],
+      storeAs: 'messagesInDatabase',
+    },
+  ])
 
-  const [mainMessage, setMainMessage] = useState([])
+  const [messages, setMessages] = useState('')
+  const [openSlider, setOpenSlider] = useState(false)
 
   const handleSubmit = () => {
     firebase
@@ -38,50 +51,15 @@ function AdminChat() {
         user: {
           username: userInfo.username,
           id: userInfo.id,
+          isAdmin: true,
           photo: userInfo.photo,
           email: userInfo.email,
         },
       })
       .then(() => {
         setMessages('')
-        firebase.firestore().collection('chats').doc(userInfo.id).set({
-          username: userInfo.username,
-          id: userInfo.id,
-          photo: userInfo.photo,
-          email: userInfo.email,
-        })
       })
   }
-
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('chats')
-      .orderBy('createdAt', 'desc')
-      .onSnapshot((snapshot) => {
-        const chatsList = snapshot.docs.map((each) => each.data())
-
-        return setChatList(chatsList)
-      })
-    return unsubscribe
-  }, [userInfo])
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('chats')
-      .doc(
-        userInfo.id ||
-          firebase.auth().currentUser.uid ||
-          '34416twgfghwghjgytrertqrtg',
-      )
-      .collection('messages')
-      .orderBy('createdAt', 'desc')
-      .onSnapshot((snapshot) => {
-        const messages = snapshot.docs.map((each) => each.data())
-        return setMainMessage(messages)
-      })
-    return unsubscribe
-  }, [userInfo])
 
   return (
     <div>
@@ -178,8 +156,8 @@ function AdminChat() {
                                 id="AllMessage"
                                 role="tabpanel"
                               >
-                                {chatList &&
-                                  chatList.map((each) => (
+                                {chats &&
+                                  chats.map((each) => (
                                     <div
                                       key={each.id}
                                       className="chat-list-area"
@@ -192,6 +170,7 @@ function AdminChat() {
                                           username: each.username,
                                           email: each.email,
                                           id: each.id,
+                                          isAdmin: each.isAdmin,
                                         })
                                       }}
                                     >
@@ -269,8 +248,8 @@ function AdminChat() {
                           id="AllMessage"
                           role="tabpanel"
                         >
-                          {chatList &&
-                            chatList.map((each) => (
+                          {chats &&
+                            chats.map((each) => (
                               <div
                                 className="chat-list-area"
                                 data-chat="person1"
@@ -282,6 +261,7 @@ function AdminChat() {
                                     username: each.username,
                                     email: each.email,
                                     id: each.id,
+                                    isAdmin: each.isAdmin,
                                   })
                                 }}
                               >
@@ -323,7 +303,7 @@ function AdminChat() {
                       >
                         <div className="d-flex align-items-center">
                           <img
-                            src={userInfo.photo}
+                            src={userInfo.isAdmin ? img : userInfo.photo}
                             alt=""
                             className="rounded-circle main-img mr-3"
                           />
@@ -398,19 +378,19 @@ function AdminChat() {
                             data-chat="person1"
                             className="chat active-chat "
                           >
-                            {mainMessage &&
-                              mainMessage.map((each) => (
+                            {messagesInDatabase &&
+                              messagesInDatabase.map((each) => (
                                 <div
                                   key={each.id}
                                   className={`media mb-4  ${
-                                    each.user.id === user.uid
+                                    each.user.isAdmin
                                       ? 'justify-content-end align-items-end'
                                       : 'received-msg  justify-content-start align-items-start'
                                   }`}
                                 >
                                   <div
                                     className={
-                                      each.user.id === user.uid
+                                      each.user.isAdmin
                                         ? 'message-sent'
                                         : 'message-received'
                                     }
