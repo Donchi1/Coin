@@ -4,8 +4,8 @@ import moment from 'moment'
 
 function AdminModal({
   userInfo,
-  handlePaymentSubmit,
-  handleSavingSubmit,
+  handleSavingWithdrawalSubmit,
+  handleWithdrawalSubmit,
   setUserInfo,
 }) {
   return (
@@ -16,9 +16,9 @@ function AdminModal({
     >
       <Form
         onSubmit={
-          userInfo.infoTitle === 'payments'
-            ? handlePaymentSubmit
-            : handleSavingSubmit
+          userInfo.infoTitle === 'withdrawals'
+            ? handleWithdrawalSubmit
+            : handleSavingWithdrawalSubmit
         }
       >
         <Modal.Header closeButton>

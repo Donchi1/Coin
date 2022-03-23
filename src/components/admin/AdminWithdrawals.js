@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { useFirebase, useFirestoreConnect } from 'react-redux-firebase'
 import * as Icons from '@material-ui/icons'
-import AdminModal from './AdminModal'
+import AdminModalW from './AdminModalW'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -158,7 +158,7 @@ function AdminWithdrawals() {
   }
   return (
     <>
-      <AdminModal
+      <AdminModalW
         userInfo={userInfo}
         handleSavingWithdrawalSubmit={handleSavingWithdrawalUpdate}
         handleWithdrawalSubmit={handleWithdrawalUpdate}
@@ -277,7 +277,7 @@ function AdminWithdrawals() {
                                   </span>
                                 </td>
                                 <td>
-                                  <span>{each.userEmail}</span>
+                                  <span>{each.email}</span>
                                 </td>
                                 <td className="wspace-no">
                                   {each.withdrawalMethod === 'Bitcoin' && (
@@ -393,10 +393,6 @@ function AdminWithdrawals() {
                                   to="#"
                                   onClick={() => {
                                     handleWithdrawalDelete(each)
-                                    setUserInfo({
-                                      ...userInfo,
-                                      infoTitle: 'withdrawals',
-                                    })
                                   }}
                                 >
                                   Delete
@@ -423,7 +419,10 @@ function AdminWithdrawals() {
                               <tr
                                 key={each.date}
                                 onClick={() =>
-                                  handleUsersTransaction(each, 'withdrawals')
+                                  handleUsersTransaction(
+                                    each,
+                                    'savingWithdrawals',
+                                  )
                                 }
                               >
                                 <td>

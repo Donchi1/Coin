@@ -89,8 +89,6 @@ function ChatAuth() {
             photo: userProfile.photo,
             email: userProfile.email,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            isTypingUser: false,
-            isTypingAdmin: false,
           })
       })
   }

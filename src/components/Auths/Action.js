@@ -304,7 +304,7 @@ export const withdrawalAction = (
     .doc(uid)
     .collection('withdrawalDatas')
     .add({
-      withdrawalAmount: withdrawalData.amount,
+      amount: withdrawalData.amount,
       wallet: withdrawalData.wallet,
       date: firebase.firestore.FieldValue.serverTimestamp(),
       currentUserfirstname: profile.firstname,
@@ -394,7 +394,7 @@ export const paymentAction = (
             .collection('paymentDatas')
             .add({
               paymentProve: url,
-              paymentAmount: amount,
+              amount: amount,
               date: firebase.firestore.FieldValue.serverTimestamp(),
               firstname: profile.firstname,
               lastname: profile.lastname,

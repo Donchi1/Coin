@@ -74,7 +74,7 @@ const emailData = {
     subject: 'Welcome',
     html: `<h1>Hi ${user.firstname} you are welcome to ultimatecoins</h1>
                     <p>We are happy to see you</p>
-                    <p>Make your life changing investment and enjoy while sit at home</p>
+                    <p>Make your life changing investment and enjoy while site at home</p>
                     <br/>
                     <small> © ${new Date().getFullYear()}
                   <a href="https://ultimatecoins.info">Ultimatecoins</a> All Rights

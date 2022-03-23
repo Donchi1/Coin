@@ -50,7 +50,7 @@ function AdminPayments() {
   const handleUsersTransaction = (info, title) => {
     return setUserInfo({
       ...userInfo,
-      userEmail: info.userEmail,
+      userEmail: info.userEmail || info.email,
       uid: info.uid,
       status: handleStatus(info),
       openModal: true,
@@ -306,7 +306,7 @@ function AdminPayments() {
                                   </span>
                                 </td>
                                 <td className="wspace-no">
-                                  {each.withdrawalMethod === 'Bitcoin' && (
+                                  {each.paymentMethod === 'Bitcoin' && (
                                     <svg
                                       className="mr-2"
                                       width="24"
@@ -329,7 +329,7 @@ function AdminPayments() {
                                       />
                                     </svg>
                                   )}
-                                  {each.withdrawalMethod === 'Litecoin' && (
+                                  {each.paymentMethod === 'Litecoin' && (
                                     <svg
                                       className="mr-1"
                                       width="24"
@@ -344,7 +344,7 @@ function AdminPayments() {
                                       />
                                     </svg>
                                   )}
-                                  {each.withdrawalMethod == 'Ethereum' && (
+                                  {each.paymentMethod === 'Ethereum' && (
                                     <svg
                                       className="mr-1"
                                       width="24"
@@ -368,15 +368,15 @@ function AdminPayments() {
                                     </svg>
                                   )}
 
-                                  {each.withdrawalMethod === 'Bank' && (
+                                  {each.paymentMethod === 'Bank' && (
                                     <Icons.Money />
                                   )}
                                   <span className="font-w600 text-black">
-                                    {each.withdrawalMethod}
+                                    {each.paymentMethod}
                                   </span>
                                 </td>
                                 <td>
-                                  <span>{each.userEmail}</span>
+                                  <span>{each.email}</span>
                                 </td>
                                 <td>
                                   <span className="text-black">
@@ -385,7 +385,7 @@ function AdminPayments() {
                                 </td>
                                 <td>
                                   <span className="font-w600 text-black">
-                                    ${each.withdrawalMethod}
+                                    ${each.amount}
                                   </span>
                                 </td>
                                 <td>
@@ -446,7 +446,7 @@ function AdminPayments() {
                               <tr
                                 key={each.date}
                                 onClick={() =>
-                                  handleUsersTransaction(each, 'savings')
+                                  handleUsersTransaction(each, 'savingFundings')
                                 }
                               >
                                 <td>
