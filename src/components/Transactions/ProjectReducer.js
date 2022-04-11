@@ -11,6 +11,8 @@ const initialAuth = {
   subcriptionError: null,
   uploadSuccess: '',
   uploadError: null,
+  passwordUpdateSuccess: '',
+  passwordUpdateError: null,
   contactMessageError: null,
   contactMessageSuccess: '',
   withdrawalData: [],
@@ -26,6 +28,7 @@ const initialAuth = {
   fundingProveSuccess: '',
   fundingProveError: '',
   paymentAmountData: '',
+  profileUploadMessage: '',
   savingWithdrawalMessage: '',
   savingWithdrawalError: '',
   withdrawalAccessPopUp: false,
@@ -205,6 +208,21 @@ export const projectReducer = (state = initialAuth, action) => {
       return {
         ...state,
         isTyping: { user: action.userTyping, admin: action.adminTyping },
+      }
+    case 'PASSWORD_UPDATE_SUCCESS':
+      return {
+        ...state,
+        passwordUpdateSuccess: action.message,
+      }
+    case 'PASSWORD_UPDATE_ERROR':
+      return {
+        ...state,
+        passwordUpdateError: action.message,
+      }
+    case 'PROFILE_UPLOAD_SUCCESS':
+      return {
+        ...state,
+        profileUpdateMessage: action.message,
       }
 
     default:

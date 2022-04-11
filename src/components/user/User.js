@@ -270,7 +270,7 @@ function User() {
     if (initialNumber <= 500 && initialNumber > 200) {
       return 50
     }
-    if (initialNumber <= 1000 && initialNumber < 500) {
+    if (initialNumber <= 1000 && initialNumber > 500) {
       return 70
     }
     if (initialNumber >= 1000) {

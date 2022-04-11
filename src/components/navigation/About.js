@@ -50,7 +50,7 @@ function About() {
                 <p className="work-des pb-20">
                   We are establish to reach out to people who really wants to
                   make wealth with the little they have. Ultimatecoins has been
-                  one of the leading and well known brokers online since 2015.
+                  one of the leading and well known brokers online since 2011.
                   We make sure you have a stable and reliable platform for your
                   investment year by year.
                 </p>
@@ -202,9 +202,9 @@ function About() {
                 <p className="heading-des">
                   Experienced leader dedicated to joint success with great
                   skills. We are multi-talented, dynamic team in mining of all
-                  crypos. we are entrepreneurs, standing out to make our company
-                  and team grow. We are all committed to recruitment and our
-                  client satisfaction{' '}
+                  cryptos. we are entrepreneurs, standing out to make our
+                  company and team grow. We are all committed to recruitment and
+                  our client satisfaction{' '}
                 </p>
               </div>
             </div>

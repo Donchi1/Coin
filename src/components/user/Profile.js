@@ -106,22 +106,27 @@ function Profile() {
       setUserPassword({ ...userPassword, isSubmitting: false })
       return MySwal.fire(requiredOption)
     }
-    if (userPassword.password === userPassword.password1) {
+    if (userPassword.password !== userPassword.password1) {
       setUserPassword({ ...userPassword, isSubmitting: false })
       return MySwal.fire(matchOption)
     }
 
-    passwordUpdate(userPassword, setUserPassword)
+    passwordUpdate(userPassword, setUserPassword, dispatch, firebase, firstname)
   }
 
-  if (profileUpdateInfo.profileMessage) {
+  if (profileUpdateInfo.profileUploadMessage) {
     MySwal.fire(profileOptions).then(() => {
       dispatch({ type: 'PROFILE_UPLOAD_SUCCESS', message: '' })
     })
   }
-  if (profileUpdateInfo.passwordMessage) {
+  if (profileUpdateInfo.passwordUpdateSuccess) {
     MySwal.fire(passwordOptions).then(() => {
       dispatch({ type: 'PASSWORD_UPLOAD_SUCCESS', message: '' })
+    })
+  }
+  if (profileUpdateInfo.passwordUpdateError) {
+    MySwal.fire(passwordOptions).then(() => {
+      dispatch({ type: 'PASSWORD_UPLOAD_ERROR', message: '' })
     })
   }
   return (
@@ -462,7 +467,7 @@ function Profile() {
                                       id="password"
                                       size="sm"
                                       title="password must be 6 characters or more and contain at least 1 lower case letter"
-                                      value={userPassword.password1}
+                                      value={userPassword.password}
                                       onChange={(e) =>
                                         setUserPassword({
                                           ...userPassword,
@@ -489,7 +494,10 @@ function Profile() {
                                   </div>
                                 </div>
                                 <div className="form-group col-md-12 text-center ">
-                                  <Button disabled={isSubmitting} type="submit">
+                                  <Button
+                                    disabled={userPassword.isSubmitting}
+                                    type="submit"
+                                  >
                                     Update
                                   </Button>
                                 </div>

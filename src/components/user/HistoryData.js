@@ -538,7 +538,7 @@ function HistoryData() {
                     <div className="col-lg-3 text-lg-right">
                       <ul className="portofolio-social">
                         <li>
-                          <Button onClick={() => push('/contacts')}>
+                          <Button onClick={() => window.location.assign('/contacts')}>
                             Contact Us <i className="fa fa-arrow-right"></i>
                           </Button>
                         </li>

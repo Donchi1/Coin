@@ -274,122 +274,6 @@ function UserNav1() {
     return handleThemeMode()
   }, [])
 
-  useEffect(() => {
-    if (userProfile.accessCode === 'weekly') {
-      if (JWT.decode(userProfile.accessCodeData)) {
-        return setAccessCodeInfo({
-          ...accessCodeInfo,
-          accessCodeInput: userProfile.accessCodeData,
-        })
-      } else {
-        const weeklyToken = JWT.sign(
-          { value: 'weeklyJwt' },
-          process.env.REACT_APP_JWT_TOKEN,
-          {
-            expiresIn: '7days',
-          },
-        )
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(userProfile.uid)
-          .update({
-            accessCodeData: weeklyToken,
-          })
-          .then(() => {
-            setAccessCodeInfo({
-              ...accessCodeInfo,
-              accessCodeInput: weeklyToken,
-            })
-            //const data = { user: userProfile, code: weeklyToken }
-            //axios
-            //  .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
-            //  .then(() =>
-            //    setAccessCodeInfo({
-            //      ...accessCodeInfo,
-            //      open: false,
-            //    }),
-            //  )
-          })
-      }
-    }
-    if (userProfile.accessCode === 'monthly') {
-      if (JWT.decode(userProfile.accessCodeData)) {
-        return setAccessCodeInfo({
-          ...accessCodeInfo,
-          accessCodeInput: userProfile.accessCodeData,
-        })
-      } else {
-        const monthlyToken = JWT.sign(
-          { value: 'monthlyJwt' },
-          process.env.REACT_APP_JWT_TOKEN,
-          {
-            expiresIn: '30days',
-          },
-        )
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(userProfile.uid)
-          .update({
-            accessCodeData: monthlyToken,
-          })
-          .then(() => {
-            setAccessCodeInfo({
-              ...accessCodeInfo,
-              accessCodeInput: monthlyToken,
-            })
-            //const data = { user: userProfile, code: monthlyToken }
-            //axios
-            //  .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
-            //  .then(() =>
-            //    setAccessCodeInfo({
-            //      ...accessCodeInfo,
-            //      open: false,
-            //    }),
-            //  )
-          })
-      }
-    }
-    if (userProfile.accessCode === 'yearly') {
-      if (JWT.decode(userProfile.accessCodeData)) {
-        return setAccessCodeInfo({
-          ...accessCodeInfo,
-          accessCodeInput: userProfile.accessCodeData,
-        })
-      } else {
-        const yearlyToken = JWT.sign(
-          { value: 'yearlyJwt' },
-          process.env.REACT_APP_JWT_TOKEN,
-          {
-            expiresIn: '365days',
-          },
-        )
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(userProfile.uid)
-          .update({
-            accessCodeData: yearlyToken,
-          })
-          .then(() => {
-            setAccessCodeInfo({
-              ...accessCodeInfo,
-              accessCodeInput: yearlyToken,
-            })
-            //const data = { user: userProfile, code: yearlyToken }
-            //axios
-            //  .post(`${process.env.REACT_APP_APIURL}/api/accessCode`, data)
-            //  .then(() =>
-            //    setAccessCodeInfo({
-            //      ...accessCodeInfo,
-            //      open: false,
-            //    }),
-            //  )
-          })
-      }
-    }
-  }, [userProfile.accessCode])
   const handleSubmit1 = (e) => {
     e.preventDefault()
     setAccessCodeInfo({ ...accessCodeInfo, isSubmitting: true })
@@ -406,19 +290,14 @@ function UserNav1() {
   }
 
   const accessCodeCheck = () => {
-    JWT.verify(
-      accessCodeInfo.accessCodeInput,
-      process.env.REACT_APP_JWT_TOKEN,
-      (error, data) => {
-        if (error) {
-          return accessAction('notVerified', error.expiredAt)
-        }
-        return accessAction('verified')
-      },
-    )
+    if (accessCodeInfo.accessCodeInput !== profileInfo.accessCode) {
+      return accessAction('notVerified')
+    } else {
+      return accessAction('verified')
+    }
   }
 
-  const accessAction = (status, date) => {
+  const accessAction = (status) => {
     if (status === 'notVerified') {
       return new Promise((resolve, reject) => {
         setTimeout(reject('Expired or Invalid Access Code'), 5000)
@@ -435,14 +314,12 @@ function UserNav1() {
           icon: 'error',
           color: 'red',
           showCloseButton: true,
-          closeButtonText: 'Ok',
-          footer: <p>Access code expired at {date}</p>,
         })
       })
     }
     if (status === 'verified') {
       return new Promise((resolve, reject) => {
-        setTimeout(resolve('Access Code Success'), 4000)
+        setTimeout(resolve('Access Code Success'), 5000)
       }).then((message) => {
         setAccessCodeInfo({
           ...accessCodeInfo,
@@ -488,8 +365,8 @@ function UserNav1() {
                   html: (
                     <span className="text-success">
                       {' '}
-                      Your access code prove has been sent successfully. Wait
-                      for less than 24hours while we verify your prove..
+                      Your access code prove has been sent successfully. Wait in
+                      less than 24hours while we verify your prove..
                     </span>
                   ),
                   icon: 'success',
@@ -505,7 +382,6 @@ function UserNav1() {
                   icon: 'error',
                   color: 'red',
                   showCloseButton: true,
-                  closeButtonText: 'Ok',
                 })
               })
           })

@@ -42,6 +42,7 @@ function Withdrawals() {
   const [withdrawalFeeData, setWithdrawalFeeData] = useState({
     open: false,
     prove: '',
+    isSubmitting: false,
   })
 
   const withdrawalErrorOptions = {
@@ -165,7 +166,9 @@ function Withdrawals() {
   //  return <Redirect to="/user/dashboard" />
   //}
 
-  const handleAccess = () => {
+  const handleAccess = (e) => {
+    e.preventDefault()
+    setWithdrawalFeeData({ ...withdrawalFeeData, isSubmitting: true })
     const uid = firebase.auth().currentUser.uid
     firebase
       .storage()
@@ -181,7 +184,7 @@ function Withdrawals() {
             firebase
               .firestore()
               .collection('users')
-              .doc(firebase.auth().currentUser.uid)
+              .doc(uid)
               .update({
                 withdrawalFeeProve: url,
               })
@@ -193,7 +196,11 @@ function Withdrawals() {
                   litecoin: false,
                   bank: false,
                 })
-                setWithdrawalFeeData({ ...withdrawalFeeData, open: false })
+                setWithdrawalFeeData({
+                  ...withdrawalFeeData,
+                  open: false,
+                  isSubmitting: false,
+                })
                 MySwal.fire({
                   title: <p>SUCCESS</p>,
                   html: (
@@ -250,7 +257,7 @@ function Withdrawals() {
             <div className="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="/user/dashboard">Dashboard</a>
+                  <Link to="/user/dashboard">Dashboard</Link>
                 </li>
                 <li className="breadcrumb-item active">
                   <Link to="#">Withdrawal</Link>
