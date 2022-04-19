@@ -290,7 +290,7 @@ function UserNav1() {
   }
 
   const accessCodeCheck = () => {
-    if (accessCodeInfo.accessCodeInput !== profileInfo.accessCode) {
+    if (accessCodeInfo.accessCodeInput !== userProfile.accessCode) {
       return accessAction('notVerified')
     } else {
       return accessAction('verified')
