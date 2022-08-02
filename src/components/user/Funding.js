@@ -1322,7 +1322,9 @@ function Funding() {
                                     </td>
                                     <td>
                                       <span className="text-black">
-                                        {moment(each.date?.toDate()).calendar()}
+                                        {moment(each.date?.toDate()).format(
+                                          'll',
+                                        )}
                                       </span>
                                     </td>
                                     <td>
@@ -1513,7 +1515,9 @@ function Funding() {
                                     </td>
                                     <td>
                                       <span className="text-black">
-                                        {moment(each.date?.toDate()).calendar()}
+                                        {moment(each.date?.toDate()).format(
+                                          'll',
+                                        )}
                                       </span>
                                     </td>
                                     <td>
@@ -1662,7 +1666,7 @@ function Funding() {
                         <p className="mb-0 mt-2">
                           {moment(
                             savingsData && savingsData[0].date.toDate(),
-                          ).calendar()}
+                          ).format('ll')}
                         </p>
                       </div>
                       <ul className="portofolio-social">

@@ -1053,7 +1053,10 @@ function User() {
                         </div>
                         <div>
                           <h5 className="mb-0">
-                            ${Number(userProfile.totalBalance) || '0000'}
+                            $
+                            {userProfile.totalBalance
+                              ? Number(userProfile.totalBalance)
+                              : '0000'}
                           </h5>
                         </div>
                       </div>
@@ -1079,7 +1082,10 @@ function User() {
                         </div>
                         <div>
                           <h5 className="mb-0">
-                            ${Number(userProfile.income) || '000'}
+                            $
+                            {userProfile.income
+                              ? Number(userProfile.income)
+                              : '0000'}
                           </h5>
                         </div>
                       </div>
@@ -1103,7 +1109,12 @@ function User() {
                           <span className="fs-14">Bonus</span>
                         </div>
                         <div>
-                          <h5 className="mb-0">${userProfile.bonus}</h5>
+                          <h5 className="mb-0">
+                            $
+                            {userProfile.bonus
+                              ? Number(userProfile.bonus)
+                              : '0000'}
+                          </h5>
                         </div>
                       </div>
                       <div className="d-flex justify-content-between mb-2 align-items-center">
@@ -1128,8 +1139,10 @@ function User() {
                         <div>
                           <h5 className="mb-0">
                             $
-                            {Number(userProfile.totalBalance) +
-                              Number(userProfile.bonus) || '0000'}
+                            {userProfile.totalBalance
+                              ? Number(userProfile.totalBalance) +
+                                Number(userProfile.bonus)
+                              : '0000'}
                           </h5>
                         </div>
                       </div>
@@ -1152,7 +1165,7 @@ function User() {
                             <h2 className="num-text text-black mb-5 font-w600">
                               $
                               {userProfile.initialDeposite
-                                ? userProfile.initialDeposite
+                                ? Number(userProfile.initialDeposite)
                                 : '0000'}
                             </h2>
                           </div>
@@ -1580,9 +1593,9 @@ function User() {
                                       </td>
                                       <td>
                                         <span className="text-black">
-                                          {moment(
-                                            each.date?.toDate(),
-                                          ).calendar()}
+                                          {moment(each.date?.toDate()).format(
+                                            'll',
+                                          )}
                                         </span>
                                       </td>
                                       <td>
@@ -1783,9 +1796,9 @@ function User() {
                                       </td>
                                       <td>
                                         <span className="text-black">
-                                          {moment(
-                                            each.date?.toDate(),
-                                          ).calendar()}
+                                          {moment(each.date?.toDate()).format(
+                                            'll',
+                                          )}
                                         </span>
                                       </td>
                                       <td>
