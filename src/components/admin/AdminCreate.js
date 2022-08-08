@@ -47,6 +47,7 @@ export const UserCreate = (props) => (
       </ImageInput>
       <TextInput source="verificationCode" />
       <BooleanInput source="verified" />
+      <BooleanInput source="commission" />
       <BooleanInput source="savingsAccount" />
       <BooleanInput source="closedForTheWeek" />
       <BooleanInput source="disableWithdrawal" />

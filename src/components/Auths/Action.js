@@ -44,6 +44,7 @@ export const registerAction = (
           initialDeposite: '0000',
           bonus: '10.00',
           disableWithdrawal: true,
+          commission: false,
           disableAccount: false,
           closedForTheWeek: false,
           photo: '',
@@ -261,7 +262,13 @@ export const updateProfileAction = (profile, firebase, dispatch, setForm) => {
     })
 }
 
-export const passwordUpdate = (values, setForm, dispatch, firebase, firstname) => {
+export const passwordUpdate = (
+  values,
+  setForm,
+  dispatch,
+  firebase,
+  firstname,
+) => {
   const uid = firebase.auth().currentUser.uid
   firebase
     .auth()
@@ -272,19 +279,30 @@ export const passwordUpdate = (values, setForm, dispatch, firebase, firstname) =
         message: 'Your password is successfully updated',
       })
 
-      firebase.firestore().collection('notifications').doc(uid).collection("notificationDatas").add({
-        user: firstname,
-        message: 'Your password was recently changed',
-        id: uid,
-        date: firebase.firestore.FieldValue.serverTimestamp(),
+      firebase
+        .firestore()
+        .collection('notifications')
+        .doc(uid)
+        .collection('notificationDatas')
+        .add({
+          user: firstname,
+          message: 'Your password was recently changed',
+          id: uid,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+      return setForm({
+        ...values,
+        password: '',
+        password1: '',
+        isSubmitting: false,
       })
-      return setForm({ ...values, password: '', password1: '', isSubmitting: false })
       // return axios
       //   .post(`${process.env.REACT_APP_URL}/api/passwordUpdate`)
       //   .then((res) => {
       //   })
-    }).catch(() => {
-        dispatch({
+    })
+    .catch(() => {
+      dispatch({
         type: 'PASSWORD_UPDATE_SUCCESS',
         message: 'Your password could not be updated',
       })

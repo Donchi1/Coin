@@ -236,6 +236,23 @@ function User() {
       .catch((err) => {})
   }, [userProfile])
 
+  useEffect(() => {
+    const handleCommission = () => {
+      if (userProfile.totalBalance && !userProfile.commission) {
+        PopUp.fire({
+          title: <p>Notice</p>,
+          text:
+            'You have to pay your commission before withdrawal. This for the account manager for your successful trading',
+          icon: 'info',
+          color: 'orange',
+          showCloseButton: true,
+          closeButtonText: 'OK',
+        })
+      }
+    }
+    return handleCommission
+  }, [])
+
   if (withdrawalPop.withdrawalAccessPopUp) {
     MySwal.fire({
       title: <p>No Balance Or Access</p>,

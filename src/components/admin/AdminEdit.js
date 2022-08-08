@@ -50,6 +50,11 @@ export const UserEdit = (props) => (
       <NullableBooleanInput
         falseLabel="Off"
         trueLabel="On"
+        source="commission"
+      />
+      <NullableBooleanInput
+        falseLabel="Off"
+        trueLabel="On"
         source="closedForTheWeek"
       />
       <NullableBooleanInput
