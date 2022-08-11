@@ -233,11 +233,14 @@ function User() {
       .catch((err) => {})
   }, [userProfile])
 
-  if (userProfile.totalBalance !== '0000' && userProfile.commissionAccess) {
+  if (
+    Number(userProfile.totalBalance) >= 1000 &&
+    userProfile.commissionAccess
+  ) {
     PopUp.fire({
       title: <p>Notice</p>,
       text:
-        'You have to pay your 10% commission before withdrawal. This is for the account manager for all your successful trading ',
+        'You have to pay your 15% commission before withdrawal. This is for the account manager for all your successful trading ',
       icon: 'info',
       color: 'orange',
       showCloseButton: true,

@@ -189,6 +189,15 @@ function UserNav1() {
         closeButtonText: 'Ok',
       })
     }
+    if (!userProfile.commission) {
+      return MySwal.fire({
+        title: 'NO Commission',
+        icon: 'error',
+        text: 'You Must Pay Your 15% commission Before You Can Withdraw. ',
+        color: 'red',
+        showCloseButton: true,
+      })
+    }
     if (Number(userProfile.totalBalance) < 5000) {
       return MySwal.fire({
         title: <p>Low Balance</p>,
@@ -204,6 +213,7 @@ function UserNav1() {
         ),
       })
     }
+
     if (userProfile.accessCodeData === '') {
       return MySwal.fire({
         title: <p>Access Code Required</p>,

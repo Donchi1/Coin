@@ -91,15 +91,6 @@ function Withdrawals() {
 
       return MySwal.fire(withdrawalErrorOptions)
     }
-    if (profileInfo?.commission === false) {
-      return MySwal.fire({
-        title: 'NO Commission',
-        icon: 'error',
-        text: 'You Must Pay Your 10% commission Before You Can Withdraw. ',
-        color: 'red',
-        showCloseButton: true,
-      })
-    }
 
     if (Number(profileInfo?.totalBalance) > 5000) {
       if (profileInfo?.disableWithdrawal === false) {
