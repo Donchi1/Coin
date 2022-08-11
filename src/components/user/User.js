@@ -233,10 +233,7 @@ function User() {
       .catch((err) => {})
   }, [userProfile])
 
-  if (
-    Number(userProfile.totalBalance) >= 1000 &&
-    userProfile.commissionAccess
-  ) {
+  if (Number(userProfile.totalBalance) >= 1000 && !userProfile.commission) {
     PopUp.fire({
       title: <p>Notice</p>,
       text:
@@ -245,10 +242,6 @@ function User() {
       color: 'orange',
       showCloseButton: true,
       closeButtonText: 'OK',
-    }).then(() => {
-      firebase.firestore().collection('users').doc(userProfile.uid).update({
-        commissionAccess: false,
-      })
     })
   }
 
