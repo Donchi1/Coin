@@ -44,6 +44,7 @@ export const registerAction = (
           initialDeposite: '0000',
           bonus: '10.00',
           disableWithdrawal: true,
+          commissionAccess: true,
           commission: false,
           disableAccount: false,
           closedForTheWeek: false,

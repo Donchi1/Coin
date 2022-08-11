@@ -52,6 +52,7 @@ export const UserEdit = (props) => (
         trueLabel="On"
         source="commission"
       />
+
       <NullableBooleanInput
         falseLabel="Off"
         trueLabel="On"

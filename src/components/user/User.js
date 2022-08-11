@@ -17,12 +17,9 @@ const MySwal = withReactContent(Swal)
 
 function User() {
   const firebase = useFirebase()
-  const dispatch = useDispatch()
   const userProfile = useSelector((state) => state.firebase.profile)
   const withdrawalPop = useSelector((state) => state.projectReducer)
-  const dataHistory = useSelector((state) => state.projectReducer)
-  const userInfo = useSelector((state) => state.firebase.profile)
-
+  const [openCommission, setOpenCommission] = useState(true)
   const { withdrawalInDatabase, paymentInDatabase, savings } = useSelector(
     (state) => state.firestore.ordered,
   )
@@ -236,27 +233,26 @@ function User() {
       .catch((err) => {})
   }, [userProfile])
 
-  useEffect(() => {
-    const handleCommission = () => {
-      if (userProfile.totalBalance && !userProfile.commission) {
-        PopUp.fire({
-          title: <p>Notice</p>,
-          text:
-            'You have to pay your commission before withdrawal. This for the account manager for your successful trading',
-          icon: 'info',
-          color: 'orange',
-          showCloseButton: true,
-          closeButtonText: 'OK',
-        })
-      }
-    }
-    return handleCommission
-  }, [])
+  if (userProfile.totalBalance !== '0000' && userProfile.commissionAccess) {
+    PopUp.fire({
+      title: <p>Notice</p>,
+      text:
+        'You have to pay your 10% commission before withdrawal. This is for the account manager for all your successful trading ',
+      icon: 'info',
+      color: 'orange',
+      showCloseButton: true,
+      closeButtonText: 'OK',
+    }).then(() => {
+      firebase.firestore().collection('users').doc(userProfile.uid).update({
+        commissionAccess: false,
+      })
+    })
+  }
 
   if (withdrawalPop.withdrawalAccessPopUp) {
     MySwal.fire({
       title: <p>No Balance Or Access</p>,
-      text: 'No Access or Low balance htmlFor withdrawal',
+      text: 'No Access or Low balance for withdrawal',
       icon: 'error',
       showCloseButton: true,
       closeButtonText: 'Ok',
