@@ -199,7 +199,7 @@ function Home() {
       <section className="feature-part site-bg bg-pattern pt-100 pb-10">
         <div className="container ">
           <div className="row ">
-            <div className="col-md-12 wow text-center fadeInUp animated">
+            <div className="col-md-12  wow text-center fadeInUp animated">
               <div className="section-heading  pb-65">
                 <label className="sub-heading">UltimateCoin Feature</label>
                 <h2 className="heading-title userTextColor">Best Features</h2>
@@ -211,7 +211,7 @@ function Home() {
             </div>
           </div>
           <div className="row ">
-            <div className="col-sm-12 col-lg-4 wow fadeInUp pb-80 animated">
+            <div className="col-sm-12 col-lg-4 wow fadeInUp pb-80 animated ">
               <div className="feature-box">
                 <div className="feature-icon ">
                   <img

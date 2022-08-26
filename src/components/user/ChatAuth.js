@@ -88,6 +88,7 @@ function ChatAuth() {
             id: userProfile.uid,
             photo: userProfile.photo,
             email: userProfile.email,
+            isAdmin: false,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           })
       })
@@ -381,14 +382,14 @@ function ChatAuth() {
                               <div
                                 key={each.id}
                                 className={`media mb-4  ${
-                                  each.user.id === userProfile.uid
+                                  !each.user.isAdmin
                                     ? 'justify-content-end align-items-end'
                                     : 'received-msg  justify-content-start align-items-start'
                                 }`}
                               >
                                 <div
                                   className={
-                                    each.user.id === userProfile.uid
+                                    !each.user.isAdmin
                                       ? 'message-sent'
                                       : 'message-received'
                                   }
@@ -410,9 +411,9 @@ function ChatAuth() {
                                     <span>{each.text}</span>
                                   </p>
                                   <span className="fs-12 text-black">
-                                    {moment(
-                                      each.createdAt?.toDate(),
-                                    ).calendar()}
+                                    {moment(each.createdAt?.toDate()).format(
+                                      'MM:dd',
+                                    )}
                                   </span>
                                 </div>
                               </div>
