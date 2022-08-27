@@ -30,7 +30,7 @@ function ChatAuth() {
     const subscribe = firebase
       .firestore()
       .collection('chats')
-      .doc(userProfile.uid)
+      .doc(userProfile.uid || 'fgfddfc')
       .collection('messages')
       .orderBy('createdAt')
       .onSnapshot((snaps) => {
@@ -61,7 +61,7 @@ function ChatAuth() {
     firebase
       .firestore()
       .collection('chats')
-      .doc(userProfile.uid)
+      .doc(userProfile?.uid)
       .collection('messages')
       .add({
         id: new Date(),
@@ -82,7 +82,7 @@ function ChatAuth() {
         return firebase
           .firestore()
           .collection('chats')
-          .doc(userProfile.uid)
+          .doc(userProfile?.uid)
           .set({
             username: userProfile.firstname,
             id: userProfile.uid,
@@ -366,11 +366,12 @@ function ChatAuth() {
                           </div>
                         </div>
                       </div>
-                      <Scrollbars
+                      <div
                         style={{
-                          height: 300,
+                          height: 200,
+                          overflow: 'visible',
                           backgroundImage:
-                            "url('https://d22roh5inpczgk.cloudfront.net/xhtml/images/chat-bg.png')",
+                            "url('https://makaanlelo.com/tf_products_007/zenix/laravel/demo/vendor/images/chat-bg.png')",
                         }}
                       >
                         <div className="chat-box-area " id="chartBox">
@@ -421,24 +422,24 @@ function ChatAuth() {
                           </div>
                         </div>
                         <div ref={scroll}></div>
-                      </Scrollbars>
-                      <div className="card-footer border-0 type-massage">
-                        <div className="input-group">
-                          <input
-                            className="form-control "
-                            placeholder="Type message..."
-                            type="text"
-                            value={messages}
-                            onChange={(e) => setMessages(e.target.value)}
-                          />
-                          <div className="input-group-append">
-                            <button
-                              type="button"
-                              className="send-btn btn-primary btn"
-                              onClick={() => handleSubmit()}
-                            >
-                              SEND
-                            </button>
+                        <div className="card-footer border-0 type-massage">
+                          <div className="input-group">
+                            <input
+                              className="form-control "
+                              placeholder="Type message..."
+                              type="text"
+                              value={messages}
+                              onChange={(e) => setMessages(e.target.value)}
+                            />
+                            <div className="input-group-append">
+                              <button
+                                type="button"
+                                className="send-btn btn-primary btn"
+                                onClick={() => handleSubmit()}
+                              >
+                                SEND
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
