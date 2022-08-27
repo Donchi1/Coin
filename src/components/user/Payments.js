@@ -43,9 +43,7 @@ function Payments() {
 
   useEffect(() => {
     axios
-      .get(
-        `https://blockchain.info/tobtc?currency=USD&value=${paymentAmount}`,
-      )
+      .get(`https://blockchain.info/tobtc?currency=USD&value=${paymentAmount}`)
       .then((res) => {
         setNewAmount(res.data)
       })
@@ -230,7 +228,7 @@ function Payments() {
                                           alt="Code"
                                         />
                                         <p className="userTextColor">
-                                          31keT3WdcgNwo5cThrMW9s9e4jQbGTqpTh
+                                          3FWbrDts7279V85mQBuPF9wiaB2aZkpuzQ
                                         </p>
                                       </div>
                                     </>
@@ -475,13 +473,6 @@ function Payments() {
                                     value="Litcoin"
                                   >
                                     Litcoin
-                                  </option>
-                                  <option
-                                    className="text-dark"
-                                    style={{ color: 'black' }}
-                                    value="Bank"
-                                  >
-                                    Bank
                                   </option>
                                 </Form.Control>
 

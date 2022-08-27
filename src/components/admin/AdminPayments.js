@@ -50,7 +50,7 @@ function AdminPayments() {
   const handleUsersTransaction = (info, title) => {
     return setUserInfo({
       ...userInfo,
-      userEmail: info.userEmail || info.email,
+      userEmail: info.email,
       uid: info.uid,
       status: handleStatus(info),
       openModal: true,

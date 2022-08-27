@@ -49,11 +49,12 @@ function AdminWithdrawals() {
   const handleUsersTransaction = (info, title) => {
     return setUserInfo({
       ...userInfo,
-      userEmail: info.userEmail,
+      userEmail: info.email,
       uid: info.uid,
       status: handleStatus(info),
       openModal: true,
       infoTitle: title,
+      date: info.date,
     })
   }
 

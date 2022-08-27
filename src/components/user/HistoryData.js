@@ -64,7 +64,7 @@ function HistoryData() {
                 <ul className="nav nav-tabs" role="tablist">
                   <li className="nav-item">
                     <a
-                      className="nav-link active"
+                      className={`nav-link ${openNote.payment && 'active'}`}
                       data-toggle="tab"
                       href="#monthly"
                       onClick={() =>
@@ -72,7 +72,7 @@ function HistoryData() {
                           ...openNote,
                           payment: true,
                           withdrawal: false,
-                          notes: false,
+                          note: false,
                         })
                       }
                     >
@@ -81,7 +81,7 @@ function HistoryData() {
                   </li>
                   <li className="nav-item">
                     <a
-                      className="nav-link"
+                      className={`nav-link ${openNote.withdrawal && 'active'}`}
                       data-toggle="tab"
                       href="#Weekly"
                       onClick={() =>
@@ -89,7 +89,7 @@ function HistoryData() {
                           ...openNote,
                           payment: false,
                           withdrawal: true,
-                          notes: false,
+                          note: false,
                         })
                       }
                     >
@@ -98,7 +98,7 @@ function HistoryData() {
                   </li>
                   <li className="nav-item">
                     <a
-                      className="nav-link"
+                      className={`nav-link ${openNote.note && 'active'}`}
                       data-toggle="tab"
                       href="#notes"
                       onClick={() =>
@@ -106,7 +106,7 @@ function HistoryData() {
                           ...openNote,
                           payment: false,
                           withdrawal: false,
-                          notes: true,
+                          note: true,
                         })
                       }
                     >
@@ -118,7 +118,7 @@ function HistoryData() {
             </div>
             <div className="card-body tab-content p-0">
               {openNote.payment && (
-                <div className="tab-pane active show fade" id="monthly">
+                <div className="tab-pane active show fade">
                   <div className="table-responsive">
                     <table className="table shadow-hover card-table border-no tbl-btn short-one">
                       <tbody>
@@ -311,7 +311,7 @@ function HistoryData() {
                 </div>
               )}
               {openNote.withdrawal && (
-                <div className="tab-pane fade" id="Weekly">
+                <div className="tab-pane active show fade">
                   <div className="table-responsive">
                     <table className="table shadow-hover card-table border-no tbl-btn short-one">
                       <tbody>
@@ -504,7 +504,7 @@ function HistoryData() {
                 </div>
               )}
               {openNote.note && (
-                <div className="tab-pane fade" id="notes">
+                <div className="tab-pane active show fade">
                   <div
                     id="dlab_W_Notification1"
                     className="widget-media dz-scroll p-3 "
