@@ -1,0 +1,409 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.site-bg {
+  background-color: black !important;
+}
+.site-bg2 {
+  background-color: rgb(26, 19, 31) !important;
+}
+.arrange {
+  width: 100% !important;
+}
+.userTextColor {
+  color: rgb(238, 111, 65) !important;
+}
+.overAll {
+  z-index: 100000000;
+}
+
+.progress-data {
+  width: 17rem !important;
+}
+.center {
+  width: 17.5%;
+  height: 17.5%;
+}
+.centerplus {
+  transform: translatex(280%);
+}
+
+.custom-icon {
+  padding: 1.5rem;
+  transform: translateY(-20%);
+  border-radius: 50%;
+}
+.custom-icon-saving {
+  padding: 1.5rem;
+
+  border-radius: 50%;
+}
+
+.history-info {
+  background: rgb(238, 111, 65) !important;
+  color: #fff;
+}
+
+.new-sec-bg {
+}
+
+.nav-color {
+  background-color: #f87d18;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.little-add {
+  color: #f87d18;
+}
+
+.backtop {
+  position: fixed;
+  right: 2rem;
+  height: 4%;
+  bottom: 5rem;
+  z-index: 20;
+  border-radius: 5rem;
+  width: 3%;
+  text-align: center;
+}
+
+.dontshow {
+  display: none !important;
+}
+.text-large {
+  font-size: 4rem !important;
+  color: white;
+  text-align: center;
+}
+.btn-new {
+  width: 20%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.second-btn {
+  width: 30%;
+  background-color: transparent;
+  border: 1px solid tomato;
+  color: white;
+}
+.second-btn:hover {
+  background-color: tomato;
+  transition: all 0.5s linear;
+  color: white;
+  cursor: pointer;
+}
+.sub-head {
+  font-size: 14px !important;
+  color: white;
+}
+.blog {
+  border: 1px solid tomato;
+  border-radius: 10px;
+  height: 80%;
+}
+.blog-img {
+  border-radius: 50%;
+}
+.custom-blog-btn1 {
+  position: absolute;
+  top: 0;
+  right: -20px;
+  top: 50%;
+  z-index: 20;
+  background-color: tomato;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.custom-blog-btn2 {
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  z-index: 20;
+  background-color: tomato;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.custom-blog-btn {
+  background-color: tomato;
+  padding: 2px;
+  color: white;
+  font-size: 18px;
+}
+
+.home-hero-title {
+  font-size: 3.5rem;
+}
+
+.loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 10000;
+  position: fixed;
+  background-color: black;
+  opacity: 0.7;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0;
+  opacity: 0.8;
+}
+
+.user-anchor {
+  font-size: 1.1rem !important;
+  text-transform: uppercase !important;
+}
+.toggle-span {
+  display: none !important;
+}
+
+.my-loader {
+  margin-top: 15%;
+}
+
+.u-design {
+  font-family: 'Helvetica';
+  font-size: 2.5rem;
+  display: inline;
+  text-shadow: 2px 2px 0px #f87d18, 3px 3px 0px #fff,
+    4px 4px 0px rgb(128, 0, 128);
+}
+.chat-bg {
+  background-color: green;
+}
+
+.notification {
+  border-bottom: orangered !important;
+  right: 0.2rem;
+  position: absolute;
+  top: 100%;
+  background-color: white;
+}
+.notification-container {
+  border-bottom: orangered !important;
+  width: 100%;
+  background-color: white;
+}
+
+.notification-container h6 {
+  background-color: tomato;
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  text-transform: uppercase;
+}
+.notification h6 {
+  background-color: tomato;
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.inner {
+  font-size: 100px;
+}
+.chat-box {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 4rem;
+}
+
+.chat-sub {
+  height: 60%;
+}
+.side-bar-item:hover {
+  background-color: rgb(226, 88, 37) !important;
+  color: #fff;
+}
+.text-new {
+  color: rgb(226, 88, 37) !important;
+}
+.side-bar-item:hover .text-new {
+  color: #fff !important;
+}
+
+.message-sent {
+  width: fit-content;
+  max-height: 100%;
+  color: #fff;
+  border-radius: 10px 10px 10px 0;
+}
+.message-received {
+  border-radius: 10px 10px 0px 10px;
+  width: fit-content;
+  max-height: 100%;
+  background-color: rgb(126, 126, 126);
+  color: #fff;
+}
+
+@media only screen and (max-width: 750px) {
+  .home-hero-title {
+    font-size: 2.5rem;
+  }
+  .data-margin {
+    margin-bottom: 1rem;
+  }
+  .custom-icon-saving {
+    padding: 0.5rem;
+  }
+  .btn-new {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  .header-align {
+    min-width: 100%;
+  }
+  .inner {
+    font-size: 50px;
+  }
+  .custom-icon {
+    padding: 0.6rem;
+    transform: translateY(-15%);
+    border-radius: 50%;
+  }
+
+  .btn-normal {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  .progress-data {
+    width: 13rem !important;
+  }
+  .price-pd {
+    margin-top: 1.2rem;
+  }
+  .backtop {
+    width: 10%;
+    height: 5%;
+    right: 2.5rem;
+  }
+}
+
+.header-spacing {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.header-spacing.new-row {
+  margin-bottom: 4rem;
+  color: rgb(16, 11, 19);
+}
+.card-bg-new {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../assets/card/card1.jpg') no-repeat fixed center;
+  background-size: cover;
+}
+ .card-bg-new1 {
+  background: url('../../assets/card/card2.jpg') no-repeat fixed center;
+  background-size: cover;
+} 
+.about-hero {
+  background: url('../../assets/btc2.jpeg') no-repeat center;
+  background-size: cover;
+}
+.pricing-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../assets/btc3.jpeg') no-repeat center;
+  background-size: cover;
+}
+.contact-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../assets/btc1.jpeg') no-repeat center;
+  background-size: cover;
+}
+.team-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../assets/bgcoin.png') no-repeat center;
+  background-size: cover;
+}
+.app-img {
+  width: 400px;
+  max-width: 100%;
+}
+
+.header-bg-new {
+ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../assets/aboutbanner.jpg') no-repeat center;
+  background-size: cover;
+}
+.token-bg-new {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../assets/btc3.jpeg') fixed center;
+  background-size: cover;
+}
+
+.apexcharts-legend {
+  display: flex;
+  overflow: auto;
+  padding: 0 10px;
+}
+.apexcharts-legend.position-bottom,
+.apexcharts-legend.position-top {
+  flex-wrap: wrap;
+}
+.apexcharts-legend.position-right,
+.apexcharts-legend.position-left {
+  flex-direction: column;
+  bottom: 0;
+}
+.apexcharts-legend.position-bottom.apexcharts-align-left,
+.apexcharts-legend.position-top.apexcharts-align-left,
+.apexcharts-legend.position-right,
+.apexcharts-legend.position-left {
+  justify-content: flex-start;
+}
+.apexcharts-legend.position-bottom.apexcharts-align-center,
+.apexcharts-legend.position-top.apexcharts-align-center {
+  justify-content: center;
+}
+.apexcharts-legend.position-bottom.apexcharts-align-right,
+.apexcharts-legend.position-top.apexcharts-align-right {
+  justify-content: flex-end;
+}
+.apexcharts-legend-series {
+  cursor: pointer;
+  line-height: normal;
+}
+.apexcharts-legend.position-bottom .apexcharts-legend-series,
+.apexcharts-legend.position-top .apexcharts-legend-series {
+  display: flex;
+  align-items: center;
+}
+.apexcharts-legend-text {
+  position: relative;
+  font-size: 14px;
+}
+.apexcharts-legend-text *,
+.apexcharts-legend-marker * {
+  pointer-events: none;
+}
+.apexcharts-legend-marker {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 3px;
+  border-style: solid;
+}
+
+.apexcharts-legend.apexcharts-align-right .apexcharts-legend-series,
+.apexcharts-legend.apexcharts-align-left .apexcharts-legend-series {
+  display: inline-block;
+}
+.apexcharts-legend-series.apexcharts-no-click {
+  cursor: auto;
+}
+.apexcharts-legend .apexcharts-hidden-zero-series,
+.apexcharts-legend .apexcharts-hidden-null-series {
+  display: none !important;
+}
+.apexcharts-inactive-legend {
+  opacity: 0.45;
+}
