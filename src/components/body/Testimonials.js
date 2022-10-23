@@ -32,32 +32,7 @@ const Prev = ({ className, onClick, style }) => (
 function Testimonials() {
   const [show, setShow] = useState(null)
 
-  const slickOption = {
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    swipeToSlide: true,
-    autoplay: true,
-    initialSlide: 0,
-    arrows:false,
-    responsive: [
-      {
-        breakPoint: 1025,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakPoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: true,
-        },
-      },
-    ],
-    
-  }
+
 
   const firebase = useFirebase()
   //useEffect(() => {
@@ -124,7 +99,34 @@ function Testimonials() {
               </div>
             </div>
           </div>
-          <Slider {...slickOption}>
+          <Slider  autoplay
+            slidesToScroll={1}
+            slidesToShow={4}
+            infinite
+            arrows={false}
+            initialSlide={0}
+            speed={2000}
+            pauseOnHover={false}
+            pauseOnFocus
+            pauseOnDotsHover={false}
+            easing="linear"
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 4,
+                  slidesToScroll: 1,
+                },
+              },
+              {
+                breakpoint: 768,
+                settings: {
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  dots: true,
+                },
+              },
+            ]}>
             {videoData.map((each) => (
               <div className="blog-box blog p-2" key={each.id}>
                 <div className="blog-img mb-15 work-box">
