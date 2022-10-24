@@ -79,7 +79,7 @@ function AccountVerifySignup() {
               dispatch({ type: 'SIGNUP_SUCCESS' })
               MySwal.fire(successOptionsSignup).then(() => {
                 setUserData({ ...userData, code: '', isSubmitting: false })
-                return push('/login')
+                return push('/user/dashboard')
                 // return axios
                 //   .post(
                 //     `${process.env.REACT_APP_APIURL}/api/welcome`,
@@ -123,30 +123,13 @@ function AccountVerifySignup() {
 
   return (
     <>
-      <section className="sub-page-banner site-bg parallax" id="banner">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 wow fadeInUp">
-              <div className="page-banner text-center">
-                <h1 className="sub-banner-title userTextColor">Verification</h1>
-                <ul>
-                  <li>
-                    <a href="/">Home</a>
-                  </li>
-                  <li>Verification</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    
 
-      <div className="authentication-bg site-bg pb-5">
-        <div className=" height-100vh ">
-          <div>
-            <div>
-              <div className="container">
-                <div className="row justify-content-center">
+      <div className="vh-100">
+      <div className="authentication h-100  ">
+        <div className=" h-100 ">
+          <div className="container">
+            <div className="row justify-content-center vh-100 align-items-center">
                   <div className="col-md-8 col-lg-6 col-xl-5 pt-2 ">
                     <div className="card wow fadeInUp">
                       <div className="card-body p-4">
@@ -209,7 +192,8 @@ function AccountVerifySignup() {
             </div>
           </div>
         </div>
-      </div>
+      
+      
     </>
   )
 }

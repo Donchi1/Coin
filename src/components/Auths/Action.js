@@ -12,7 +12,7 @@ const next = (firebase, url, user, push) => {
     })
 }
 
-export const registerAction = (
+export const registerAction = async (
   data,
   firebase,
   dispatch,
@@ -24,61 +24,50 @@ export const registerAction = (
   const email = data.email
   const password = data.password
 
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then((user) => {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(user.user.uid)
-        .set({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          phone: data.phone,
-          country: data.country,
-          uid: user.user.uid,
-          initial: data.firstname[0] + data.lastname[0],
-          totalBalance: '0000',
-          initialDeposite: '0000',
-          bonus: '10.00',
-          disableWithdrawal: true,
-          commissionAccess: true,
-          commission: false,
-          disableAccount: false,
-          closedForTheWeek: false,
-          photo: '',
-          verificationCode: '',
-          accessCode: '',
-          income: '',
-          verified: false,
-          accessCodeProve: '',
-          withdrawalProve: '',
-          savingsAccount: false,
-          weeklyClosingAlert: true,
-          withdrawalFeeProve: '',
-          accessCodeData: '',
-        })
-        .then(() => {
-          firebase
-            .storage()
-            .ref('users')
-            .child(user.user.uid)
-            .put(data.photo)
-            .then(() => {
-              firebase
-                .storage()
-                .ref(`users/${user.user.uid}`)
-                .getDownloadURL()
-                .then((url) => {
-                  return next(firebase, url, user.user, push)
-                  // return push('/verification/signup')
-                })
-            })
-        })
-    })
-    .catch((error) => {
+  try {
+    const user = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+    await firebase.storage().ref('users').child(user.user.uid).put(data.photo)
+
+    const url = await firebase
+      .storage()
+      .ref(`users/${user.user.uid}`)
+      .getDownloadURL()
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(user.user.uid)
+      .set({
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        phone: data.phone,
+        country: data.country,
+        uid: user.user.uid,
+        initial: data.firstname[0] + data.lastname[0],
+        totalBalance: '0000',
+        initialDeposite: '0000',
+        bonus: '10.00',
+        disableWithdrawal: true,
+        commissionAccess: true,
+        commission: false,
+        disableAccount: false,
+        closedForTheWeek: false,
+        photo: url,
+        verificationCode: '',
+        accessCode: '',
+        income: '',
+        verified: false,
+        accessCodeProve: '',
+        withdrawalProve: '',
+        savingsAccount: false,
+        weeklyClosingAlert: true,
+        withdrawalFeeProve: '',
+        accessCodeData: '',
+      })
+      push('/verification/signup')  
+    }catch(error) {
       setUserData.setEmail('')
       setUserData.setPassword('')
       setUserData.setPhone('')
@@ -89,7 +78,7 @@ export const registerAction = (
       setUserData.setIsSubmitting('')
       setOpenPopUp({ ...openPopUp, error: true })
       return dispatch({ type: 'SIGNUP_ERROR', error })
-    })
+    }
 }
 
 export const logginAction = (
